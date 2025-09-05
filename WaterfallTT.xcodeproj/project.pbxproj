@@ -6,24 +6,102 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		0B4FDB892E252DC0009A94F5 /* DocumentPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B4FDB882E252DBB009A94F5 /* DocumentPicker.swift */; };
+		0B4FDB8B2E253961009A94F5 /* TeamNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B4FDB8A2E253959009A94F5 /* TeamNameView.swift */; };
+		0BA646432E1FF34800321354 /* LocationTeamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA646422E1FF34800321354 /* LocationTeamView.swift */; };
+		0BC8BE1E2E3A38E400ABA07F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0BC8BE1D2E3A38E400ABA07F /* GoogleService-Info.plist */; };
+		0BC8BE262E3A3CD600ABA07F /* FirestoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC8BE242E3A3CD600ABA07F /* FirestoreManager.swift */; };
+		0BC8BE282E3A3D4700ABA07F /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC8BE272E3A3D4400ABA07F /* User.swift */; };
+		0BC8BE2B2E3A40C900ABA07F /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 0BC8BE2A2E3A40C900ABA07F /* FirebaseAnalytics */; };
+		0BC8BE2D2E3A40C900ABA07F /* FirebaseAnalyticsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 0BC8BE2C2E3A40C900ABA07F /* FirebaseAnalyticsCore */; };
+		0BC8BE2F2E3A40C900ABA07F /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 0BC8BE2E2E3A40C900ABA07F /* FirebaseCore */; };
+		0BC8BE312E3A40C900ABA07F /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 0BC8BE302E3A40C900ABA07F /* FirebaseCrashlytics */; };
+		0BC8BE332E3A40C900ABA07F /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 0BC8BE322E3A40C900ABA07F /* FirebaseFirestore */; };
+		0BC8BE352E3A413000ABA07F /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC8BE342E3A413000ABA07F /* Helper.swift */; };
+		0BC8BE382E3A424200ABA07F /* EntitlementManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC8BE372E3A424200ABA07F /* EntitlementManager.swift */; };
+		0BE3CFE82E61A133002A286A /* AnimatedStepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE3CFE72E61A133002A286A /* AnimatedStepper.swift */; };
+		0BECA4422E1EBC350000F789 /* SelectPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BECA4412E1EBC350000F789 /* SelectPlayerView.swift */; };
+		0BFA00082E1E4BA400F10BEA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0BFAFFFE2E1E4BA400F10BEA /* Assets.xcassets */; };
+		0BFA00092E1E4BA400F10BEA /* CameraButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFAFFEE2E1E4BA400F10BEA /* CameraButtonStyle.swift */; };
+		0BFA000A2E1E4BA400F10BEA /* PrimaryButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFAFFEF2E1E4BA400F10BEA /* PrimaryButtonStyle.swift */; };
+		0BFA000B2E1E4BA400F10BEA /* Chip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFAFFF12E1E4BA400F10BEA /* Chip.swift */; };
+		0BFA000C2E1E4BA400F10BEA /* ChipModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFAFFF22E1E4BA400F10BEA /* ChipModel.swift */; };
+		0BFA000D2E1E4BA400F10BEA /* AutoCompleteSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFAFFF42E1E4BA400F10BEA /* AutoCompleteSheet.swift */; };
+		0BFA000E2E1E4BA400F10BEA /* FloatingTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFAFFF52E1E4BA400F10BEA /* FloatingTextField.swift */; };
+		0BFA000F2E1E4BA400F10BEA /* HeightCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFAFFF62E1E4BA400F10BEA /* HeightCalculator.swift */; };
+		0BFA00102E1E4BA400F10BEA /* KeyboardAvoiding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFAFFF72E1E4BA400F10BEA /* KeyboardAvoiding.swift */; };
+		0BFA00112E1E4BA400F10BEA /* View+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFAFFF82E1E4BA400F10BEA /* View+extensions.swift */; };
+		0BFA00122E1E4BA400F10BEA /* WrappedHStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFAFFF92E1E4BA400F10BEA /* WrappedHStack.swift */; };
+		0BFA00132E1E4BA400F10BEA /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFAFFFB2E1E4BA400F10BEA /* Player.swift */; };
+		0BFA00142E1E4BA400F10BEA /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFAFFFC2E1E4BA400F10BEA /* Team.swift */; };
+		0BFA00152E1E4BA400F10BEA /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFAFFFF2E1E4BA400F10BEA /* Constants.swift */; };
+		0BFA00162E1E4BA400F10BEA /* ManagePlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFA00002E1E4BA400F10BEA /* ManagePlayerView.swift */; };
+		0BFA00182E1E4BA400F10BEA /* PlayersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFA00022E1E4BA400F10BEA /* PlayersView.swift */; };
+		0BFA00192E1E4BA400F10BEA /* ShareSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFA00032E1E4BA400F10BEA /* ShareSheet.swift */; };
+		0BFA001A2E1E4BA400F10BEA /* TeamSnapshotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFA00042E1E4BA400F10BEA /* TeamSnapshotView.swift */; };
+		0BFA001B2E1E4BA400F10BEA /* WaterfallTTApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFA00052E1E4BA400F10BEA /* WaterfallTTApp.swift */; };
+		0BFA001C2E1E4BA400F10BEA /* WaterfallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFA00062E1E4BA400F10BEA /* WaterfallView.swift */; };
+		0BFA001E2E1E4BC600F10BEA /* InitTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFA001D2E1E4BC600F10BEA /* InitTabView.swift */; };
+		0BFA00202E1E4C2400F10BEA /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFA001F2E1E4C2400F10BEA /* DataManager.swift */; };
+		0BFA00222E1E504A00F10BEA /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFA00212E1E504A00F10BEA /* StatsView.swift */; };
+		0BFA00262E1E509700F10BEA /* LoaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFA00232E1E509700F10BEA /* LoaderView.swift */; };
+		0BFA00272E1E509700F10BEA /* LoaderViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFA00242E1E509700F10BEA /* LoaderViewModifier.swift */; };
+		0BFA00292E1E563B00F10BEA /* AvailabilityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFA00282E1E563B00F10BEA /* AvailabilityView.swift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		0B12F33B2E0D3B1D005AED4F /* WaterfallTT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WaterfallTT.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0B4FDB872E252D0C009A94F5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = WaterfallTT/Info.plist; sourceTree = SOURCE_ROOT; };
+		0B4FDB882E252DBB009A94F5 /* DocumentPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentPicker.swift; sourceTree = "<group>"; };
+		0B4FDB8A2E253959009A94F5 /* TeamNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamNameView.swift; sourceTree = "<group>"; };
+		0BA646422E1FF34800321354 /* LocationTeamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTeamView.swift; sourceTree = "<group>"; };
+		0BC8BE1D2E3A38E400ABA07F /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		0BC8BE242E3A3CD600ABA07F /* FirestoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreManager.swift; sourceTree = "<group>"; };
+		0BC8BE272E3A3D4400ABA07F /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		0BC8BE342E3A413000ABA07F /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
+		0BC8BE362E3A417500ABA07F /* WaterfallTT.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = WaterfallTT.entitlements; path = WaterfallTT/WaterfallTT.entitlements; sourceTree = SOURCE_ROOT; };
+		0BC8BE372E3A424200ABA07F /* EntitlementManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntitlementManager.swift; sourceTree = "<group>"; };
+		0BE3CFE72E61A133002A286A /* AnimatedStepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedStepper.swift; sourceTree = "<group>"; };
+		0BECA4412E1EBC350000F789 /* SelectPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectPlayerView.swift; sourceTree = "<group>"; };
+		0BFA00002E1E4BA400F10BEA /* ManagePlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagePlayerView.swift; sourceTree = "<group>"; };
+		0BFA00022E1E4BA400F10BEA /* PlayersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayersView.swift; sourceTree = "<group>"; };
+		0BFA00032E1E4BA400F10BEA /* ShareSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSheet.swift; sourceTree = "<group>"; };
+		0BFA00042E1E4BA400F10BEA /* TeamSnapshotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamSnapshotView.swift; sourceTree = "<group>"; };
+		0BFA00052E1E4BA400F10BEA /* WaterfallTTApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaterfallTTApp.swift; sourceTree = "<group>"; };
+		0BFA00062E1E4BA400F10BEA /* WaterfallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaterfallView.swift; sourceTree = "<group>"; };
+		0BFA001D2E1E4BC600F10BEA /* InitTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitTabView.swift; sourceTree = "<group>"; };
+		0BFA001F2E1E4C2400F10BEA /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		0BFA00212E1E504A00F10BEA /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsView.swift; sourceTree = "<group>"; };
+		0BFA00232E1E509700F10BEA /* LoaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoaderView.swift; sourceTree = "<group>"; };
+		0BFA00242E1E509700F10BEA /* LoaderViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoaderViewModifier.swift; sourceTree = "<group>"; };
+		0BFA00282E1E563B00F10BEA /* AvailabilityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvailabilityView.swift; sourceTree = "<group>"; };
+		0BFAFFEE2E1E4BA400F10BEA /* CameraButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraButtonStyle.swift; sourceTree = "<group>"; };
+		0BFAFFEF2E1E4BA400F10BEA /* PrimaryButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryButtonStyle.swift; sourceTree = "<group>"; };
+		0BFAFFF12E1E4BA400F10BEA /* Chip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chip.swift; sourceTree = "<group>"; };
+		0BFAFFF22E1E4BA400F10BEA /* ChipModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChipModel.swift; sourceTree = "<group>"; };
+		0BFAFFF42E1E4BA400F10BEA /* AutoCompleteSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCompleteSheet.swift; sourceTree = "<group>"; };
+		0BFAFFF52E1E4BA400F10BEA /* FloatingTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingTextField.swift; sourceTree = "<group>"; };
+		0BFAFFF62E1E4BA400F10BEA /* HeightCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeightCalculator.swift; sourceTree = "<group>"; };
+		0BFAFFF72E1E4BA400F10BEA /* KeyboardAvoiding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardAvoiding.swift; sourceTree = "<group>"; };
+		0BFAFFF82E1E4BA400F10BEA /* View+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+extensions.swift"; sourceTree = "<group>"; };
+		0BFAFFF92E1E4BA400F10BEA /* WrappedHStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrappedHStack.swift; sourceTree = "<group>"; };
+		0BFAFFFB2E1E4BA400F10BEA /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		0BFAFFFC2E1E4BA400F10BEA /* Team.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
+		0BFAFFFE2E1E4BA400F10BEA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		0BFAFFFF2E1E4BA400F10BEA /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		0B12F33D2E0D3B1D005AED4F /* WaterfallTT */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			name = WaterfallTT;
-			path = ../../../itecanb/dev/WaterfallTT/WaterfallTT;
-			sourceTree = "<group>";
-		};
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		0B12F3382E0D3B1D005AED4F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0BC8BE2B2E3A40C900ABA07F /* FirebaseAnalytics in Frameworks */,
+				0BC8BE312E3A40C900ABA07F /* FirebaseCrashlytics in Frameworks */,
+				0BC8BE2F2E3A40C900ABA07F /* FirebaseCore in Frameworks */,
+				0BC8BE332E3A40C900ABA07F /* FirebaseFirestore in Frameworks */,
+				0BC8BE2D2E3A40C900ABA07F /* FirebaseAnalyticsCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -33,7 +111,7 @@
 		0B12F3322E0D3B1D005AED4F = {
 			isa = PBXGroup;
 			children = (
-				0B12F33D2E0D3B1D005AED4F /* WaterfallTT */,
+				0BFA00072E1E4BA400F10BEA /* WaterfallTT */,
 				0B12F33C2E0D3B1D005AED4F /* Products */,
 			);
 			sourceTree = "<group>";
@@ -44,6 +122,100 @@
 				0B12F33B2E0D3B1D005AED4F /* WaterfallTT.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		0BC8BE252E3A3CD600ABA07F /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				0BC8BE242E3A3CD600ABA07F /* FirestoreManager.swift */,
+			);
+			path = Database;
+			sourceTree = "<group>";
+		};
+		0BFA00072E1E4BA400F10BEA /* WaterfallTT */ = {
+			isa = PBXGroup;
+			children = (
+				0BFA00052E1E4BA400F10BEA /* WaterfallTTApp.swift */,
+				0BFA001D2E1E4BC600F10BEA /* InitTabView.swift */,
+				0BFA00062E1E4BA400F10BEA /* WaterfallView.swift */,
+				0BFA00282E1E563B00F10BEA /* AvailabilityView.swift */,
+				0BFA00022E1E4BA400F10BEA /* PlayersView.swift */,
+				0BFA00212E1E504A00F10BEA /* StatsView.swift */,
+				0BFA00002E1E4BA400F10BEA /* ManagePlayerView.swift */,
+				0BFA00032E1E4BA400F10BEA /* ShareSheet.swift */,
+				0BECA4412E1EBC350000F789 /* SelectPlayerView.swift */,
+				0BFA00042E1E4BA400F10BEA /* TeamSnapshotView.swift */,
+				0BA646422E1FF34800321354 /* LocationTeamView.swift */,
+				0B4FDB882E252DBB009A94F5 /* DocumentPicker.swift */,
+				0B4FDB8A2E253959009A94F5 /* TeamNameView.swift */,
+				0BFAFFFA2E1E4BA400F10BEA /* Components */,
+				0BC8BE252E3A3CD600ABA07F /* Database */,
+				0BFAFFFD2E1E4BA400F10BEA /* Model */,
+				0BFAFFFF2E1E4BA400F10BEA /* Constants.swift */,
+				0BC8BE342E3A413000ABA07F /* Helper.swift */,
+				0BC8BE362E3A417500ABA07F /* WaterfallTT.entitlements */,
+				0B4FDB872E252D0C009A94F5 /* Info.plist */,
+				0BFAFFFE2E1E4BA400F10BEA /* Assets.xcassets */,
+				0BC8BE1D2E3A38E400ABA07F /* GoogleService-Info.plist */,
+			);
+			name = WaterfallTT;
+			path = ../../../itecanb/dev/WaterfallTT/WaterfallTT;
+			sourceTree = "<group>";
+		};
+		0BFA00252E1E509700F10BEA /* Loader */ = {
+			isa = PBXGroup;
+			children = (
+				0BFA00232E1E509700F10BEA /* LoaderView.swift */,
+				0BFA00242E1E509700F10BEA /* LoaderViewModifier.swift */,
+			);
+			path = Loader;
+			sourceTree = "<group>";
+		};
+		0BFAFFF02E1E4BA400F10BEA /* ButtonStyle */ = {
+			isa = PBXGroup;
+			children = (
+				0BFAFFEE2E1E4BA400F10BEA /* CameraButtonStyle.swift */,
+				0BFAFFEF2E1E4BA400F10BEA /* PrimaryButtonStyle.swift */,
+			);
+			path = ButtonStyle;
+			sourceTree = "<group>";
+		};
+		0BFAFFF32E1E4BA400F10BEA /* Chip */ = {
+			isa = PBXGroup;
+			children = (
+				0BFAFFF12E1E4BA400F10BEA /* Chip.swift */,
+				0BFAFFF22E1E4BA400F10BEA /* ChipModel.swift */,
+			);
+			path = Chip;
+			sourceTree = "<group>";
+		};
+		0BFAFFFA2E1E4BA400F10BEA /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				0BE3CFE72E61A133002A286A /* AnimatedStepper.swift */,
+				0BFAFFF42E1E4BA400F10BEA /* AutoCompleteSheet.swift */,
+				0BFAFFF02E1E4BA400F10BEA /* ButtonStyle */,
+				0BFAFFF32E1E4BA400F10BEA /* Chip */,
+				0BFAFFF52E1E4BA400F10BEA /* FloatingTextField.swift */,
+				0BFAFFF62E1E4BA400F10BEA /* HeightCalculator.swift */,
+				0BFAFFF72E1E4BA400F10BEA /* KeyboardAvoiding.swift */,
+				0BFA00252E1E509700F10BEA /* Loader */,
+				0BFAFFF82E1E4BA400F10BEA /* View+extensions.swift */,
+				0BFAFFF92E1E4BA400F10BEA /* WrappedHStack.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		0BFAFFFD2E1E4BA400F10BEA /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				0BC8BE372E3A424200ABA07F /* EntitlementManager.swift */,
+				0BFA001F2E1E4C2400F10BEA /* DataManager.swift */,
+				0BC8BE272E3A3D4400ABA07F /* User.swift */,
+				0BFAFFFC2E1E4BA400F10BEA /* Team.swift */,
+				0BFAFFFB2E1E4BA400F10BEA /* Player.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -61,11 +233,13 @@
 			);
 			dependencies = (
 			);
-			fileSystemSynchronizedGroups = (
-				0B12F33D2E0D3B1D005AED4F /* WaterfallTT */,
-			);
 			name = WaterfallTT;
 			packageProductDependencies = (
+				0BC8BE2A2E3A40C900ABA07F /* FirebaseAnalytics */,
+				0BC8BE2C2E3A40C900ABA07F /* FirebaseAnalyticsCore */,
+				0BC8BE2E2E3A40C900ABA07F /* FirebaseCore */,
+				0BC8BE302E3A40C900ABA07F /* FirebaseCrashlytics */,
+				0BC8BE322E3A40C900ABA07F /* FirebaseFirestore */,
 			);
 			productName = WaterfallTT;
 			productReference = 0B12F33B2E0D3B1D005AED4F /* WaterfallTT.app */;
@@ -95,6 +269,9 @@
 			);
 			mainGroup = 0B12F3322E0D3B1D005AED4F;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				0BC8BE292E3A40C900ABA07F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 0B12F33C2E0D3B1D005AED4F /* Products */;
 			projectDirPath = "";
@@ -110,6 +287,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0BFA00082E1E4BA400F10BEA /* Assets.xcassets in Resources */,
+				0BC8BE1E2E3A38E400ABA07F /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -120,6 +299,40 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0BFA001E2E1E4BC600F10BEA /* InitTabView.swift in Sources */,
+				0BC8BE262E3A3CD600ABA07F /* FirestoreManager.swift in Sources */,
+				0BFA00092E1E4BA400F10BEA /* CameraButtonStyle.swift in Sources */,
+				0BFA000A2E1E4BA400F10BEA /* PrimaryButtonStyle.swift in Sources */,
+				0BE3CFE82E61A133002A286A /* AnimatedStepper.swift in Sources */,
+				0BC8BE282E3A3D4700ABA07F /* User.swift in Sources */,
+				0BFA000B2E1E4BA400F10BEA /* Chip.swift in Sources */,
+				0BFA000C2E1E4BA400F10BEA /* ChipModel.swift in Sources */,
+				0BC8BE352E3A413000ABA07F /* Helper.swift in Sources */,
+				0BFA000D2E1E4BA400F10BEA /* AutoCompleteSheet.swift in Sources */,
+				0BFA000E2E1E4BA400F10BEA /* FloatingTextField.swift in Sources */,
+				0BFA000F2E1E4BA400F10BEA /* HeightCalculator.swift in Sources */,
+				0BFA00102E1E4BA400F10BEA /* KeyboardAvoiding.swift in Sources */,
+				0BFA00112E1E4BA400F10BEA /* View+extensions.swift in Sources */,
+				0BFA00122E1E4BA400F10BEA /* WrappedHStack.swift in Sources */,
+				0BFA00132E1E4BA400F10BEA /* Player.swift in Sources */,
+				0B4FDB892E252DC0009A94F5 /* DocumentPicker.swift in Sources */,
+				0BFA00142E1E4BA400F10BEA /* Team.swift in Sources */,
+				0BFA00152E1E4BA400F10BEA /* Constants.swift in Sources */,
+				0BFA00162E1E4BA400F10BEA /* ManagePlayerView.swift in Sources */,
+				0BECA4422E1EBC350000F789 /* SelectPlayerView.swift in Sources */,
+				0BFA00182E1E4BA400F10BEA /* PlayersView.swift in Sources */,
+				0BFA00262E1E509700F10BEA /* LoaderView.swift in Sources */,
+				0BFA00272E1E509700F10BEA /* LoaderViewModifier.swift in Sources */,
+				0BFA00192E1E4BA400F10BEA /* ShareSheet.swift in Sources */,
+				0BC8BE382E3A424200ABA07F /* EntitlementManager.swift in Sources */,
+				0BFA00292E1E563B00F10BEA /* AvailabilityView.swift in Sources */,
+				0B4FDB8B2E253961009A94F5 /* TeamNameView.swift in Sources */,
+				0BFA001A2E1E4BA400F10BEA /* TeamSnapshotView.swift in Sources */,
+				0BFA00202E1E4C2400F10BEA /* DataManager.swift in Sources */,
+				0BFA00222E1E504A00F10BEA /* StatsView.swift in Sources */,
+				0BFA001B2E1E4BA400F10BEA /* WaterfallTTApp.swift in Sources */,
+				0BFA001C2E1E4BA400F10BEA /* WaterfallView.swift in Sources */,
+				0BA646432E1FF34800321354 /* LocationTeamView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -252,23 +465,35 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = WK7T3Z2QPN;
+				CODE_SIGN_ENTITLEMENTS = WaterfallTT/WaterfallTT.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 5;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = WK7T3Z2QPN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WaterfallTT/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Ping Cascade";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_NSDocumentsFolderUsageDescription = "Cette application nécessite l'accès à vos fichiers pour importer des données.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = benjamin.cante.WaterfallTT;
+				PRODUCT_BUNDLE_IDENTIFIER = benjamin.cante.WaterfallPing;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Waterfall DEV";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -280,23 +505,35 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = WK7T3Z2QPN;
+				CODE_SIGN_ENTITLEMENTS = WaterfallTT/WaterfallTT.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 5;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = WK7T3Z2QPN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WaterfallTT/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Ping Cascade";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_NSDocumentsFolderUsageDescription = "Cette application nécessite l'accès à vos fichiers pour importer des données.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = benjamin.cante.WaterfallTT;
+				PRODUCT_BUNDLE_IDENTIFIER = benjamin.cante.WaterfallPing;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Waterfall DEV";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -325,6 +562,45 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		0BC8BE292E3A40C900ABA07F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		0BC8BE2A2E3A40C900ABA07F /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0BC8BE292E3A40C900ABA07F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		0BC8BE2C2E3A40C900ABA07F /* FirebaseAnalyticsCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0BC8BE292E3A40C900ABA07F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalyticsCore;
+		};
+		0BC8BE2E2E3A40C900ABA07F /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0BC8BE292E3A40C900ABA07F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		0BC8BE302E3A40C900ABA07F /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0BC8BE292E3A40C900ABA07F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
+		0BC8BE322E3A40C900ABA07F /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0BC8BE292E3A40C900ABA07F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 0B12F3332E0D3B1D005AED4F /* Project object */;
 }
