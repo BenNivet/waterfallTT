@@ -53,7 +53,7 @@ public struct Chip: View {
 private extension Chip {
     var backgroundColor: Color {
         if model.isActive {
-            CharterConstants.mainBlue
+            CharterConstants.mainColor
         } else {
             CharterConstants.mainGray
         }

@@ -26,7 +26,7 @@ struct CharterConstants {
     static let radius: CGFloat = 12
 
     // Color
-    static let mainBlue: Color = Color(UIColor(hexString: "#024CAA"))
+    static let mainColor: Color = Color(UIColor(hexString: "#6600cc"))
     static let mainRed: Color = Color(UIColor(hexString: "#D13E46"))
     static let halfWhite: Color = .white.opacity(0.6)
     static let halfGray: Color = .gray.opacity(0.6)

@@ -24,7 +24,7 @@ extension View {
 
     func addLinearGradientBackground() -> some View {
         background(VStack {
-            LinearGradient(gradient: Gradient(colors: [CharterConstants.mainBlue.opacity(0.8), .clear]),
+            LinearGradient(gradient: Gradient(colors: [CharterConstants.mainColor.opacity(0.9), .clear]),
                            startPoint: .top,
                            endPoint: .bottom)
                 .frame(height: 200)

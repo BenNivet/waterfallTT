@@ -452,7 +452,7 @@ struct WaterfallView: View {
                 return CharterConstants.mainGray
             }
         } else {
-            return Color.red.opacity(0.6)
+            return CharterConstants.mainRed.opacity(0.7)
         }
     }
 

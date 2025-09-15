@@ -15,4 +15,7 @@ final class EntitlementManager: ObservableObject {
     
     @AppStorage("appLaunched", store: userDefaults)
     var appLaunched = 0
+
+    @AppStorage("hasSeenImportInterstitial", store: userDefaults)
+    var hasSeenImportInterstitial = false
 }

@@ -16,6 +16,7 @@ struct PlayersView: View {
     @State private var showAddPlayerView = false
     @State private var showManagePlayerView: Player?
     @State private var showDocumentPicker = false
+    @State private var showInterstitialPicker = false
     @State private var searchText: String = ""
     @State private var results: [(name: String, points: Int)] = []
 
@@ -55,7 +56,11 @@ struct PlayersView: View {
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button {
-                            showDocumentPicker = true
+                            if entitlementManager.hasSeenImportInterstitial {
+                                showDocumentPicker = true
+                            } else {
+                                showInterstitialPicker = true
+                            }
                         } label: {
                             Image(systemName: "square.and.arrow.down")
                         }
@@ -70,6 +75,13 @@ struct PlayersView: View {
                     ToolbarItem(placement: .topBarTrailing) {
                         EditButton()
                     }
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button {
+                            showInterstitialPicker = true
+                        } label: {
+                            Image(systemName: "questionmark.circle")
+                        }
+                    }
                 }
                 .sheet(isPresented: $showAddPlayerView) {
                     ManagePlayerView()
@@ -80,6 +92,12 @@ struct PlayersView: View {
                                      newName: showManagePlayerView?.name ?? "",
                                      newPoints: String(showManagePlayerView?.points ?? 0))
                         .presentationDetents([.fraction(0.4)])
+                }
+                .fullScreenCover(isPresented: $showInterstitialPicker) {
+                    ImportInterstitialView(isPresented: $showInterstitialPicker)
+                        .onDisappear {
+                            showDocumentPicker = true
+                        }
                 }
                 .sheet(isPresented: $showDocumentPicker) {
                     DocumentPicker { url in

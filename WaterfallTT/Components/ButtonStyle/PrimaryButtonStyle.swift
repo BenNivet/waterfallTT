@@ -17,7 +17,7 @@ struct PrimaryButtonStyle: ButtonStyle {
             .frame(maxWidth: .infinity, minHeight: CharterConstants.buttonSize)
             .foregroundStyle(.white)
             .font(.system(size: 18, weight: .semibold))
-            .background(CharterConstants.mainBlue)
+            .background(CharterConstants.mainColor)
             .clipShape(RoundedRectangle(cornerRadius: CharterConstants.radius))
             .opacity(!isEnabled || configuration.isPressed ? CharterConstants.disabledOpacity : 1)
             .contentShape(Rectangle())

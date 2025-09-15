@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0B2660CE2E7311D4004B2B10 /* ImportInterstitialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2660CD2E7311CB004B2B10 /* ImportInterstitialView.swift */; };
 		0B4FDB892E252DC0009A94F5 /* DocumentPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B4FDB882E252DBB009A94F5 /* DocumentPicker.swift */; };
 		0B4FDB8B2E253961009A94F5 /* TeamNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B4FDB8A2E253959009A94F5 /* TeamNameView.swift */; };
 		0BA646432E1FF34800321354 /* LocationTeamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA646422E1FF34800321354 /* LocationTeamView.swift */; };
@@ -52,6 +53,7 @@
 
 /* Begin PBXFileReference section */
 		0B12F33B2E0D3B1D005AED4F /* WaterfallTT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WaterfallTT.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0B2660CD2E7311CB004B2B10 /* ImportInterstitialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportInterstitialView.swift; sourceTree = "<group>"; };
 		0B4FDB872E252D0C009A94F5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = WaterfallTT/Info.plist; sourceTree = SOURCE_ROOT; };
 		0B4FDB882E252DBB009A94F5 /* DocumentPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentPicker.swift; sourceTree = "<group>"; };
 		0B4FDB8A2E253959009A94F5 /* TeamNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamNameView.swift; sourceTree = "<group>"; };
@@ -148,6 +150,7 @@
 				0BA646422E1FF34800321354 /* LocationTeamView.swift */,
 				0B4FDB882E252DBB009A94F5 /* DocumentPicker.swift */,
 				0B4FDB8A2E253959009A94F5 /* TeamNameView.swift */,
+				0B2660CD2E7311CB004B2B10 /* ImportInterstitialView.swift */,
 				0BFAFFFA2E1E4BA400F10BEA /* Components */,
 				0BC8BE252E3A3CD600ABA07F /* Database */,
 				0BFAFFFD2E1E4BA400F10BEA /* Model */,
@@ -303,6 +306,7 @@
 				0BC8BE262E3A3CD600ABA07F /* FirestoreManager.swift in Sources */,
 				0BFA00092E1E4BA400F10BEA /* CameraButtonStyle.swift in Sources */,
 				0BFA000A2E1E4BA400F10BEA /* PrimaryButtonStyle.swift in Sources */,
+				0B2660CE2E7311D4004B2B10 /* ImportInterstitialView.swift in Sources */,
 				0BE3CFE82E61A133002A286A /* AnimatedStepper.swift in Sources */,
 				0BC8BE282E3A3D4700ABA07F /* User.swift in Sources */,
 				0BFA000B2E1E4BA400F10BEA /* Chip.swift in Sources */,
@@ -469,7 +473,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = WK7T3Z2QPN;
 				ENABLE_PREVIEWS = YES;
@@ -509,7 +513,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = WK7T3Z2QPN;
 				ENABLE_PREVIEWS = YES;

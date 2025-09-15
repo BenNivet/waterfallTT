@@ -38,6 +38,10 @@ struct LocationTeamView: View {
                 .padding(.horizontal, CharterConstants.margin)
                 .buttonStyle(PrimaryButtonStyle())
             }
+            .keyboardAvoiding()
+            .onTapGesture {
+                hideKeyboard()
+            }
             .addLinearGradientBackground()
             .scrollIndicators(.hidden)
             .navigationTitle("Lieu des équipes")
