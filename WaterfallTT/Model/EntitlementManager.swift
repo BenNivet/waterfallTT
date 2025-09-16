@@ -12,6 +12,9 @@ final class EntitlementManager: ObservableObject {
     
     @AppStorage("userId", store: userDefaults)
     var userId: String?
+
+    @AppStorage("canUpdate", store: userDefaults)
+    var canUpdate = true
     
     @AppStorage("appLaunched", store: userDefaults)
     var appLaunched = 0

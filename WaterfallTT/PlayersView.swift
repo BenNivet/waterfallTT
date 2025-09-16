@@ -54,32 +54,34 @@ struct PlayersView: View {
                 .addLinearGradientBackground()
                 .navigationTitle("Joueurs")
                 .toolbar {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Button {
-                            if entitlementManager.hasSeenImportInterstitial {
-                                showDocumentPicker = true
-                            } else {
-                                showInterstitialPicker = true
+                    if entitlementManager.canUpdate {
+                        ToolbarItem(placement: .topBarTrailing) {
+                            Button {
+                                if entitlementManager.hasSeenImportInterstitial {
+                                    showDocumentPicker = true
+                                } else {
+                                    showInterstitialPicker = true
+                                }
+                            } label: {
+                                Image(systemName: "square.and.arrow.down")
                             }
-                        } label: {
-                            Image(systemName: "square.and.arrow.down")
                         }
-                    }
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Button {
-                            showAddPlayerView = true
-                        } label: {
-                            Image(systemName: "plus")
+                        ToolbarItem(placement: .topBarTrailing) {
+                            Button {
+                                showAddPlayerView = true
+                            } label: {
+                                Image(systemName: "plus")
+                            }
                         }
-                    }
-                    ToolbarItem(placement: .topBarTrailing) {
-                        EditButton()
-                    }
-                    ToolbarItem(placement: .topBarLeading) {
-                        Button {
-                            showInterstitialPicker = true
-                        } label: {
-                            Image(systemName: "questionmark.circle")
+                        ToolbarItem(placement: .topBarTrailing) {
+                            EditButton()
+                        }
+                        ToolbarItem(placement: .topBarLeading) {
+                            Button {
+                                showInterstitialPicker = true
+                            } label: {
+                                Image(systemName: "questionmark.circle")
+                            }
                         }
                     }
                 }
@@ -117,12 +119,14 @@ struct PlayersView: View {
                 VStack(spacing: CharterConstants.margin) {
                     Text("Aucun joueur")
                         .font(.title)
-                    Text("Ajouter des joueurs en cliquant sur le bouton \(Image(systemName: "plus"))")
-                        .font(.title2)
-                        .multilineTextAlignment(.center)
-                    Text("Importer des joueurs en cliquant sur le bouton \(Image(systemName: "square.and.arrow.down"))")
-                        .font(.title2)
-                        .multilineTextAlignment(.center)
+                    if entitlementManager.canUpdate {
+                        Text("Ajouter des joueurs en cliquant sur le bouton \(Image(systemName: "plus"))")
+                            .font(.title2)
+                            .multilineTextAlignment(.center)
+                        Text("Importer des joueurs en cliquant sur le bouton \(Image(systemName: "square.and.arrow.down"))")
+                            .font(.title2)
+                            .multilineTextAlignment(.center)
+                    }
                 }
                 .padding(.horizontal, CharterConstants.marginLarge)
                 Spacer()
@@ -138,10 +142,14 @@ struct PlayersView: View {
                     }
                     .contentShape(Rectangle())
                     .onTapGesture {
-                        showManagePlayerView = player
+                        if entitlementManager.canUpdate {
+                            showManagePlayerView = player
+                        }
                     }
                 }
-                .onDelete(perform: deletePlayer)
+                .if(entitlementManager.canUpdate) {
+                    $0.onDelete(perform: deletePlayer)
+                }
             }
             .listStyle(PlainListStyle())
             .searchable(text: $searchText, prompt: "Rechercher un joueur")
@@ -187,6 +195,7 @@ struct PlayersView: View {
             if entitlementManager.userId == nil {
                 if let resultId = await firestoreManager.createUser() {
                     entitlementManager.userId = resultId
+                    entitlementManager.canUpdate = true
                 }
             }
             guard let userId = entitlementManager.userId else { return }

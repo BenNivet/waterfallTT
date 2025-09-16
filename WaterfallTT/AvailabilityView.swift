@@ -9,7 +9,10 @@ import FirebaseAnalytics
 import SwiftUI
 
 struct AvailabilityView: View {
+    @EnvironmentObject private var entitlementManager: EntitlementManager
     @EnvironmentObject private var dataManager: DataManager
+
+    @State private var sensorFeedback = false
 
     private let firestoreManager = FirestoreManager.shared
 
@@ -28,6 +31,7 @@ struct AvailabilityView: View {
             mainView
                 .addLinearGradientBackground()
                 .navigationTitle("Joueurs \(totalPlayers.0)/\(totalPlayers.1)")
+                .sensoryFeedback(.success, trigger: sensorFeedback)
         }
     }
 
@@ -67,7 +71,10 @@ struct AvailabilityView: View {
         Binding {
             player.isAvailable
         } set: { _ in
-            toggleAvailability(of: player)
+            if entitlementManager.canUpdate {
+                toggleAvailability(of: player)
+                sensorFeedback.toggle()
+            }
         }
     }
 

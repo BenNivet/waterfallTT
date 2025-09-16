@@ -24,6 +24,7 @@ struct WaterfallView: View {
     @State private var snapshotImage: UIImage?
     @State private var showTeamNameView: Team? = nil
     @State private var sensorFeedback = false
+    @State private var shareAlert = false
 
     private let firestoreManager = FirestoreManager.shared
 
@@ -79,23 +80,33 @@ struct WaterfallView: View {
         NavigationView {
             ScrollView {
                 VStack(spacing: CharterConstants.margin) {
-                    HStack {
-                        Text("Nombre d’équipes")
-                        Spacer()
-                        AnimatedStepper(currentNumber: $dataManager.teamsCount) {
-                            Analytics.logEvent(LogEvent.addTeam, parameters: nil)
-                            dataManager.teamsCount += 1
-                            updateTeamCount()
-                        } onDecrement: {
-                            Analytics.logEvent(LogEvent.deleteTeam, parameters: nil)
-                            dataManager.teamsCount -= 1
-                            updateTeamCount()
+                    if entitlementManager.canUpdate {
+                        HStack {
+                            Text("Nombre d’équipes")
+                            Spacer()
+                            AnimatedStepper(currentNumber: $dataManager.teamsCount) {
+                                Analytics.logEvent(LogEvent.addTeam, parameters: nil)
+                                dataManager.teamsCount += 1
+                                updateTeamCount()
+                            } onDecrement: {
+                                Analytics.logEvent(LogEvent.deleteTeam, parameters: nil)
+                                dataManager.teamsCount -= 1
+                                updateTeamCount()
+                            }
                         }
+                        .padding(.horizontal, CharterConstants.margin)
+                    } else {
+                        HStack {
+                            Text("Mode lecture seule")
+                            Spacer()
+                        }
+                        .padding(.horizontal, CharterConstants.margin)
                     }
-                    .padding(.horizontal, CharterConstants.margin)
-
+                    
                     teamsView
-                    buttonsView
+                    if entitlementManager.canUpdate {
+                        buttonsView
+                    }
                 }
                 .padding(.vertical, CharterConstants.margin)
             }
@@ -109,24 +120,31 @@ struct WaterfallView: View {
                     }
                     .foregroundStyle(.white)
                 }
-                if let userId = entitlementManager.userId {
+                if entitlementManager.userId != nil,
+                   entitlementManager.canUpdate {
                     ToolbarItem(placement: .topBarLeading) {
-                        ShareLink(item: sharedText(id: userId),
-                                  preview: SharePreview("Partager mon club"))
+                        Button {
+                            shareAlert = true
+                        } label: {
+                            Image(systemName: "square.and.arrow.up")
+                        }
+                        .foregroundStyle(.white)
                     }
                 }
-                ToolbarItem {
-                    Button {
-                        showLocations = true
-                    } label: {
-                        Image(systemName: "paperplane")
+                if entitlementManager.canUpdate {
+                    ToolbarItem {
+                        Button {
+                            showLocations = true
+                        } label: {
+                            Image(systemName: "paperplane")
+                        }
+                        .foregroundStyle(.white)
                     }
-                    .foregroundStyle(.white)
                 }
             }
             .sensoryFeedback(.success, trigger: sensorFeedback)
             .addLinearGradientBackground()
-            .navigationTitle("Cascade")
+            .navigationTitle("Ping Cascade")
             .alert("Réinitialiser toutes les équipes ?",
                    isPresented: $showResetConfirmation) {
                 Button("Annuler", role: .cancel) {}
@@ -177,15 +195,26 @@ struct WaterfallView: View {
                 Button("Quitter le club") {
                     showExitConfirmation = true
                 }
-                Button("Supprimer les données", role: .destructive) {
-                    showResetAllConfirmation = true
+                if entitlementManager.canUpdate {
+                    Button("Supprimer les données", role: .destructive) {
+                        showResetAllConfirmation = true
+                    }
                 }
-//                Button("Ajouter des données") {
-//                    addFakeData()
-//                }
-//                Button("Exporter mes données") {
-//                    // TODO:
-//                }
+                Button("Annuler", role: .cancel) {}
+            }
+            .confirmationDialog("Partager l'accès au club",
+                                isPresented: $shareAlert,
+                                titleVisibility: .automatic) {
+                if let userId = entitlementManager.userId {
+                    ShareLink(item: sharedText(id: userId, update: true),
+                              preview: SharePreview("Partager mon club")) {
+                        Text("Modification")
+                    }
+                    ShareLink(item: sharedText(id: userId, update: false),
+                              preview: SharePreview("Partager mon club")) {
+                        Text("Lecture seule")
+                    }
+                }
                 Button("Annuler", role: .cancel) {}
             }
             .onOpenURL { handleURL($0) }
@@ -197,11 +226,15 @@ struct WaterfallView: View {
         ForEach(sortedTeams.indices, id: \.self) { sortedTeamIndex in
             let index = teams.firstIndex(of: sortedTeams[sortedTeamIndex]) ?? 0
             Button {
-                selectedTeamIndex = index
+                if entitlementManager.canUpdate {
+                    selectedTeamIndex = index
+                }
             } label: {
                 VStack {
                     Button {
-                        showTeamNameView = teams[index]
+                        if entitlementManager.canUpdate {
+                            showTeamNameView = teams[index]
+                        }
                     } label: {
                         HStack(spacing: CharterConstants.marginSmall) {
                             Text(teamName(for: index))
@@ -234,7 +267,9 @@ struct WaterfallView: View {
                     Spacer()
                     Chip(model: ChipModel(isActive: .constant(true),
                                           title: "\(player.name) (\(player.points))") {
-                            removePlayerFromTeam(player)
+                            if entitlementManager.canUpdate {
+                                removePlayerFromTeam(player)
+                            }
                         })
                         .overlay(alignment: .topLeading) {
                             if player.isCaptain {
@@ -246,8 +281,10 @@ struct WaterfallView: View {
                             }
                         }
                         .onLongPressGesture {
-                            sensorFeedback.toggle()
-                            toggleCaptain(of: player)
+                            if entitlementManager.canUpdate {
+                                sensorFeedback.toggle()
+                                toggleCaptain(of: player)
+                            }
                         }
                     Spacer()
                 }
@@ -282,15 +319,20 @@ struct WaterfallView: View {
     func handleURL(_ url: URL) {
         guard let host = url.host() else { return }
         if host == "code" {
-            findTeams(code: url.lastPathComponent)
+            let code = url.lastPathComponent
+            let codeArray = code.components(separatedBy: "-")
+            if let userId = codeArray.first {
+                findTeams(code: userId, update: codeArray.last != "0")
+            }
         }
     }
 
-    private func findTeams(code: String) {
+    private func findTeams(code: String, update: Bool) {
         Task {
             guard let userId = await firestoreManager.findUser(id: code) else { return }
             dataManager.reset()
             entitlementManager.userId = userId
+            entitlementManager.canUpdate = update
             reload = true
         }
     }
@@ -368,6 +410,7 @@ struct WaterfallView: View {
 
     private func resetAll() {
         entitlementManager.userId = nil
+        entitlementManager.canUpdate = true
         for player in players {
             firestoreManager.deletePlayer(player)
         }
@@ -380,17 +423,10 @@ struct WaterfallView: View {
 
     private func exitClub() {
         entitlementManager.userId = nil
+        entitlementManager.canUpdate = true
         dataManager.reset()
         Analytics.logEvent(LogEvent.exitClub, parameters: nil)
     }
-
-//    private func addFakeData() {
-//        // TODO: Firestore
-//        dataManager.players = (1 ... 25).map { Player(name: "Joueur \($0)", points: Int.random(in: 500 ... 1800)) }
-//        dataManager.teams = []
-//        dataManager.teamsCount = 5
-//        updateTeamCount()
-//    }
 
     private func updateTeamCount() {
         Task {
@@ -398,6 +434,7 @@ struct WaterfallView: View {
             if entitlementManager.userId == nil {
                 if let resultId = await firestoreManager.createUser() {
                     entitlementManager.userId = resultId
+                    entitlementManager.canUpdate = true
                 }
             }
             guard let userId = entitlementManager.userId else { return }
@@ -477,13 +514,13 @@ struct WaterfallView: View {
         "\(teams[index].name)" + (teams[index].division.isEmpty ? "" : " - \(teams[index].division)") + " (\(totalPoints(index)) pts)"
     }
 
-    func sharedText(id: String) -> String {
+    func sharedText(id: String, update: Bool) -> String {
         String(localized:
             """
             Ping Cascade
             Rejoins le club !
             Clic sur le lien ci-dessous pour y acceder :
-            waterfalltt://code/\(id)
+            waterfalltt://code/\(id)\(update ? "" : "-0")
             L'application Ping Cascade doit déjà être installée sur le téléphone.
             """)
     }
