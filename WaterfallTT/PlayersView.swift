@@ -170,11 +170,15 @@ struct PlayersView: View {
         _ = fileURL.startAccessingSecurityScopedResource()
         do {
             let contents = try String(contentsOf: fileURL, encoding: .utf8)
-            let lines = contents.split(separator: "\n").map { String($0) }
+            let lines = contents.contains("\r\n")
+                ? contents.split(separator: "\r\n").map { String($0) }
+                : contents.split(separator: "\n").map { String($0) }
 
             results = [] // Réinitialiser les résultats
             for line in lines.dropFirst() { // Ignorer l'en-tête
-                let components = line.split(separator: ",").map { String($0) }
+                let components = contents.contains(";")
+                    ? line.split(separator: ";").map { String($0) }
+                    : line.split(separator: ",").map { String($0) }
                 if components.count == 2,
                    let points = Int(components[1].trimmingCharacters(in: .whitespaces)) {
                     let name = components[0].trimmingCharacters(in: .whitespaces)
