@@ -204,7 +204,7 @@ struct WaterfallView: View {
             }
             .confirmationDialog("Partager l'accès au club",
                                 isPresented: $shareAlert,
-                                titleVisibility: .automatic) {
+                                titleVisibility: .visible) {
                 if let userId = entitlementManager.userId {
                     ShareLink(item: sharedText(id: userId, update: true),
                               preview: SharePreview("Partager mon club")) {
