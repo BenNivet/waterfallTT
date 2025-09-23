@@ -18,14 +18,4 @@ final class DataManager: ObservableObject {
         teams.removeAll()
         teamsCount = 0
     }
-    
-    private func saveData() {
-//        let encoder = JSONEncoder()
-//        if let playersData = try? encoder.encode(players),
-//           let teamsData = try? encoder.encode(teams) {
-//            UserDefaults.standard.set(playersData, forKey: UserDefaultsKeys.playersKey)
-//            UserDefaults.standard.set(teamsData, forKey: UserDefaultsKeys.teamsKey)
-//            UserDefaults.standard.set(teamsCount, forKey: UserDefaultsKeys.teamsCountKey)
-//        }
-    }
 }

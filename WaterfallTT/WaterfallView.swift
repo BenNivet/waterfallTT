@@ -83,6 +83,7 @@ struct WaterfallView: View {
                     if entitlementManager.canUpdate {
                         HStack {
                             Text("Nombre d’équipes")
+                                .font(.headline)
                             Spacer()
                             AnimatedStepper(currentNumber: $dataManager.teamsCount) {
                                 Analytics.logEvent(LogEvent.addTeam, parameters: nil)
@@ -98,6 +99,7 @@ struct WaterfallView: View {
                     } else {
                         HStack {
                             Text("Mode lecture seule")
+                                .font(.headline)
                             Spacer()
                         }
                         .padding(.horizontal, CharterConstants.margin)
