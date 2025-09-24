@@ -10,6 +10,8 @@
 		0B2660CE2E7311D4004B2B10 /* ImportInterstitialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2660CD2E7311CB004B2B10 /* ImportInterstitialView.swift */; };
 		0B4FDB892E252DC0009A94F5 /* DocumentPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B4FDB882E252DBB009A94F5 /* DocumentPicker.swift */; };
 		0B4FDB8B2E253961009A94F5 /* TeamNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B4FDB8A2E253959009A94F5 /* TeamNameView.swift */; };
+		0B68E2242E84237A00718B5E /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 0B68E2232E84237A00718B5E /* GoogleMobileAds */; };
+		0B68E2272E8423AB00718B5E /* InterstitialAdsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B68E2252E8423AB00718B5E /* InterstitialAdsManager.swift */; };
 		0BA646432E1FF34800321354 /* LocationTeamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA646422E1FF34800321354 /* LocationTeamView.swift */; };
 		0BC8BE1E2E3A38E400ABA07F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0BC8BE1D2E3A38E400ABA07F /* GoogleService-Info.plist */; };
 		0BC8BE262E3A3CD600ABA07F /* FirestoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC8BE242E3A3CD600ABA07F /* FirestoreManager.swift */; };
@@ -56,6 +58,7 @@
 		0B4FDB872E252D0C009A94F5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = WaterfallTT/Info.plist; sourceTree = SOURCE_ROOT; };
 		0B4FDB882E252DBB009A94F5 /* DocumentPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentPicker.swift; sourceTree = "<group>"; };
 		0B4FDB8A2E253959009A94F5 /* TeamNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamNameView.swift; sourceTree = "<group>"; };
+		0B68E2252E8423AB00718B5E /* InterstitialAdsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterstitialAdsManager.swift; sourceTree = "<group>"; };
 		0BA646422E1FF34800321354 /* LocationTeamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTeamView.swift; sourceTree = "<group>"; };
 		0BC8BE1D2E3A38E400ABA07F /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0BC8BE242E3A3CD600ABA07F /* FirestoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreManager.swift; sourceTree = "<group>"; };
@@ -97,6 +100,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0B68E2242E84237A00718B5E /* GoogleMobileAds in Frameworks */,
 				0BC8BE2B2E3A40C900ABA07F /* FirebaseAnalytics in Frameworks */,
 				0BC8BE312E3A40C900ABA07F /* FirebaseCrashlytics in Frameworks */,
 				0BC8BE2F2E3A40C900ABA07F /* FirebaseCore in Frameworks */,
@@ -124,6 +128,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		0B68E2262E8423AB00718B5E /* Ads */ = {
+			isa = PBXGroup;
+			children = (
+				0B68E2252E8423AB00718B5E /* InterstitialAdsManager.swift */,
+			);
+			path = Ads;
+			sourceTree = "<group>";
+		};
 		0BC8BE252E3A3CD600ABA07F /* Database */ = {
 			isa = PBXGroup;
 			children = (
@@ -148,6 +160,7 @@
 				0B4FDB882E252DBB009A94F5 /* DocumentPicker.swift */,
 				0B4FDB8A2E253959009A94F5 /* TeamNameView.swift */,
 				0B2660CD2E7311CB004B2B10 /* ImportInterstitialView.swift */,
+				0B68E2262E8423AB00718B5E /* Ads */,
 				0BFAFFFA2E1E4BA400F10BEA /* Components */,
 				0BC8BE252E3A3CD600ABA07F /* Database */,
 				0BFAFFFD2E1E4BA400F10BEA /* Model */,
@@ -155,8 +168,8 @@
 				0BC8BE342E3A413000ABA07F /* Helper.swift */,
 				0BC8BE362E3A417500ABA07F /* WaterfallTT.entitlements */,
 				0B4FDB872E252D0C009A94F5 /* Info.plist */,
-				0BFAFFFE2E1E4BA400F10BEA /* Assets.xcassets */,
 				0BC8BE1D2E3A38E400ABA07F /* GoogleService-Info.plist */,
+				0BFAFFFE2E1E4BA400F10BEA /* Assets.xcassets */,
 			);
 			name = WaterfallTT;
 			path = ../../../itecanb/dev/WaterfallTT/WaterfallTT;
@@ -240,6 +253,7 @@
 				0BC8BE2E2E3A40C900ABA07F /* FirebaseCore */,
 				0BC8BE302E3A40C900ABA07F /* FirebaseCrashlytics */,
 				0BC8BE322E3A40C900ABA07F /* FirebaseFirestore */,
+				0B68E2232E84237A00718B5E /* GoogleMobileAds */,
 			);
 			productName = WaterfallTT;
 			productReference = 0B12F33B2E0D3B1D005AED4F /* WaterfallTT.app */;
@@ -271,6 +285,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				0BC8BE292E3A40C900ABA07F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				0B68E2222E84237A00718B5E /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 0B12F33C2E0D3B1D005AED4F /* Products */;
@@ -308,6 +323,7 @@
 				0BC8BE282E3A3D4700ABA07F /* User.swift in Sources */,
 				0BFA000B2E1E4BA400F10BEA /* Chip.swift in Sources */,
 				0BFA000C2E1E4BA400F10BEA /* ChipModel.swift in Sources */,
+				0B68E2272E8423AB00718B5E /* InterstitialAdsManager.swift in Sources */,
 				0BC8BE352E3A413000ABA07F /* Helper.swift in Sources */,
 				0BFA000D2E1E4BA400F10BEA /* AutoCompleteSheet.swift in Sources */,
 				0BFA000E2E1E4BA400F10BEA /* FloatingTextField.swift in Sources */,
@@ -469,7 +485,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = WK7T3Z2QPN;
 				ENABLE_PREVIEWS = YES;
@@ -483,14 +499,13 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4;
+				MARKETING_VERSION = 1.5;
 				PRODUCT_BUNDLE_IDENTIFIER = benjamin.cante.WaterfallPing;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -510,7 +525,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = WK7T3Z2QPN;
 				ENABLE_PREVIEWS = YES;
@@ -524,14 +539,13 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4;
+				MARKETING_VERSION = 1.5;
 				PRODUCT_BUNDLE_IDENTIFIER = benjamin.cante.WaterfallPing;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -566,6 +580,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		0B68E2222E84237A00718B5E /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.11.0;
+			};
+		};
 		0BC8BE292E3A40C900ABA07F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -577,6 +599,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		0B68E2232E84237A00718B5E /* GoogleMobileAds */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0B68E2222E84237A00718B5E /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
+			productName = GoogleMobileAds;
+		};
 		0BC8BE2A2E3A40C900ABA07F /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 0BC8BE292E3A40C900ABA07F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

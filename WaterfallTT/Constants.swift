@@ -38,6 +38,9 @@ struct CharterConstants {
 
     /// Opacity
     static let disabledOpacity: CGFloat = 0.4
+
+    // Random
+    static let minimumAppLaunch = 5
 }
 
 struct UserDefaultsKeys {

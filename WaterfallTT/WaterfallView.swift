@@ -5,6 +5,7 @@
 //  Created by CANTE Benjamin on 26/06/2025.
 //
 
+import AppTrackingTransparency
 import FirebaseAnalytics
 import SwiftUI
 
@@ -13,6 +14,7 @@ struct WaterfallView: View {
 
     @EnvironmentObject private var entitlementManager: EntitlementManager
     @EnvironmentObject private var dataManager: DataManager
+    @EnvironmentObject private var interstitialAdsManager: InterstitialAdsManager
 
     @State private var isLoaderPresented = false
     @State private var showExitConfirmation = false
@@ -104,13 +106,21 @@ struct WaterfallView: View {
                         }
                         .padding(.horizontal, CharterConstants.margin)
                     }
-                    
+
                     teamsView
                     if entitlementManager.canUpdate {
                         buttonsView
                     }
                 }
                 .padding(.vertical, CharterConstants.margin)
+            }
+            .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
+                ATTrackingManager.requestTrackingAuthorization(completionHandler: { _ in })
+            }
+            .onReceive(interstitialAdsManager.$interstitialAdLoaded) { isInterstitialAdLoaded in
+                if isInterstitialAdLoaded {
+                    interstitialAdsManager.displayInterstitialAd()
+                }
             }
             .scrollIndicators(.hidden)
             .toolbar {

@@ -6,12 +6,14 @@
 //
 
 import FirebaseCore
+import GoogleMobileAds
 import SwiftUI
 
 @main
 struct WaterfallTTApp: App {
     @StateObject private var entitlementManager: EntitlementManager
     @StateObject private var dataManager: DataManager
+    @StateObject private var interstitialAdsManager = InterstitialAdsManager()
 
     init() {
         FirebaseApp.configure()
@@ -25,13 +27,11 @@ struct WaterfallTTApp: App {
         _dataManager = StateObject(wrappedValue: dataManager)
 //        _subscriptionsManager = StateObject(wrappedValue: subscriptionsManager)
 
-//        Task {
-//            if !entitlementManager.isPremium,
-//               entitlementManager.appLaunched > CharterConstants.minimumAppLaunch {
-//                await GADMobileAds.sharedInstance().start()
-//            }
-//            await subscriptionsManager.updatePurchasedProducts()
-//        }
+        Task {
+            if entitlementManager.appLaunched > CharterConstants.minimumAppLaunch {
+                await MobileAds.shared.start()
+            }
+        }
     }
 
     var body: some Scene {
@@ -39,6 +39,7 @@ struct WaterfallTTApp: App {
             InitTabView()
                 .environmentObject(entitlementManager)
                 .environmentObject(dataManager)
+                .environmentObject(interstitialAdsManager)
                 .fontDesign(.rounded)
         }
     }
