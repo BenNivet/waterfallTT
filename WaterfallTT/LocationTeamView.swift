@@ -65,6 +65,7 @@ struct LocationTeamView: View {
                 if !homeTeams.contains(team) {
                     FloatingTextField(placeHolder: "Lieu de la rencontre",
                                       text: locationBinding(for: team))
+                    .autocorrectionDisabled()
                 }
             }
         }

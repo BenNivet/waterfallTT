@@ -27,11 +27,11 @@ struct WaterfallTTApp: App {
         _dataManager = StateObject(wrappedValue: dataManager)
 //        _subscriptionsManager = StateObject(wrappedValue: subscriptionsManager)
 
-        Task {
-            if entitlementManager.appLaunched > CharterConstants.minimumAppLaunch {
-                await MobileAds.shared.start()
-            }
-        }
+//        Task {
+//            if entitlementManager.appLaunched > CharterConstants.minimumAppLaunch {
+//                await MobileAds.shared.start()
+//            }
+//        }
     }
 
     var body: some Scene {

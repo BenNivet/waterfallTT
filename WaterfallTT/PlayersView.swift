@@ -179,9 +179,9 @@ struct PlayersView: View {
                 let components = contents.contains(";")
                     ? line.split(separator: ";").map { String($0) }
                     : line.split(separator: ",").map { String($0) }
-                if components.count == 2,
-                   let points = Int(components[1].trimmingCharacters(in: .whitespaces)) {
+                if components.count >= 2 {
                     let name = components[0].trimmingCharacters(in: .whitespaces)
+                    let points = Int(components[1].trimmingCharacters(in: .whitespaces)) ?? 9999
                     results.append((name: name, points: points))
                 }
             }

@@ -8,11 +8,13 @@
 import SwiftUI
 
 struct TeamSnapshotView: View {
-    @EnvironmentObject private var dataManager: DataManager
-
     let teams: [Team]
     let players: [Player]
-    
+    var numberOfArray: Int {
+        guard teams.count > 3 else { return 1 }
+        return Int(ceil(Double(teams.count) / 2))
+    }
+
     init(teams: [Team], players: [Player]) {
         self.teams = teams
         self.players = players
@@ -24,16 +26,20 @@ struct TeamSnapshotView: View {
                 .font(.title)
                 .bold()
 
-            ForEach(teams) { team in
-                VStack(alignment: .leading, spacing: CharterConstants.marginSmall) {
-                    Text(teamName(team))
-                        .font(.headline)
-                    players(in: team)
+            ForEach(teams.splitInSubArrays(into: numberOfArray), id: \.self) { array in
+                HStack(alignment: .top, spacing: CharterConstants.margin) {
+                    ForEach(array) { team in
+                        VStack(alignment: .leading, spacing: CharterConstants.marginSmall) {
+                            Text(teamName(team))
+                                .font(.headline)
+                            players(in: team)
+                        }
+                    }
                 }
                 .padding(.bottom, CharterConstants.marginSmall)
             }
         }
-        .padding()
+        .padding(CharterConstants.margin)
         .background(Color.white)
     }
 
@@ -42,11 +48,11 @@ struct TeamSnapshotView: View {
             .filter { $0.teamId == team.teamId }
             .sorted { $0.points > $1.points }
             .sorted { $0.isCaptain && !$1.isCaptain },
-                id: \.id) { player in
-            Text("• \(player.name)" + (player.isCaptain ? " (C)" : ""))
-        }
+            id: \.id) { player in
+                Text("• \(player.name)" + (player.isCaptain ? " (C)" : ""))
+            }
     }
-    
+
     private func teamName(_ team: Team) -> String {
         var name = team.name
         if !team.division.isEmpty {
@@ -58,5 +64,19 @@ struct TeamSnapshotView: View {
             name += " (Domicile)"
         }
         return name
+    }
+}
+
+extension Array {
+    func splitInSubArrays(into size: Int) -> [[Element]] {
+        var output: [[Element]] = []
+        (0 ..< size).forEach {
+            var subArray: [Element] = []
+            for elem in stride(from: $0, to: count, by: size) {
+                subArray.append(self[elem])
+            }
+            output.append(subArray)
+        }
+        return output
     }
 }

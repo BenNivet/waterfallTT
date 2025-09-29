@@ -8,6 +8,7 @@
 import AppTrackingTransparency
 import FirebaseAnalytics
 import SwiftUI
+import UIKit
 
 struct WaterfallView: View {
     @Binding var reload: Bool
@@ -114,14 +115,14 @@ struct WaterfallView: View {
                 }
                 .padding(.vertical, CharterConstants.margin)
             }
-            .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
-                ATTrackingManager.requestTrackingAuthorization(completionHandler: { _ in })
-            }
-            .onReceive(interstitialAdsManager.$interstitialAdLoaded) { isInterstitialAdLoaded in
-                if isInterstitialAdLoaded {
-                    interstitialAdsManager.displayInterstitialAd()
-                }
-            }
+//            .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
+//                ATTrackingManager.requestTrackingAuthorization(completionHandler: { _ in })
+//            }
+//            .onReceive(interstitialAdsManager.$interstitialAdLoaded) { isInterstitialAdLoaded in
+//                if isInterstitialAdLoaded {
+//                    interstitialAdsManager.displayInterstitialAd()
+//                }
+//            }
             .scrollIndicators(.hidden)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
@@ -482,6 +483,7 @@ struct WaterfallView: View {
     private func shareSnapshot() {
         let snapshotView = TeamSnapshotView(teams: sortedTeams, players: players)
         let renderer = ImageRenderer(content: snapshotView)
+        renderer.proposedSize = ProposedViewSize(CGSize(width: 595.2, height: 841.8))
         if let image = renderer.uiImage {
             Analytics.logEvent(LogEvent.exportTeams, parameters: nil)
             snapshotImage = image

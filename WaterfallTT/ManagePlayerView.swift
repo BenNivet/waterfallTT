@@ -33,6 +33,7 @@ public struct ManagePlayerView: View {
     public var body: some View {
         VStack(spacing: CharterConstants.marginSmall) {
             FloatingTextField(placeHolder: String(localized: "Nom du joueur"), text: $newName, isRequired: true)
+                .autocorrectionDisabled()
             FloatingTextField(placeHolder: String(localized: "Classement"), text: $newPoints, isRequired: true)
                 .keyboardType(.numberPad)
             Spacer()
