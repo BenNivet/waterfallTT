@@ -1,5 +1,5 @@
 //
-//  ImportInterstitialView.swift
+//  ClubIdInterstitialView.swift
 //  WaterfallTT
 //
 //  Created by CANTE Benjamin on 11/09/2025.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ImportInterstitialView: View {
+struct ClubIdInterstitialView: View {
     @EnvironmentObject private var entitlementManager: EntitlementManager
     @Environment(\.dismiss) var dismiss
 
@@ -18,17 +18,12 @@ struct ImportInterstitialView: View {
             VStack(spacing: CharterConstants.margin) {
                 ScrollView {
                     VStack(spacing: CharterConstants.margin) {
-                        Text("Pour importer des joueurs, veuillez utiliser un fichier Excel (.csv) avec deux colonnes")
+                        Text("Pour trouver l'identifiant FFTT de votre club, vous pouver vous rendre sur l'application FFTT et trouver le numero dans le detail de votre club.")
                             .font(.title3)
                             .foregroundColor(.white)
                             .multilineTextAlignment(.center)
 
-                        Text("• La première colonne doit contenir le nom et le prénom du joueur\n• La seconde colonne doit contenir son nombre de points FFTT")
-                            .font(.body)
-                            .foregroundColor(.white)
-                            .multilineTextAlignment(.center)
-
-                        Image("IntestitialImage")
+                        Image("InterstitialClubIdImage")
                             .resizable()
                             .scaledToFit()
                             .padding(.vertical, CharterConstants.marginMedium)
@@ -41,7 +36,7 @@ struct ImportInterstitialView: View {
             .padding(CharterConstants.margin)
             .scrollIndicators(.hidden)
             .addLinearGradientBackground()
-            .navigationTitle("Import de joueurs")
+            .navigationTitle("Identifiant FFTT")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
@@ -56,7 +51,7 @@ struct ImportInterstitialView: View {
 
     private var understoodButton: some View {
         Button("Ne plus afficher") {
-            entitlementManager.hasSeenImportInterstitial = true
+            entitlementManager.hasSeenClubIdInterstitial = true
             isPresented = false
         }
         .buttonStyle(PrimaryButtonStyle())

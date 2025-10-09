@@ -11,7 +11,7 @@ struct TeamSnapshotView: View {
     let teams: [Team]
     let players: [Player]
     var numberOfArray: Int {
-        guard teams.count > 3 else { return 1 }
+        guard teams.count > 3 else { return teams.count }
         return Int(ceil(Double(teams.count) / 2))
     }
 
@@ -22,7 +22,7 @@ struct TeamSnapshotView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: CharterConstants.margin) {
-            Text("Répartition des équipes")
+            Text("Composition")
                 .font(.title)
                 .bold()
 

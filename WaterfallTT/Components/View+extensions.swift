@@ -54,4 +54,13 @@ extension View {
             self
         }
     }
+
+    @ViewBuilder
+    func navigationSubtitleIfPossible<S>(_ subtitle: S) -> some View where S : StringProtocol {
+        if #available(iOS 26.0, *) {
+            self.navigationSubtitle(subtitle)
+        } else {
+            self
+        }
+    }
 }

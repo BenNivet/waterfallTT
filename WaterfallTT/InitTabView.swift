@@ -37,7 +37,7 @@ struct InitTabView: View {
                 Image("wallpaper1")
                     .resizable()
                     .ignoresSafeArea()
-                    .navigationTitle(String(localized: "Cascade"))
+                    .navigationTitle(String(localized: "Ping Cascade"))
             }
             .task {
                 await fetchFromServer()
@@ -59,11 +59,11 @@ struct InitTabView: View {
                         Text("Joueurs")
                         Image(systemName: "person.3.fill")
                     }
-//                StatsView()
-//                    .tabItem {
-//                        Text("Stats")
-//                        Image(systemName: "folder.fill")
-//                    }
+                SettingsView()
+                    .tabItem {
+                        Text("Réglages")
+                        Image(systemName: "gearshape.fill")
+                    }
             }
             .accentColor(.white)
             .onAppear {
@@ -82,12 +82,14 @@ struct InitTabView: View {
     }
 
     private func fetch(userId: String) async {
+        async let user = firestoreManager.fetchUser(for: userId)
         async let teams = firestoreManager.fetchTeams(for: userId)
         async let players = firestoreManager.fetchPlayers(for: userId)
-        await updateModel(teams: teams, players: players)
+        await updateModel(user, teams: teams, players: players)
     }
 
-    private func updateModel(teams: [Team], players: [Player]) {
+    private func updateModel(_ user: User?, teams: [Team], players: [Player]) {
+        dataManager.user = user
         dataManager.teams = teams
         dataManager.players = players
         dataManager.teamsCount = teams.count

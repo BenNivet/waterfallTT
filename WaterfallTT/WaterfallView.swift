@@ -15,19 +15,15 @@ struct WaterfallView: View {
 
     @EnvironmentObject private var entitlementManager: EntitlementManager
     @EnvironmentObject private var dataManager: DataManager
-    @EnvironmentObject private var interstitialAdsManager: InterstitialAdsManager
-
     @State private var isLoaderPresented = false
-    @State private var showExitConfirmation = false
-    @State private var showResetAllConfirmation = false
     @State private var showResetConfirmation = false
-    @State private var showSettings = false
-    @State private var showLocations = false
+    @State private var showExportTeams = false
     @State private var selectedTeamIndex: Int?
     @State private var snapshotImage: UIImage?
     @State private var showTeamNameView: Team? = nil
     @State private var sensorFeedback = false
     @State private var shareAlert = false
+    @State private var teamsToExport: [Team] = []
 
     private let firestoreManager = FirestoreManager.shared
 
@@ -71,6 +67,10 @@ struct WaterfallView: View {
         dataManager.teamsCount
     }
 
+    private var clubName: String {
+        dataManager.user?.name ?? ""
+    }
+
     private var isTeamsEmpty: Bool {
         teams.isEmpty || players.allSatisfy(\.teamId.isEmpty)
     }
@@ -80,40 +80,42 @@ struct WaterfallView: View {
     }
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollView {
-                VStack(spacing: CharterConstants.margin) {
-                    if entitlementManager.canUpdate {
-                        HStack {
-                            Text("Nombre d’équipes")
-                                .font(.headline)
-                            Spacer()
-                            AnimatedStepper(currentNumber: $dataManager.teamsCount) {
-                                Analytics.logEvent(LogEvent.addTeam, parameters: nil)
-                                dataManager.teamsCount += 1
-                                updateTeamCount()
-                            } onDecrement: {
-                                Analytics.logEvent(LogEvent.deleteTeam, parameters: nil)
-                                dataManager.teamsCount -= 1
-                                updateTeamCount()
+                if teamsCount == 0 {
+                    VStack {
+                        Spacer()
+                        VStack(spacing: CharterConstants.margin) {
+                            Text("Aucune équipe")
+                                .font(.title)
+                            if entitlementManager.canUpdate {
+                                Text("Ajouter des équipes en allant dans l'onglet \"Réglages\" \(Image(systemName: "gearshape.fill"))")
+                                    .font(.title2)
+                                    .multilineTextAlignment(.center)
                             }
                         }
-                        .padding(.horizontal, CharterConstants.margin)
-                    } else {
-                        HStack {
-                            Text("Mode lecture seule")
-                                .font(.headline)
-                            Spacer()
+                        .padding(.horizontal, CharterConstants.marginLarge)
+                        Spacer()
+                    }
+                    .frame(maxWidth: .infinity)
+                } else {
+                    VStack(spacing: CharterConstants.margin) {
+                        if !entitlementManager.canUpdate {
+                            HStack {
+                                Text("Mode lecture seule")
+                                    .font(.headline)
+                                Spacer()
+                            }
+                            .padding(.horizontal, CharterConstants.margin)
                         }
-                        .padding(.horizontal, CharterConstants.margin)
-                    }
 
-                    teamsView
-                    if entitlementManager.canUpdate {
-                        buttonsView
+                        teamsView
+                        if entitlementManager.canUpdate {
+                            buttonsView
+                        }
                     }
+                    .padding(.vertical, CharterConstants.margin)
                 }
-                .padding(.vertical, CharterConstants.margin)
             }
 //            .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
 //                ATTrackingManager.requestTrackingAuthorization(completionHandler: { _ in })
@@ -125,14 +127,6 @@ struct WaterfallView: View {
 //            }
             .scrollIndicators(.hidden)
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button {
-                        showSettings = true
-                    } label: {
-                        Image(systemName: "gearshape")
-                    }
-                    .foregroundStyle(.white)
-                }
                 if entitlementManager.userId != nil,
                    entitlementManager.canUpdate {
                     ToolbarItem(placement: .topBarLeading) {
@@ -147,7 +141,7 @@ struct WaterfallView: View {
                 if entitlementManager.canUpdate {
                     ToolbarItem {
                         Button {
-                            showLocations = true
+                            showExportTeams = true
                         } label: {
                             Image(systemName: "paperplane")
                         }
@@ -158,25 +152,12 @@ struct WaterfallView: View {
             .sensoryFeedback(.success, trigger: sensorFeedback)
             .addLinearGradientBackground()
             .navigationTitle("Ping Cascade")
+            .navigationSubtitleIfPossible(clubName)
             .alert("Réinitialiser toutes les équipes ?",
                    isPresented: $showResetConfirmation) {
                 Button("Annuler", role: .cancel) {}
                 Button("Réinitialiser", role: .destructive) {
                     clearTeams()
-                }
-            }
-            .alert("Quitter le club ?",
-                   isPresented: $showExitConfirmation) {
-                Button("Annuler", role: .cancel) {}
-                Button("Quitter", role: .destructive) {
-                    exitClub()
-                }
-            }
-            .alert("Supprimer toutes les donnés du club ?",
-                   isPresented: $showResetAllConfirmation) {
-                Button("Annuler", role: .cancel) {}
-                Button("Supprimer", role: .destructive) {
-                    resetAll()
                 }
             }
             .sheet(isPresented: snapshotImageBinding) {
@@ -187,7 +168,7 @@ struct WaterfallView: View {
             .sheet(isPresented: showTeamNameViewBinding) {
                 if let showTeamNameView {
                     TeamNameView(team: showTeamNameView)
-                        .presentationDetents([.fraction(0.3)])
+                        .presentationDetents([.fraction(0.5)])
                 }
             }
             .fullScreenCover(isPresented: selectedTeamIndexBinding) {
@@ -196,24 +177,8 @@ struct WaterfallView: View {
                                      selectedPlayers: players(at: selectedTeamIndex))
                 }
             }
-            .fullScreenCover(isPresented: $showLocations) {
-                LocationTeamView(homeTeams: teams.filter(\.location.isEmpty))
-                    .onDisappear {
-                        shareSnapshot()
-                    }
-            }
-            .confirmationDialog("Réglages",
-                                isPresented: $showSettings,
-                                titleVisibility: .automatic) {
-                Button("Quitter le club") {
-                    showExitConfirmation = true
-                }
-                if entitlementManager.canUpdate {
-                    Button("Supprimer les données", role: .destructive) {
-                        showResetAllConfirmation = true
-                    }
-                }
-                Button("Annuler", role: .cancel) {}
+            .fullScreenCover(isPresented: $showExportTeams) {
+                ExportTeamsView(teamsToExportBinding: $teamsToExport)
             }
             .confirmationDialog("Partager l'accès au club",
                                 isPresented: $shareAlert,
@@ -229,6 +194,11 @@ struct WaterfallView: View {
                     }
                 }
                 Button("Annuler", role: .cancel) {}
+            }
+            .onChange(of: teamsToExport) {
+                if !teamsToExport.isEmpty {
+                    shareSnapshot(teams: teamsToExport.sorted { $1.order > $0.order })
+                }
             }
             .onOpenURL { handleURL($0) }
             .loader(isPresented: $isLoaderPresented)
@@ -249,12 +219,22 @@ struct WaterfallView: View {
                             showTeamNameView = teams[index]
                         }
                     } label: {
-                        HStack(spacing: CharterConstants.marginSmall) {
-                            Text(teamName(for: index))
-                            Image(systemName: "pencil")
+                        VStack(spacing: CharterConstants.marginXSmall) {
+                            HStack(spacing: CharterConstants.marginSmall) {
+                                Text(teamName(for: index))
+                                Image(systemName: "pencil")
+                            }
+                            .font(.headline)
+                            HStack(spacing: CharterConstants.marginSmall) {
+                                teams[index].location.isEmpty
+                                    ? Image(systemName: "house.fill")
+                                    : Image(systemName: "car.fill")
+                                Text(teamLocation(for: index))
+                            }
+                            .font(.subheadline)
                         }
                         .padding(CharterConstants.marginSmall)
-                        .font(.headline)
+                        .contentShape(Rectangle())
                     }
                     Spacer()
                     teamPlayersView(index: index)
@@ -319,7 +299,7 @@ struct WaterfallView: View {
             assignPlayersToTeams()
         }
         .buttonStyle(PrimaryButtonStyle())
-        .disabled(!isTeamsEmpty)
+        .disabled(!isTeamsEmpty || players.isEmpty)
     }
 
     private var reinitButtonView: some View {
@@ -327,6 +307,7 @@ struct WaterfallView: View {
             showResetConfirmation = true
         }
         .buttonStyle(SecondaryButtonStyle())
+        .disabled(isTeamsEmpty)
     }
 
     func handleURL(_ url: URL) {
@@ -344,8 +325,9 @@ struct WaterfallView: View {
         Task {
             guard let userId = await firestoreManager.findUser(id: code) else { return }
             dataManager.reset()
-            entitlementManager.userId = userId
-            entitlementManager.canUpdate = update
+            let userStore = entitlementManager.appendUserIfNeeded(userId: userId, canUpdate: update)
+            entitlementManager.userId = userStore.userId
+            entitlementManager.canUpdate = userStore.canUpdate
             reload = true
         }
     }
@@ -421,67 +403,8 @@ struct WaterfallView: View {
         Analytics.logEvent(LogEvent.fillTeams, parameters: nil)
     }
 
-    private func resetAll() {
-        entitlementManager.userId = nil
-        entitlementManager.canUpdate = true
-        for player in players {
-            firestoreManager.deletePlayer(player)
-        }
-        for team in teams {
-            firestoreManager.deleteTeam(team)
-        }
-        dataManager.reset()
-        Analytics.logEvent(LogEvent.removeAllData, parameters: nil)
-    }
-
-    private func exitClub() {
-        entitlementManager.userId = nil
-        entitlementManager.canUpdate = true
-        dataManager.reset()
-        Analytics.logEvent(LogEvent.exitClub, parameters: nil)
-    }
-
-    private func updateTeamCount() {
-        Task {
-            isLoaderPresented = true
-            if entitlementManager.userId == nil {
-                if let resultId = await firestoreManager.createUser() {
-                    entitlementManager.userId = resultId
-                    entitlementManager.canUpdate = true
-                }
-            }
-            guard let userId = entitlementManager.userId else { return }
-            if teamsCount > teams.count {
-                let toAdd = teamsCount - teams.count
-                for _ in 0 ..< toAdd {
-                    var newTeam = Team(userId: userId, order: (sortedTeams.last?.order ?? 0) + 1, name: "Équipe \(teams.count + 1)")
-                    if let teamId = await firestoreManager.insertTeam(newTeam) {
-                        newTeam.teamId = teamId
-                        dataManager.teams.append(newTeam)
-                    }
-                }
-            } else if teamsCount < teams.count {
-                let teamsToRemove = teamsCount == 0 ? teams : Array(sortedTeams.suffix(teams.count - teamsCount))
-                for team in teamsToRemove {
-                    let users = players.filter { $0.teamId == team.teamId }
-                    for user in users {
-                        guard let index = players.firstIndex(of: user) else { continue }
-                        var newUser = user
-                        newUser.teamId.removeAll()
-                        newUser.isCaptain = false
-                        firestoreManager.updatePlayer(newUser)
-                        dataManager.players[index] = newUser
-                    }
-                    firestoreManager.deleteTeam(team)
-                }
-                dataManager.teams = Array(sortedTeams.prefix(teamsCount))
-            }
-            isLoaderPresented = false
-        }
-    }
-
-    private func shareSnapshot() {
-        let snapshotView = TeamSnapshotView(teams: sortedTeams, players: players)
+    private func shareSnapshot(teams: [Team]) {
+        let snapshotView = TeamSnapshotView(teams: teams, players: players)
         let renderer = ImageRenderer(content: snapshotView)
         renderer.proposedSize = ProposedViewSize(CGSize(width: 595.2, height: 841.8))
         if let image = renderer.uiImage {
@@ -526,6 +449,10 @@ struct WaterfallView: View {
 
     private func teamName(for index: Int) -> String {
         "\(teams[index].name)" + (teams[index].division.isEmpty ? "" : " - \(teams[index].division)") + " (\(totalPoints(index)) pts)"
+    }
+
+    private func teamLocation(for index: Int) -> String {
+        teams[index].location.isEmpty ? "Domicile" : "\(teams[index].location)"
     }
 
     func sharedText(id: String, update: Bool) -> String {

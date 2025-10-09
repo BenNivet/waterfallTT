@@ -12,6 +12,8 @@ public struct TeamNameView: View {
     @EnvironmentObject private var dataManager: DataManager
 
     @State private var newName = ""
+    @State private var atHome: Bool
+    @State private var location: String
 
     let team: Team
     private let firestoreManager = FirestoreManager.shared
@@ -22,11 +24,21 @@ public struct TeamNameView: View {
     init(team: Team) {
         self.team = team
         _newName = State(initialValue: team.division)
+        _atHome = State(initialValue: team.location.isEmpty)
+        _location = State(initialValue: team.location)
     }
 
     public var body: some View {
-        VStack(spacing: CharterConstants.marginSmall) {
-            FloatingTextField(placeHolder: String(localized: "Division de l'équipe"), text: $newName, isRequired: true)
+        VStack(spacing: CharterConstants.margin) {
+            FloatingTextField(placeHolder: String(localized: "Division de l'équipe"),
+                              text: $newName)
+                .autocorrectionDisabled()
+            Toggle("Domicile", isOn: $atHome)
+            if !atHome {
+                FloatingTextField(placeHolder: "Lieu de la rencontre",
+                                  text: $location)
+                    .autocorrectionDisabled()
+            }
             Spacer()
             Button("Valider") {
                 hideKeyboard()
@@ -45,6 +57,11 @@ public struct TeamNameView: View {
         if let index = teams.firstIndex(of: team) {
             var newTeam = teams[index]
             newTeam.division = newName
+            if atHome {
+                newTeam.location.removeAll()
+            } else {
+                newTeam.location = location
+            }
             firestoreManager.updateTeam(newTeam)
             dataManager.teams[index] = newTeam
         }

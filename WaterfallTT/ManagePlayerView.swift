@@ -31,20 +31,29 @@ public struct ManagePlayerView: View {
     }
 
     public var body: some View {
-        VStack(spacing: CharterConstants.marginSmall) {
+        VStack(spacing: CharterConstants.margin) {
             FloatingTextField(placeHolder: String(localized: "Nom du joueur"), text: $newName, isRequired: true)
                 .autocorrectionDisabled()
             FloatingTextField(placeHolder: String(localized: "Classement"), text: $newPoints, isRequired: true)
                 .keyboardType(.numberPad)
             Spacer()
-            Button("Ajouter") {
+            Button(player == nil ? "Ajouter" : "Sauvegarder") {
                 hideKeyboard()
                 Task {
                     await addNewPlayer()
+                    dismiss()
                 }
             }
             .buttonStyle(PrimaryButtonStyle())
             .disabled(newName.isEmpty || newPoints.isEmpty)
+            if player != nil {
+                Button("Supprimer") {
+                    hideKeyboard()
+                    deletePlayer()
+                }
+                .buttonStyle(DestructiveButtonStyle())
+                .disabled(newName.isEmpty || newPoints.isEmpty)
+            }
         }
         .padding(CharterConstants.margin)
         .keyboardAvoiding()
@@ -69,12 +78,12 @@ public struct ManagePlayerView: View {
 
         if let userId = entitlementManager.userId {
             player.userId = userId
-        } else {
-            let resultId = await firestoreManager.createUser()
-            if let resultId {
-                entitlementManager.userId = resultId
-                player.userId = resultId
-            }
+        } else if let user = await firestoreManager.createUser() {
+            entitlementManager.userId = user.documentId
+            entitlementManager.canUpdate = true
+            entitlementManager.appendUserIfNeeded(userId: user.documentId, canUpdate: true)
+            dataManager.user = user
+            player.userId = user.documentId
         }
         let playerId = await firestoreManager.insertOrUpdatePlayer(player)
         guard let playerId else { return }
@@ -87,6 +96,15 @@ public struct ManagePlayerView: View {
 
         newName = ""
         newPoints = ""
+    }
+
+    func deletePlayer() {
+        if let player,
+           let playerIndex = players.firstIndex(where: { $0.id == player.id }) {
+            let player = players[playerIndex]
+            firestoreManager.deletePlayer(player)
+            dataManager.players.remove(at: playerIndex)
+        }
         dismiss()
     }
 }

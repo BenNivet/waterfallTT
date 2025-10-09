@@ -50,7 +50,7 @@ struct SelectPlayerView: View {
     }
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack(spacing: CharterConstants.margin) {
                 ScrollView {
                     playersView

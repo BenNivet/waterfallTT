@@ -13,7 +13,7 @@ import SwiftUI
 struct WaterfallTTApp: App {
     @StateObject private var entitlementManager: EntitlementManager
     @StateObject private var dataManager: DataManager
-    @StateObject private var interstitialAdsManager = InterstitialAdsManager()
+//    @StateObject private var interstitialAdsManager = InterstitialAdsManager()
 
     init() {
         FirebaseApp.configure()
@@ -32,6 +32,9 @@ struct WaterfallTTApp: App {
 //                await MobileAds.shared.start()
 //            }
 //        }
+        if let userId = entitlementManager.userId {
+           entitlementManager.appendUserIfNeeded(userId: userId, canUpdate: entitlementManager.canUpdate)
+        }
     }
 
     var body: some Scene {
@@ -39,7 +42,7 @@ struct WaterfallTTApp: App {
             InitTabView()
                 .environmentObject(entitlementManager)
                 .environmentObject(dataManager)
-                .environmentObject(interstitialAdsManager)
+//                .environmentObject(interstitialAdsManager)
                 .fontDesign(.rounded)
         }
     }

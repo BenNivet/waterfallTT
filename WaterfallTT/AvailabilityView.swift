@@ -27,7 +27,7 @@ struct AvailabilityView: View {
     }
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             mainView
                 .addLinearGradientBackground()
                 .navigationTitle("Joueurs \(totalPlayers.0)/\(totalPlayers.1)")
@@ -36,21 +36,21 @@ struct AvailabilityView: View {
     }
 
     @ViewBuilder private var mainView: some View {
-        if players.isEmpty {
-            VStack {
-                Spacer()
-                Text("Aucun joueur")
-                    .font(.title)
-                    .padding(.horizontal, CharterConstants.marginLarge)
-                Spacer()
-            }
-            .frame(maxWidth: .infinity)
-        } else {
-            ScrollView {
+        ScrollView {
+            if players.isEmpty {
+                VStack {
+                    Spacer()
+                    Text("Aucun joueur")
+                        .font(.title)
+                        .padding(.horizontal, CharterConstants.marginLarge)
+                    Spacer()
+                }
+                .frame(maxWidth: .infinity)
+            } else {
                 playersView
             }
-            .scrollIndicators(.hidden)
         }
+        .scrollIndicators(.hidden)
     }
 
     private var playersView: some View {

@@ -46,17 +46,54 @@ class FirestoreManager {
         }
     }
 
-    func createUser(name: String = "") async -> String? {
+    func createUser(name: String = "", ffttId: String = "") async -> User? {
         do {
-            return try await withCheckedThrowingContinuation { continuation in
-                var ref: DocumentReference?
-                ref = try? db?.collection(Table.users.rawValue)
-                    .addDocument(from: UserServer(name: name)) { _ in
-                        continuation.resume(returning: ref?.documentID)
-                    }
-            }
+            let userServer = UserServer(name: name, ffttId: ffttId)
+            let document = try await db?.collection(Table.users.rawValue)
+                .addDocument(from: userServer)
+            guard let document else { return nil }
+
+            return User(userServer: userServer, documentId: document.documentID)
         } catch {
             return nil
+        }
+    }
+
+    func fetchUser(for userId: String) async -> User? {
+        do {
+            let documentSnapshot = try await db?.collection(Table.users.rawValue)
+                .document(userId)
+                .getDocument()
+            guard let documentSnapshot,
+                  documentSnapshot.exists,
+                  let userServer = try? documentSnapshot.data(as: UserServer.self)
+            else { return nil }
+
+            return User(userServer: userServer,
+                        documentId: documentSnapshot.documentID)
+        } catch {
+            return nil
+        }
+    }
+
+    func fetchUsers(for usersId: [String]) async -> [User] {
+        do {
+            let querySnapshot = try await db?.collection(Table.users.rawValue)
+                .whereField(FieldPath.documentID(), in: usersId)
+                .getDocuments()
+            guard let documents = querySnapshot?.documents
+            else { return [] }
+
+            return documents
+                .compactMap { userData -> User? in
+                    guard let userServer = try? userData.data(as: UserServer.self)
+                    else { return nil }
+                    return User(userServer: userServer,
+                                documentId: userData.documentID)
+                }
+
+        } catch {
+            return []
         }
     }
 
@@ -157,6 +194,12 @@ class FirestoreManager {
             .setData(from: player.playerServer)
     }
 
+    func updateUser(_ user: User) {
+        try? db?.collection(Table.users.rawValue)
+            .document(user.documentId)
+            .setData(from: user.userServer)
+    }
+
     func deleteTeam(_ team: Team) {
         db?.collection(Table.teams.rawValue)
             .document(team.teamId)
@@ -166,6 +209,12 @@ class FirestoreManager {
     func deletePlayer(_ player: Player) {
         db?.collection(Table.players.rawValue)
             .document(player.playerId)
+            .delete()
+    }
+
+    func deleteUser(_ userId: String) {
+        db?.collection(Table.users.rawValue)
+            .document(userId)
             .delete()
     }
 }

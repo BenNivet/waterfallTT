@@ -8,6 +8,12 @@
 import FirebaseAnalytics
 import SwiftUI
 
+struct ImportResult {
+    var players: [(name: String, points: Int)] = []
+    var clubName: String = ""
+    var clubId: String = ""
+}
+
 struct PlayersView: View {
     @EnvironmentObject private var entitlementManager: EntitlementManager
     @EnvironmentObject private var dataManager: DataManager
@@ -15,10 +21,19 @@ struct PlayersView: View {
     @State private var isLoaderPresented = false
     @State private var showAddPlayerView = false
     @State private var showManagePlayerView: Player?
+    @State private var showImportDialog = false
     @State private var showDocumentPicker = false
     @State private var showInterstitialPicker = false
-    @State private var searchText: String = ""
-    @State private var results: [(name: String, points: Int)] = []
+    @State private var showInterstitialHelp = false
+    @State private var showInterstitialClubId = false
+    @State private var showInterstitialClubIdHelp = false
+    @State private var showHelpDialog = false
+    @State private var searchText = ""
+    @State private var results = ImportResult()
+    @State private var idClub = ""
+    @State private var showingIdClubAlert = false
+    @State private var idClubText = ""
+    @State private var showDeleteAllConfirmation = false
 
     private let firestoreManager = FirestoreManager.shared
 
@@ -48,20 +63,17 @@ struct PlayersView: View {
     }
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             mainView
                 .padding(.vertical, CharterConstants.margin)
                 .addLinearGradientBackground()
                 .navigationTitle("Joueurs")
+                .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     if entitlementManager.canUpdate {
                         ToolbarItem(placement: .topBarTrailing) {
                             Button {
-                                if entitlementManager.hasSeenImportInterstitial {
-                                    showDocumentPicker = true
-                                } else {
-                                    showInterstitialPicker = true
-                                }
+                                showImportDialog = true
                             } label: {
                                 Image(systemName: "square.and.arrow.down")
                             }
@@ -73,12 +85,14 @@ struct PlayersView: View {
                                 Image(systemName: "plus")
                             }
                         }
-                        ToolbarItem(placement: .topBarTrailing) {
-                            EditButton()
+                        if !players.isEmpty {
+                            ToolbarItem(placement: .topBarTrailing) {
+                                EditButton()
+                            }
                         }
                         ToolbarItem(placement: .topBarLeading) {
                             Button {
-                                showInterstitialPicker = true
+                                showHelpDialog = true
                             } label: {
                                 Image(systemName: "questionmark.circle")
                             }
@@ -101,11 +115,89 @@ struct PlayersView: View {
                             showDocumentPicker = true
                         }
                 }
+                .fullScreenCover(isPresented: $showInterstitialClubId) {
+                    ClubIdInterstitialView(isPresented: $showInterstitialClubId)
+                        .onDisappear {
+                            showingIdClubAlert = true
+                        }
+                }
+                .fullScreenCover(isPresented: $showInterstitialHelp) {
+                    ImportInterstitialView(isPresented: $showInterstitialHelp)
+                }
+                .fullScreenCover(isPresented: $showInterstitialClubIdHelp) {
+                    ClubIdInterstitialView(isPresented: $showInterstitialClubIdHelp)
+                }
                 .sheet(isPresented: $showDocumentPicker) {
                     DocumentPicker { url in
                         if let url {
                             extractLines(from: url)
                         }
+                    }
+                }
+                .confirmationDialog("Import de joueurs",
+                                    isPresented: $showImportDialog,
+                                    titleVisibility: .visible) {
+                    Button("Via FFTT") {
+                        if let ffttId = dataManager.user?.ffttId,
+                           !ffttId.isEmpty {
+                            idClub = ffttId
+                        } else {
+                            if entitlementManager.hasSeenClubIdInterstitial {
+                                showingIdClubAlert = true
+                            } else {
+                                showInterstitialClubId = true
+                            }
+                        }
+                    }
+                    Button("Via fichier Excel (.csv)") {
+                        if entitlementManager.hasSeenImportInterstitial {
+                            showDocumentPicker = true
+                        } else {
+                            showInterstitialPicker = true
+                        }
+                    }
+                    Button("Annuler", role: .cancel) {}
+                }
+                .confirmationDialog("Aide",
+                                    isPresented: $showHelpDialog,
+                                    titleVisibility: .visible) {
+                    Button("Import via identifiant FFTT") {
+                        showInterstitialClubIdHelp = true
+                    }
+                    Button("Import via fichier Excel (.csv)") {
+                        showInterstitialHelp = true
+                    }
+                    Button("Annuler", role: .cancel) {}
+                }
+                .background {
+                    if !idClub.isEmpty {
+                        WebViewViewControllerRepresentable(idClub: $idClub,
+                                                           results: $results)
+                            .opacity(0)
+                    }
+                }
+                .alert("Importer les joueurs", isPresented: $showingIdClubAlert) {
+                    TextField("Identifiant FFTT", text: $idClubText)
+                        .autocorrectionDisabled()
+                    Button("Annuler", role: .cancel) {}
+                    Button("OK") {
+                        idClub = idClubText
+                        idClubText = ""
+                    }
+                } message: {
+                    Text("Veuillez entrer l'identifiant FFTT du club")
+                }
+                .alert("Supprimer tous les joueurs du club ?", isPresented: $showDeleteAllConfirmation) {
+                    Button("Annuler", role: .cancel) {}
+                    Button("Supprimer", role: .destructive) {
+                        deleteAllPlayers()
+                    }
+                }
+                .onChange(of: idClub) { old, _ in
+                    isLoaderPresented.toggle()
+                    if !results.players.isEmpty {
+                        results.clubId = old
+                        addPlayers()
                     }
                 }
                 .loader(isPresented: $isLoaderPresented)
@@ -150,10 +242,20 @@ struct PlayersView: View {
                 .if(entitlementManager.canUpdate) {
                     $0.onDelete(perform: deletePlayer)
                 }
+                if searchText.isEmpty {
+                    removeAllButtonView
+                }
             }
             .listStyle(PlainListStyle())
             .searchable(text: $searchText, prompt: "Rechercher un joueur")
         }
+    }
+
+    private var removeAllButtonView: some View {
+        Button("Tout supprimer") {
+            showDeleteAllConfirmation = true
+        }
+        .buttonStyle(DestructiveButtonStyle())
     }
 
     private func deletePlayer(at offsets: IndexSet) {
@@ -166,6 +268,13 @@ struct PlayersView: View {
         }
     }
 
+    private func deleteAllPlayers() {
+        for player in players {
+            firestoreManager.deletePlayer(player)
+        }
+        dataManager.players.removeAll()
+    }
+
     private func extractLines(from fileURL: URL) {
         _ = fileURL.startAccessingSecurityScopedResource()
         do {
@@ -174,7 +283,6 @@ struct PlayersView: View {
                 ? contents.split(separator: "\r\n").map { String($0) }
                 : contents.split(separator: "\n").map { String($0) }
 
-            results = [] // Réinitialiser les résultats
             for line in lines.dropFirst() { // Ignorer l'en-tête
                 let components = contents.contains(";")
                     ? line.split(separator: ";").map { String($0) }
@@ -182,7 +290,7 @@ struct PlayersView: View {
                 if components.count >= 2 {
                     let name = components[0].trimmingCharacters(in: .whitespaces)
                     let points = Int(components[1].trimmingCharacters(in: .whitespaces)) ?? 9999
-                    results.append((name: name, points: points))
+                    results.players.append((name: name, points: points))
                 }
             }
             fileURL.stopAccessingSecurityScopedResource()
@@ -194,27 +302,39 @@ struct PlayersView: View {
     }
 
     private func addPlayers() {
+        guard !results.players.isEmpty else { return }
         Task {
             isLoaderPresented = true
             if entitlementManager.userId == nil {
-                if let resultId = await firestoreManager.createUser() {
-                    entitlementManager.userId = resultId
+                if let user = await firestoreManager.createUser(name: results.clubName, ffttId: results.clubId) {
+                    entitlementManager.userId = user.documentId
                     entitlementManager.canUpdate = true
+                    entitlementManager.appendUserIfNeeded(userId: user.documentId, canUpdate: true)
+                    dataManager.user = user
                 }
+            } else if let user = dataManager.user {
+                let newUser = user
+                if newUser.name.isEmpty, !results.clubName.isEmpty {
+                    newUser.name = results.clubName
+                }
+                if !results.clubId.isEmpty {
+                    newUser.ffttId = results.clubId
+                }
+                firestoreManager.updateUser(newUser)
+                dataManager.user = newUser
             }
             guard let userId = entitlementManager.userId else { return }
 
-            if !results.isEmpty {
-                Analytics.logEvent(LogEvent.importPlayers, parameters: nil)
-                for res in results {
-                    var player = Player(userId: userId, name: res.name, points: res.points)
-                    let playerId = await firestoreManager.insertOrUpdatePlayer(player)
-                    guard let playerId else { continue }
-                    player.playerId = playerId
-                    dataManager.players.append(player)
-                }
+            Analytics.logEvent(LogEvent.importPlayers, parameters: nil)
+            for res in results.players {
+                var player = Player(userId: userId, name: res.name, points: res.points)
+                let playerId = await firestoreManager.insertOrUpdatePlayer(player)
+                guard let playerId else { continue }
+                player.playerId = playerId
+                dataManager.players.append(player)
             }
             isLoaderPresented = false
+            results = ImportResult()
         }
     }
 }

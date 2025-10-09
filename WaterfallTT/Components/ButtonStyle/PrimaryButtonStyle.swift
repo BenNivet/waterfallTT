@@ -14,7 +14,8 @@ struct PrimaryButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration
             .label
-            .frame(maxWidth: .infinity, minHeight: CharterConstants.buttonSize)
+            .frame(maxWidth: .infinity)
+            .frame(height: CharterConstants.buttonSize)
             .foregroundStyle(.white)
             .font(.system(size: 18, weight: .semibold))
             .background(CharterConstants.mainColor)
@@ -29,7 +30,8 @@ struct SecondaryButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration
             .label
-            .frame(maxWidth: .infinity, minHeight: CharterConstants.buttonSize)
+            .frame(maxWidth: .infinity)
+            .frame(height: CharterConstants.buttonSize)
             .foregroundStyle(.white)
             .font(.system(size: 18, weight: .regular))
             .background(CharterConstants.mainGray)
@@ -44,31 +46,13 @@ struct DestructiveButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration
             .label
-            .frame(maxWidth: .infinity, minHeight: CharterConstants.buttonSize)
+            .frame(maxWidth: .infinity)
+            .frame(height: CharterConstants.buttonSize)
             .foregroundStyle(.white)
             .font(.system(size: 18, weight: .semibold))
             .background(CharterConstants.mainRed)
             .clipShape(RoundedRectangle(cornerRadius: CharterConstants.radius))
             .opacity(configuration.isPressed ? CharterConstants.disabledOpacity : 1)
             .contentShape(Rectangle())
-    }
-}
-
-struct CircleButtonStyle: ButtonStyle {
-    
-    func makeBody(configuration: Configuration) -> some View {
-        configuration
-            .label
-            .font(.system(size: 16, weight: .semibold))
-            .foregroundColor(.black)
-            .frame(width: CharterConstants.quantitySize, height: CharterConstants.quantitySize)
-            .background(
-                Circle()
-                    .fill(Color.white)
-                    .shadow(color: .black.opacity(0.05), radius: CharterConstants.radius, x: 0, y: 0)
-            )
-            .clipShape(Circle())
-            .opacity(configuration.isPressed ? CharterConstants.disabledOpacity : 1)
-            .contentShape(Circle())
     }
 }

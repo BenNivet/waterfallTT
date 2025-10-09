@@ -30,7 +30,7 @@ struct CharterConstants {
     static let mainRed: Color = Color(UIColor(hexString: "#D13E46"))
     static let halfWhite: Color = .white.opacity(0.6)
     static let halfGray: Color = .gray.opacity(0.6)
-    static let mainGray: Color = Color(.systemGray6)
+    static let mainGray: Color = Color(.systemGray5)
 
     // Alpha Transparency
     static let alphaFifteen: CGFloat = 0.15
