@@ -6,6 +6,7 @@
 //
 
 import FirebaseAnalytics
+import MessageUI
 import SwiftUI
 
 struct SettingsView: View {
@@ -18,6 +19,8 @@ struct SettingsView: View {
     @State private var showIdFFTTClub = false
     @State private var showExitConfirmation = false
     @State private var showResetAllConfirmation = false
+    @State private var showingMailView = false
+    @State private var mailResult: Result<MFMailComposeResult, Error>? = nil
 
     private let firestoreManager = FirestoreManager.shared
 
@@ -54,6 +57,7 @@ struct SettingsView: View {
                         clubNameView
                         idClubView
                     }
+
                     numberTeamsView
 
                     if !entitlementManager.usersStored.isEmpty {
@@ -64,6 +68,13 @@ struct SettingsView: View {
                     if entitlementManager.userId != nil {
                         section("Paramètre du compte")
                         buttonsView
+                    }
+
+                    if MFMailComposeViewController.canSendMail() {
+                        Button("Demande de support") {
+                            showingMailView = true
+                        }
+                        .buttonStyle(SecondaryButtonStyle())
                     }
 
                     Spacer()
@@ -97,6 +108,9 @@ struct SettingsView: View {
                 Button("Quitter", role: .destructive) {
                     exitClub()
                 }
+            }
+            .sheet(isPresented: $showingMailView) {
+                MailView(result: $mailResult)
             }
             .alert("Supprimer toutes les donnés du club ?",
                    isPresented: $showResetAllConfirmation) {

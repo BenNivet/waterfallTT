@@ -18,6 +18,7 @@ class FirestoreManager {
 
     enum Column: String {
         case userId
+        case name
     }
 
     static let shared = FirestoreManager()
@@ -25,25 +26,6 @@ class FirestoreManager {
 
     init() {
         db = Firestore.firestore()
-    }
-
-    func findUser(id: String) async -> String? {
-        guard !id.isEmpty else { return nil }
-        do {
-            return try await withCheckedThrowingContinuation { continuation in
-                db?.collection(Table.users.rawValue).document(id)
-                    .getDocument { documentSnapshot, _ in
-                        if let documentSnapshot,
-                           documentSnapshot.exists {
-                            continuation.resume(returning: documentSnapshot.documentID)
-                        } else {
-                            continuation.resume(returning: nil)
-                        }
-                    }
-            }
-        } catch {
-            return nil
-        }
     }
 
     func createUser(name: String = "", ffttId: String = "") async -> User? {
@@ -80,6 +62,27 @@ class FirestoreManager {
         do {
             let querySnapshot = try await db?.collection(Table.users.rawValue)
                 .whereField(FieldPath.documentID(), in: usersId)
+                .getDocuments()
+            guard let documents = querySnapshot?.documents
+            else { return [] }
+
+            return documents
+                .compactMap { userData -> User? in
+                    guard let userServer = try? userData.data(as: UserServer.self)
+                    else { return nil }
+                    return User(userServer: userServer,
+                                documentId: userData.documentID)
+                }
+
+        } catch {
+            return []
+        }
+    }
+
+    func fetchAllUsers() async -> [User] {
+        do {
+            let querySnapshot = try await db?.collection(Table.users.rawValue)
+                .whereField(Column.name.rawValue, isNotEqualTo: "")
                 .getDocuments()
             guard let documents = querySnapshot?.documents
             else { return [] }

@@ -64,6 +64,13 @@ struct InitTabView: View {
                         Text("Réglages")
                         Image(systemName: "gearshape.fill")
                     }
+#if DEBUG
+                AdminView()
+                    .tabItem {
+                        Text("Admin")
+                        Image(systemName: "eye")
+                    }
+#endif
             }
             .accentColor(.white)
             .onAppear {

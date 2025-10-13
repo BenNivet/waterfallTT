@@ -89,7 +89,10 @@ struct WaterfallView: View {
                             Text("Aucune équipe")
                                 .font(.title)
                             if entitlementManager.canUpdate {
-                                Text("Ajouter des équipes en allant dans l'onglet \"Réglages\" \(Image(systemName: "gearshape.fill"))")
+                                Text("1. Importer des joueurs en allant dans l'onglet **Joueurs** \(Image(systemName: "person.3.fill"))")
+                                    .font(.title2)
+                                    .multilineTextAlignment(.center)
+                                Text("2. Ajouter des équipes en allant dans l'onglet **Réglages** \(Image(systemName: "gearshape.fill"))")
                                     .font(.title2)
                                     .multilineTextAlignment(.center)
                             }
@@ -137,8 +140,6 @@ struct WaterfallView: View {
                         }
                         .foregroundStyle(.white)
                     }
-                }
-                if entitlementManager.canUpdate {
                     ToolbarItem {
                         Button {
                             showExportTeams = true
@@ -323,9 +324,9 @@ struct WaterfallView: View {
 
     private func findTeams(code: String, update: Bool) {
         Task {
-            guard let userId = await firestoreManager.findUser(id: code) else { return }
+            guard let user = await firestoreManager.fetchUser(for: code) else { return }
             dataManager.reset()
-            let userStore = entitlementManager.appendUserIfNeeded(userId: userId, canUpdate: update)
+            let userStore = entitlementManager.appendUserIfNeeded(userId: user.documentId, canUpdate: update)
             entitlementManager.userId = userStore.userId
             entitlementManager.canUpdate = userStore.canUpdate
             reload = true

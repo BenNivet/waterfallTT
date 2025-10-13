@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0B0E5E082E9807BA009240C0 /* AdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0E5E072E9807BA009240C0 /* AdminView.swift */; };
 		0B2660CE2E7311D4004B2B10 /* ImportInterstitialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2660CD2E7311CB004B2B10 /* ImportInterstitialView.swift */; };
 		0B4FDB892E252DC0009A94F5 /* DocumentPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B4FDB882E252DBB009A94F5 /* DocumentPicker.swift */; };
 		0B4FDB8B2E253961009A94F5 /* TeamNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B4FDB8A2E253959009A94F5 /* TeamNameView.swift */; };
@@ -17,6 +18,7 @@
 		0B6E7D5D2E8E56DC00422636 /* ClubNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6E7D5C2E8E56D600422636 /* ClubNameView.swift */; };
 		0B6E7D5F2E8E6A8700422636 /* ClubFFTTIdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6E7D5E2E8E6A8700422636 /* ClubFFTTIdView.swift */; };
 		0BA646432E1FF34800321354 /* ExportTeamsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA646422E1FF34800321354 /* ExportTeamsView.swift */; };
+		0BC2965B2E9D326B002FA18B /* MailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC2965A2E9D3266002FA18B /* MailView.swift */; };
 		0BC8BE1E2E3A38E400ABA07F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0BC8BE1D2E3A38E400ABA07F /* GoogleService-Info.plist */; };
 		0BC8BE262E3A3CD600ABA07F /* FirestoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC8BE242E3A3CD600ABA07F /* FirestoreManager.swift */; };
 		0BC8BE282E3A3D4700ABA07F /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC8BE272E3A3D4400ABA07F /* User.swift */; };
@@ -60,6 +62,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0B0E5E072E9807BA009240C0 /* AdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminView.swift; sourceTree = "<group>"; };
 		0B12F33B2E0D3B1D005AED4F /* WaterfallTT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WaterfallTT.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0B2660CD2E7311CB004B2B10 /* ImportInterstitialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportInterstitialView.swift; sourceTree = "<group>"; };
 		0B4FDB872E252D0C009A94F5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = WaterfallTT/Info.plist; sourceTree = SOURCE_ROOT; };
@@ -71,6 +74,7 @@
 		0B6E7D5C2E8E56D600422636 /* ClubNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubNameView.swift; sourceTree = "<group>"; };
 		0B6E7D5E2E8E6A8700422636 /* ClubFFTTIdView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubFFTTIdView.swift; sourceTree = "<group>"; };
 		0BA646422E1FF34800321354 /* ExportTeamsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportTeamsView.swift; sourceTree = "<group>"; };
+		0BC2965A2E9D3266002FA18B /* MailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailView.swift; sourceTree = "<group>"; };
 		0BC8BE1D2E3A38E400ABA07F /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0BC8BE242E3A3CD600ABA07F /* FirestoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreManager.swift; sourceTree = "<group>"; };
 		0BC8BE272E3A3D4400ABA07F /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -169,6 +173,7 @@
 				0BFA00282E1E563B00F10BEA /* AvailabilityView.swift */,
 				0BFA00022E1E4BA400F10BEA /* PlayersView.swift */,
 				0B6E7D282E8DB4B400422636 /* SettingsView.swift */,
+				0B0E5E072E9807BA009240C0 /* AdminView.swift */,
 				0BFA00002E1E4BA400F10BEA /* ManagePlayerView.swift */,
 				0BFA00032E1E4BA400F10BEA /* ShareSheet.swift */,
 				0BECA4412E1EBC350000F789 /* SelectPlayerView.swift */,
@@ -181,11 +186,12 @@
 				0B6E7D5C2E8E56D600422636 /* ClubNameView.swift */,
 				0B6E7D5E2E8E6A8700422636 /* ClubFFTTIdView.swift */,
 				0B6E7D2A2E8DBEFA00422636 /* ClubListView.swift */,
+				0BDA65D92E8C1A7B00B14CEA /* WebViewViewController.swift */,
+				0BC2965A2E9D3266002FA18B /* MailView.swift */,
 				0B68E2262E8423AB00718B5E /* Ads */,
 				0BFAFFFA2E1E4BA400F10BEA /* Components */,
 				0BC8BE252E3A3CD600ABA07F /* Database */,
 				0BFAFFFD2E1E4BA400F10BEA /* Model */,
-				0BDA65D92E8C1A7B00B14CEA /* WebViewViewController.swift */,
 				0BFAFFFF2E1E4BA400F10BEA /* Constants.swift */,
 				0BC8BE342E3A413000ABA07F /* Helper.swift */,
 				0BC8BE362E3A417500ABA07F /* WaterfallTT.entitlements */,
@@ -344,6 +350,7 @@
 				0BE3CFE82E61A133002A286A /* AnimatedStepper.swift in Sources */,
 				0B6E7D292E8DB4BA00422636 /* SettingsView.swift in Sources */,
 				0BC8BE282E3A3D4700ABA07F /* User.swift in Sources */,
+				0B0E5E082E9807BA009240C0 /* AdminView.swift in Sources */,
 				0BFA000B2E1E4BA400F10BEA /* Chip.swift in Sources */,
 				0B6E7D5D2E8E56DC00422636 /* ClubNameView.swift in Sources */,
 				0BFA000C2E1E4BA400F10BEA /* ChipModel.swift in Sources */,
@@ -355,6 +362,7 @@
 				0BFA000F2E1E4BA400F10BEA /* HeightCalculator.swift in Sources */,
 				0BFA00102E1E4BA400F10BEA /* KeyboardAvoiding.swift in Sources */,
 				0BFA00112E1E4BA400F10BEA /* View+extensions.swift in Sources */,
+				0BC2965B2E9D326B002FA18B /* MailView.swift in Sources */,
 				0BFA00122E1E4BA400F10BEA /* WrappedHStack.swift in Sources */,
 				0BFA00132E1E4BA400F10BEA /* Player.swift in Sources */,
 				0B4FDB892E252DC0009A94F5 /* DocumentPicker.swift in Sources */,
@@ -534,7 +542,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.7;
+				MARKETING_VERSION = 1.8;
 				PRODUCT_BUNDLE_IDENTIFIER = benjamin.cante.WaterfallPing;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -575,7 +583,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.7;
+				MARKETING_VERSION = 1.8;
 				PRODUCT_BUNDLE_IDENTIFIER = benjamin.cante.WaterfallPing;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

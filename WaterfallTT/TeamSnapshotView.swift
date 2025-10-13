@@ -22,7 +22,7 @@ struct TeamSnapshotView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: CharterConstants.margin) {
-            Text("Composition")
+            Text("Compositions")
                 .font(.title)
                 .bold()
 
@@ -32,6 +32,7 @@ struct TeamSnapshotView: View {
                         VStack(alignment: .leading, spacing: CharterConstants.marginSmall) {
                             Text(teamName(team))
                                 .font(.headline)
+                            locationView(team)
                             players(in: team)
                         }
                     }
@@ -58,12 +59,19 @@ struct TeamSnapshotView: View {
         if !team.division.isEmpty {
             name += " - \(team.division)"
         }
-        if !team.location.isEmpty {
-            name += " (\(team.location))"
-        } else {
-            name += " (Domicile)"
-        }
         return name
+    }
+
+    private func locationView(_ team: Team) -> some View {
+        HStack(spacing: CharterConstants.marginSmall) {
+            team.location.isEmpty
+                ? Image(systemName: "house.fill")
+                : Image(systemName: "car.fill")
+            team.location.isEmpty
+                ? Text("Domicile")
+                : Text(team.location)
+        }
+        .font(.headline)
     }
 }
 

@@ -34,6 +34,7 @@ struct PlayersView: View {
     @State private var showingIdClubAlert = false
     @State private var idClubText = ""
     @State private var showDeleteAllConfirmation = false
+    @State private var oldIdClub = ""
 
     private let firestoreManager = FirestoreManager.shared
 
@@ -59,6 +60,14 @@ struct PlayersView: View {
             showManagePlayerView != nil
         } set: { _ in
             showManagePlayerView = nil
+        }
+    }
+
+    private var oldIdClubBinding: Binding<Bool> {
+        Binding {
+            !oldIdClub.isEmpty
+        } set: { _ in
+            oldIdClub.removeAll()
         }
     }
 
@@ -182,10 +191,19 @@ struct PlayersView: View {
                     Button("Annuler", role: .cancel) {}
                     Button("OK") {
                         idClub = idClubText
-                        idClubText = ""
+                        idClubText.removeAll()
                     }
                 } message: {
                     Text("Veuillez entrer l'identifiant FFTT du club")
+                }
+                .alert("Erreur", isPresented: oldIdClubBinding) {
+                    Button("Annuler", role: .cancel) {}
+                    Button("Réessayer") {
+                        idClub = oldIdClub
+                        oldIdClub.removeAll()
+                    }
+                } message: {
+                    Text("Une erreur s'est produite lors de l'import des joueurs, voulez-vous réesayer ?")
                 }
                 .alert("Supprimer tous les joueurs du club ?", isPresented: $showDeleteAllConfirmation) {
                     Button("Annuler", role: .cancel) {}
@@ -198,6 +216,8 @@ struct PlayersView: View {
                     if !results.players.isEmpty {
                         results.clubId = old
                         addPlayers()
+                    } else {
+                        oldIdClub = old
                     }
                 }
                 .loader(isPresented: $isLoaderPresented)
@@ -212,10 +232,10 @@ struct PlayersView: View {
                     Text("Aucun joueur")
                         .font(.title)
                     if entitlementManager.canUpdate {
-                        Text("Ajouter des joueurs en cliquant sur le bouton \(Image(systemName: "plus"))")
+                        Text("Ajouter des joueurs en cliquant sur le bouton **\(Image(systemName: "plus"))**")
                             .font(.title2)
                             .multilineTextAlignment(.center)
-                        Text("Importer des joueurs en cliquant sur le bouton \(Image(systemName: "square.and.arrow.down"))")
+                        Text("Importer des joueurs en cliquant sur le bouton **\(Image(systemName: "square.and.arrow.down"))**")
                             .font(.title2)
                             .multilineTextAlignment(.center)
                     }
