@@ -9,8 +9,8 @@ import Foundation
 
 struct Team: Identifiable, Hashable {
     var id: String { teamId }
-    var userId: String = ""
-    var teamId: String = ""
+    var userId: String
+    var teamId: String
     var order: Int
     var name: String
     var division: String

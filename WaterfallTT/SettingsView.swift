@@ -48,6 +48,19 @@ struct SettingsView: View {
         dataManager.user?.ffttId ?? ""
     }
 
+    private var cascadeModeBinding: Binding<Bool> {
+        Binding {
+            dataManager.user?.cascade ?? true
+        }
+        set: { newValue in
+            if let newUser = dataManager.user {
+                newUser.cascade = newValue
+                firestoreManager.updateUser(newUser)
+                dataManager.user = newUser
+            }
+        }
+    }
+
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -56,6 +69,7 @@ struct SettingsView: View {
                     if entitlementManager.userId != nil {
                         clubNameView
                         idClubView
+                        toggleCascadeView
                     }
 
                     numberTeamsView
@@ -172,6 +186,12 @@ struct SettingsView: View {
             }
             .buttonStyle(SecondaryButtonStyle())
         }
+    }
+
+    private var toggleCascadeView: some View {
+        Toggle("Mode Cascade", isOn: cascadeModeBinding)
+            .font(.headline)
+            .padding(.vertical, CharterConstants.marginSmall)
     }
 
     private var numberTeamsView: some View {

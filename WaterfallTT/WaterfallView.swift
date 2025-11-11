@@ -15,6 +15,7 @@ struct WaterfallView: View {
 
     @EnvironmentObject private var entitlementManager: EntitlementManager
     @EnvironmentObject private var dataManager: DataManager
+    @EnvironmentObject private var interstitialAdsManager: InterstitialAdsManager
     @State private var isLoaderPresented = false
     @State private var showResetConfirmation = false
     @State private var showExportTeams = false
@@ -123,11 +124,12 @@ struct WaterfallView: View {
 //            .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
 //                ATTrackingManager.requestTrackingAuthorization(completionHandler: { _ in })
 //            }
-//            .onReceive(interstitialAdsManager.$interstitialAdLoaded) { isInterstitialAdLoaded in
-//                if isInterstitialAdLoaded {
-//                    interstitialAdsManager.displayInterstitialAd()
-//                }
-//            }
+            .onReceive(interstitialAdsManager.$interstitialAdLoaded) { isInterstitialAdLoaded in
+                if entitlementManager.userId != nil,
+                   isInterstitialAdLoaded {
+                    interstitialAdsManager.displayInterstitialAd()
+                }
+            }
             .scrollIndicators(.hidden)
             .toolbar {
                 if entitlementManager.userId != nil,
@@ -421,13 +423,15 @@ struct WaterfallView: View {
             guard let newIndex = teams.firstIndex(of: sortedTeams[$0]) else { return false }
             return totalPoints(newIndex) < total
         }) {
-            if players(at: index).count != 4 {
+            if players(at: index).count < 4 {
                 return Color.orange.opacity(0.6)
             } else {
                 return CharterConstants.mainGray
             }
         } else {
-            return CharterConstants.mainRed.opacity(0.7)
+            return dataManager.user?.cascade ?? true
+                ? CharterConstants.mainRed.opacity(0.7)
+                : CharterConstants.mainGray
         }
     }
 

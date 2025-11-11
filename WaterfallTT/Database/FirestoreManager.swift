@@ -220,4 +220,25 @@ class FirestoreManager {
             .document(userId)
             .delete()
     }
+
+    func fetchAllPlayers() async -> [Player] {
+        do {
+            let querySnapshot = try await db?.collection(Table.players.rawValue)
+                .whereField(Column.userId.rawValue, isNotEqualTo: "")
+                .getDocuments()
+            guard let documents = querySnapshot?.documents
+            else { return [] }
+
+            return documents
+                .compactMap { playerData -> Player? in
+                    guard let playerServer = try? playerData.data(as: PlayerServer.self)
+                    else { return nil }
+                    return Player(playerServer: playerServer,
+                                  documentId: playerData.documentID)
+                }
+
+        } catch {
+            return []
+        }
+    }
 }

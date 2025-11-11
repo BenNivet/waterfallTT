@@ -7,19 +7,19 @@
 
 import Foundation
 
-//let names = ["DUPONT", "MARTIN", "LECOMTE", "MOREAU", "GARNIER", "PETIT", "DURAND", "ROBERT", "DUMONT", "LEROY"]
-//let firstnames = ["Jean", "Alice", "Sophie", "Louis", "Claire", "Rémi", "Marc", "Thomas", "Paul", "Émilie"]
+// let names = ["DUPONT", "MARTIN", "LECOMTE", "MOREAU", "GARNIER", "PETIT", "DURAND", "ROBERT", "DUMONT", "LEROY"]
+// let firstnames = ["Jean", "Alice", "Sophie", "Louis", "Claire", "Rémi", "Marc", "Thomas", "Paul", "Émilie"]
 
 struct Player: Identifiable, Hashable {
     var id: String { playerId }
-    var userId: String = ""
-    var playerId: String = ""
-    var teamId: String = ""
-    var name: String = ""
+    var userId: String
+    var playerId: String
+    var teamId: String
+    var name: String
 //    var nameTest: String = { names.randomElement()! + " " + firstnames.randomElement()! }()
-    var points = 500
-    var isAvailable = true
-    var isCaptain = false
+    var points: Int
+    var isAvailable: Bool
+    var isCaptain: Bool
 
     var playerServer: PlayerServer {
         PlayerServer(userId: userId,

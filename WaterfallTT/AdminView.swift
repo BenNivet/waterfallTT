@@ -9,6 +9,7 @@ import SwiftUI
 
 struct AdminView: View {
     @State private var clubs: [User] = []
+    @State private var players: [Player] = []
     private let firestoreManager = FirestoreManager.shared
 
     var body: some View {
@@ -16,6 +17,7 @@ struct AdminView: View {
             mainView
                 .task {
                     clubs = await firestoreManager.fetchAllUsers()
+                    players = await firestoreManager.fetchAllPlayers()
                 }
                 .addLinearGradientBackground()
                 .navigationTitle("Admin")
@@ -49,12 +51,14 @@ struct AdminView: View {
                 UIApplication.shared.open(url)
             }
         } label: {
-            HStack {
+            HStack(spacing: CharterConstants.marginSmall) {
                 Text(club.name.isEmpty ? "Nom inconnu" : club.name)
-                    .font(.headline)
+                    .padding(.vertical, CharterConstants.margin)
                 Spacer()
+                players(for: club)
             }
-            .padding(CharterConstants.marginMedium)
+            .padding(.horizontal, CharterConstants.margin)
+            .font(.headline)
             .contentShape(Rectangle())
         }
         .overlay(alignment: .bottom) {
@@ -63,5 +67,19 @@ struct AdminView: View {
                 .background(CharterConstants.halfGray)
         }
         .buttonStyle(.plain)
+    }
+
+    @ViewBuilder
+    private func players(for club: User) -> some View {
+        let players = players.filter { $0.userId == club.documentId }
+        if !players.isEmpty {
+            let playerInTeam = players.filter { !$0.teamId.isEmpty }.count
+            let string = "\(playerInTeam)/\(players.count)"
+            Text(string)
+                .padding(CharterConstants.marginSmall)
+                .font(.subheadline)
+                .background(CharterConstants.mainColor)
+                .clipShape(Capsule())
+        }
     }
 }
