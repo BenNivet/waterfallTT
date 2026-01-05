@@ -10,7 +10,14 @@ import SwiftUI
 struct AdminView: View {
     @State private var clubs: [User] = []
     @State private var players: [Player] = []
+    @State private var searchText = ""
+
     private let firestoreManager = FirestoreManager.shared
+    private var filteredClubs: [User] {
+        guard !searchText.isEmpty else { return clubs }
+        let queryFormatted = searchText.queryFormatted
+        return clubs.filter { $0.name.queryFormatted.contains(queryFormatted) }
+    }
 
     var body: some View {
         NavigationStack {
@@ -20,29 +27,25 @@ struct AdminView: View {
                     players = await firestoreManager.fetchAllPlayers()
                 }
                 .addLinearGradientBackground()
-                .navigationTitle("Admin")
-                .navigationBarTitleDisplayMode(.inline)
+                .navigationTitle("Admin" + (clubs.isEmpty ? "" : " (\(clubs.count) clubs)"))
+//                .navigationBarTitleDisplayMode(.inline)
         }
     }
 
     private var mainView: some View {
         ScrollView {
-            HStack {
-                Spacer()
-                Text("\(clubs.count) clubs")
-                    .font(.headline)
-                Spacer()
-            }
             VStack(spacing: 0) {
-                ForEach(clubs, id: \.documentId) { club in
+                ForEach(filteredClubs, id: \.documentId) { club in
                     clubView(for: club)
                 }
             }
+            .frame(maxWidth: .infinity)
             .background(RoundedRectangle(cornerRadius: CharterConstants.radius)
                 .stroke(CharterConstants.halfGray, lineWidth: 1))
             .padding(CharterConstants.margin)
         }
         .scrollIndicators(.hidden)
+        .searchable(text: $searchText)
     }
 
     private func clubView(for club: User) -> some View {
@@ -52,13 +55,17 @@ struct AdminView: View {
             }
         } label: {
             HStack(spacing: CharterConstants.marginSmall) {
-                Text(club.name.isEmpty ? "Nom inconnu" : club.name)
-                    .padding(.vertical, CharterConstants.margin)
+                VStack(alignment: .leading) {
+                    Text(club.name.isEmpty ? "Inconnu" : club.name.trimmingCharacters(in: .whitespaces))
+                        .font(.headline)
+                    Text(club.date)
+                        .font(.footnote)
+                }
                 Spacer()
                 players(for: club)
             }
             .padding(.horizontal, CharterConstants.margin)
-            .font(.headline)
+            .padding(.vertical, CharterConstants.marginSmall)
             .contentShape(Rectangle())
         }
         .overlay(alignment: .bottom) {
@@ -73,7 +80,7 @@ struct AdminView: View {
     private func players(for club: User) -> some View {
         let players = players.filter { $0.userId == club.documentId }
         if !players.isEmpty {
-            let playerInTeam = players.filter { !$0.teamId.isEmpty }.count
+            let playerInTeam = players.count(where: { !$0.teamId.isEmpty })
             let string = "\(playerInTeam)/\(players.count)"
             Text(string)
                 .padding(CharterConstants.marginSmall)

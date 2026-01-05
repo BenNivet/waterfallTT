@@ -8,12 +8,6 @@
 import FirebaseAnalytics
 import SwiftUI
 
-struct ImportResult {
-    var players: [(name: String, points: Int)] = []
-    var clubName: String = ""
-    var clubId: String = ""
-}
-
 struct PlayersView: View {
     @EnvironmentObject private var entitlementManager: EntitlementManager
     @EnvironmentObject private var dataManager: DataManager
@@ -232,10 +226,23 @@ struct PlayersView: View {
                     Text("Aucun joueur")
                         .font(.title)
                     if entitlementManager.canUpdate {
-                        Text("Ajouter des joueurs en cliquant sur le bouton **\(Image(systemName: "plus"))**")
+                        Text("Importer des joueurs en cliquant sur le bouton **\(Image(systemName: "square.and.arrow.down"))**")
                             .font(.title2)
                             .multilineTextAlignment(.center)
-                        Text("Importer des joueurs en cliquant sur le bouton **\(Image(systemName: "square.and.arrow.down"))**")
+                        HStack(spacing: CharterConstants.marginSmall) {
+                            Divider()
+                                .frame(height: 1)
+                                .frame(maxWidth: .infinity)
+                                .background(CharterConstants.halfWhite)
+                            Text("OU")
+                                .font(.headline)
+                                .foregroundStyle(CharterConstants.halfWhite)
+                            Divider()
+                                .frame(height: 1)
+                                .frame(maxWidth: .infinity)
+                                .background(CharterConstants.halfWhite)
+                        }
+                        Text("Ajouter des joueurs en cliquant sur le bouton **\(Image(systemName: "plus"))**")
                             .font(.title2)
                             .multilineTextAlignment(.center)
                     }

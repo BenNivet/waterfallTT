@@ -25,6 +25,7 @@ struct WaterfallView: View {
     @State private var sensorFeedback = false
     @State private var shareAlert = false
     @State private var teamsToExport: [Team] = []
+    @State private var configureClub = false
 
     private let firestoreManager = FirestoreManager.shared
 
@@ -89,13 +90,35 @@ struct WaterfallView: View {
                         VStack(spacing: CharterConstants.margin) {
                             Text("Aucune équipe")
                                 .font(.title)
+                                .padding(.bottom, CharterConstants.margin)
                             if entitlementManager.canUpdate {
-                                Text("1. Importer des joueurs en allant dans l'onglet **Joueurs** \(Image(systemName: "person.3.fill"))")
-                                    .font(.title2)
-                                    .multilineTextAlignment(.center)
-                                Text("2. Ajouter des équipes en allant dans l'onglet **Réglages** \(Image(systemName: "gearshape.fill"))")
-                                    .font(.title2)
-                                    .multilineTextAlignment(.center)
+                                Button {
+                                    configureClub = true
+                                } label: {
+                                    Text("Configurer le club")
+                                }
+                                .buttonStyle(PrimaryButtonStyle())
+                                HStack(spacing: CharterConstants.marginSmall) {
+                                    Divider()
+                                        .frame(height: 1)
+                                        .frame(maxWidth: .infinity)
+                                        .background(CharterConstants.halfWhite)
+                                    Text("OU")
+                                        .font(.headline)
+                                        .foregroundStyle(CharterConstants.halfWhite)
+                                    Divider()
+                                        .frame(height: 1)
+                                        .frame(maxWidth: .infinity)
+                                        .background(CharterConstants.halfWhite)
+                                }
+                                VStack(spacing: CharterConstants.marginSmall) {
+                                    Text("1. Ajouter des équipes en allant dans l'onglet **Réglages** \(Image(systemName: "gearshape.fill"))")
+                                        .font(.title3)
+                                        .multilineTextAlignment(.center)
+                                    Text("2. Importer des joueurs en allant dans l'onglet **Joueurs** \(Image(systemName: "person.3.fill"))")
+                                        .font(.title3)
+                                        .multilineTextAlignment(.center)
+                                }
                             }
                         }
                         .padding(.horizontal, CharterConstants.marginLarge)
@@ -182,6 +205,9 @@ struct WaterfallView: View {
             }
             .fullScreenCover(isPresented: $showExportTeams) {
                 ExportTeamsView(teamsToExportBinding: $teamsToExport)
+            }
+            .fullScreenCover(isPresented: $configureClub) {
+                ConfigureClubView()
             }
             .confirmationDialog("Partager l'accès au club",
                                 isPresented: $shareAlert,

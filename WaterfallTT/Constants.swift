@@ -39,7 +39,7 @@ struct CharterConstants {
     /// Opacity
     static let disabledOpacity: CGFloat = 0.4
 
-    // Random
+    /// Random
     static let minimumAppLaunch = 20
 }
 
@@ -49,7 +49,7 @@ struct UserDefaultsKeys {
     static let teamsCountKey = "teamsCount"
 }
 
-//struct ScreenName {
+// struct ScreenName {
 //    static let wineList = "Wine_list"
 //    static let emptyWineList = "Wine_list_empty"
 //    static let addWine = "Add_wine"
@@ -63,7 +63,7 @@ struct UserDefaultsKeys {
 //    static let scanWine = "Scan_wine"
 //    static let selectWineName = "Select_wine_name"
 //    static let newFeatures = "New_featuresV2"
-//}
+// }
 
 struct LogEvent {
     static let addTeam = "Add_team"
@@ -95,7 +95,10 @@ extension UIColor {
         let hex = hexString.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
         var int = UInt32()
         Scanner(string: hex).scanHexInt32(&int)
-        let a, r, g, b: UInt32
+        let a: UInt32
+        let r: UInt32
+        let g: UInt32
+        let b: UInt32
 
         (a, r, g, b) = switch hex.count {
         case 3: // RGB (12-bit)
@@ -109,5 +112,11 @@ extension UIColor {
         }
 
         self.init(red: CGFloat(r) / 255, green: CGFloat(g) / 255, blue: CGFloat(b) / 255, alpha: CGFloat(a) / 255)
+    }
+}
+
+extension String {
+    var queryFormatted: String {
+        folding(options: .diacriticInsensitive, locale: .current).lowercased()
     }
 }

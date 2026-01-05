@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0B07486C2F054B90004BF08E /* ConfigureClubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B07486B2F054B81004BF08E /* ConfigureClubView.swift */; };
+		0B07486E2F055930004BF08E /* ImportResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B07486D2F055930004BF08E /* ImportResult.swift */; };
+		0B0748702F057F5D004BF08E /* ConfettiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B07486F2F057F5D004BF08E /* ConfettiView.swift */; };
 		0B0E5E082E9807BA009240C0 /* AdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0E5E072E9807BA009240C0 /* AdminView.swift */; };
 		0B2660CE2E7311D4004B2B10 /* ImportInterstitialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2660CD2E7311CB004B2B10 /* ImportInterstitialView.swift */; };
 		0B4FDB892E252DC0009A94F5 /* DocumentPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B4FDB882E252DBB009A94F5 /* DocumentPicker.swift */; };
@@ -62,6 +65,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0B07486B2F054B81004BF08E /* ConfigureClubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureClubView.swift; sourceTree = "<group>"; };
+		0B07486D2F055930004BF08E /* ImportResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportResult.swift; sourceTree = "<group>"; };
+		0B07486F2F057F5D004BF08E /* ConfettiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfettiView.swift; sourceTree = "<group>"; };
 		0B0E5E072E9807BA009240C0 /* AdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminView.swift; sourceTree = "<group>"; };
 		0B12F33B2E0D3B1D005AED4F /* WaterfallTT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WaterfallTT.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0B2660CD2E7311CB004B2B10 /* ImportInterstitialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportInterstitialView.swift; sourceTree = "<group>"; };
@@ -174,6 +180,7 @@
 				0BFA00022E1E4BA400F10BEA /* PlayersView.swift */,
 				0B6E7D282E8DB4B400422636 /* SettingsView.swift */,
 				0B0E5E072E9807BA009240C0 /* AdminView.swift */,
+				0B07486B2F054B81004BF08E /* ConfigureClubView.swift */,
 				0BFA00002E1E4BA400F10BEA /* ManagePlayerView.swift */,
 				0BFA00032E1E4BA400F10BEA /* ShareSheet.swift */,
 				0BECA4412E1EBC350000F789 /* SelectPlayerView.swift */,
@@ -233,6 +240,7 @@
 		0BFAFFFA2E1E4BA400F10BEA /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				0B07486F2F057F5D004BF08E /* ConfettiView.swift */,
 				0BE3CFE72E61A133002A286A /* AnimatedStepper.swift */,
 				0BFAFFF42E1E4BA400F10BEA /* AutoCompleteSheet.swift */,
 				0BFAFFF02E1E4BA400F10BEA /* ButtonStyle */,
@@ -250,6 +258,7 @@
 		0BFAFFFD2E1E4BA400F10BEA /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				0B07486D2F055930004BF08E /* ImportResult.swift */,
 				0BC8BE272E3A3D4400ABA07F /* User.swift */,
 				0BFAFFFC2E1E4BA400F10BEA /* Team.swift */,
 				0BFAFFFB2E1E4BA400F10BEA /* Player.swift */,
@@ -350,9 +359,11 @@
 				0BE3CFE82E61A133002A286A /* AnimatedStepper.swift in Sources */,
 				0B6E7D292E8DB4BA00422636 /* SettingsView.swift in Sources */,
 				0BC8BE282E3A3D4700ABA07F /* User.swift in Sources */,
+				0B07486E2F055930004BF08E /* ImportResult.swift in Sources */,
 				0B0E5E082E9807BA009240C0 /* AdminView.swift in Sources */,
 				0BFA000B2E1E4BA400F10BEA /* Chip.swift in Sources */,
 				0B6E7D5D2E8E56DC00422636 /* ClubNameView.swift in Sources */,
+				0B0748702F057F5D004BF08E /* ConfettiView.swift in Sources */,
 				0BFA000C2E1E4BA400F10BEA /* ChipModel.swift in Sources */,
 				0B6E7D5F2E8E6A8700422636 /* ClubFFTTIdView.swift in Sources */,
 				0B68E2272E8423AB00718B5E /* InterstitialAdsManager.swift in Sources */,
@@ -379,6 +390,7 @@
 				0BFA00192E1E4BA400F10BEA /* ShareSheet.swift in Sources */,
 				0BC8BE382E3A424200ABA07F /* EntitlementManager.swift in Sources */,
 				0BFA00292E1E563B00F10BEA /* AvailabilityView.swift in Sources */,
+				0B07486C2F054B90004BF08E /* ConfigureClubView.swift in Sources */,
 				0B4FDB8B2E253961009A94F5 /* TeamNameView.swift in Sources */,
 				0BFA001A2E1E4BA400F10BEA /* TeamSnapshotView.swift in Sources */,
 				0BFA00202E1E4C2400F10BEA /* DataManager.swift in Sources */,
@@ -521,7 +533,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = WK7T3Z2QPN;
 				ENABLE_PREVIEWS = YES;
@@ -542,7 +554,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.9;
+				MARKETING_VERSION = 2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = benjamin.cante.WaterfallPing;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -562,7 +574,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = WK7T3Z2QPN;
 				ENABLE_PREVIEWS = YES;
@@ -583,7 +595,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.9;
+				MARKETING_VERSION = 2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = benjamin.cante.WaterfallPing;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
