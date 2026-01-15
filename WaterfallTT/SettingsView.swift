@@ -7,9 +7,12 @@
 
 import FirebaseAnalytics
 import MessageUI
+import StoreKit
 import SwiftUI
 
 struct SettingsView: View {
+    @Environment(\.requestReview) private var requestReview
+
     @EnvironmentObject private var entitlementManager: EntitlementManager
     @EnvironmentObject private var dataManager: DataManager
 
@@ -83,6 +86,8 @@ struct SettingsView: View {
                         section("Paramètre du compte")
                         buttonsView
                     }
+
+                    rateButton
 
                     if MFMailComposeViewController.canSendMail() {
                         Button("Demande de support") {
@@ -241,6 +246,13 @@ struct SettingsView: View {
                 .buttonStyle(DestructiveButtonStyle())
             }
         }
+    }
+
+    private var rateButton: some View {
+        Button("Noter l'application") {
+            requestReview()
+        }
+        .buttonStyle(PrimaryButtonStyle())
     }
 
     private func updateTeamCount() {

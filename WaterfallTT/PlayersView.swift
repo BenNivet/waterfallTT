@@ -9,6 +9,8 @@ import FirebaseAnalytics
 import SwiftUI
 
 struct PlayersView: View {
+    @Environment(\.requestReview) private var requestReview
+
     @EnvironmentObject private var entitlementManager: EntitlementManager
     @EnvironmentObject private var dataManager: DataManager
 
@@ -29,6 +31,8 @@ struct PlayersView: View {
     @State private var idClubText = ""
     @State private var showDeleteAllConfirmation = false
     @State private var oldIdClub = ""
+    @State private var resetBeforeImport = false
+    @State private var updateRemotePlayers = false
 
     private let firestoreManager = FirestoreManager.shared
 
@@ -74,6 +78,17 @@ struct PlayersView: View {
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     if entitlementManager.canUpdate {
+                        if let ffttId = dataManager.user?.ffttId,
+                           !ffttId.isEmpty,
+                           !players.isEmpty {
+                            ToolbarItem(placement: .topBarTrailing) {
+                                Button {
+                                    updateRemotePlayers = true
+                                } label: {
+                                    Image(systemName: "arrow.circlepath")
+                                }
+                            }
+                        }
                         ToolbarItem(placement: .topBarTrailing) {
                             Button {
                                 showImportDialog = true
@@ -86,11 +101,6 @@ struct PlayersView: View {
                                 showAddPlayerView = true
                             } label: {
                                 Image(systemName: "plus")
-                            }
-                        }
-                        if !players.isEmpty {
-                            ToolbarItem(placement: .topBarTrailing) {
-                                EditButton()
                             }
                         }
                         ToolbarItem(placement: .topBarLeading) {
@@ -143,7 +153,11 @@ struct PlayersView: View {
                     Button("Via FFTT") {
                         if let ffttId = dataManager.user?.ffttId,
                            !ffttId.isEmpty {
-                            idClub = ffttId
+                            if players.isEmpty {
+                                idClub = ffttId
+                            } else {
+                                resetBeforeImport = true
+                            }
                         } else {
                             if entitlementManager.hasSeenClubIdInterstitial {
                                 showingIdClubAlert = true
@@ -189,6 +203,26 @@ struct PlayersView: View {
                     }
                 } message: {
                     Text("Veuillez entrer l'identifiant FFTT du club")
+                }
+                .alert("Mettre à jour", isPresented: $updateRemotePlayers) {
+                    Button("Non", role: .cancel) {}
+                    Button("Oui", role: .destructive) {
+                        deleteAllPlayers()
+                        idClub = dataManager.user?.ffttId ?? ""
+                    }
+                } message: {
+                    Text("Souhaitez-vous mettre à jour votre liste de joueurs ?\n(Cela va supprimer toute liste de joueurs actuelle)")
+                }
+                .alert("Attention", isPresented: $resetBeforeImport) {
+                    Button("Non", role: .cancel) {
+                        idClub = dataManager.user?.ffttId ?? ""
+                    }
+                    Button("Oui", role: .destructive) {
+                        deleteAllPlayers()
+                        idClub = dataManager.user?.ffttId ?? ""
+                    }
+                } message: {
+                    Text("Voulez-vous effacer la liste actuelle avant d'importer les nouveaux joueurs ?")
                 }
                 .alert("Erreur", isPresented: oldIdClubBinding) {
                     Button("Annuler", role: .cancel) {}
@@ -362,6 +396,7 @@ struct PlayersView: View {
             }
             isLoaderPresented = false
             results = ImportResult()
+            requestReview()
         }
     }
 }

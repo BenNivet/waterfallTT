@@ -14,9 +14,11 @@ struct AdminView: View {
 
     private let firestoreManager = FirestoreManager.shared
     private var filteredClubs: [User] {
-        guard !searchText.isEmpty else { return clubs }
+        guard !searchText.isEmpty else { return clubs.sorted { $1.date < $0.date } }
         let queryFormatted = searchText.queryFormatted
-        return clubs.filter { $0.name.queryFormatted.contains(queryFormatted) }
+        return clubs
+            .filter { $0.name.queryFormatted.contains(queryFormatted) }
+            .sorted { $1.date < $0.date }
     }
 
     var body: some View {
@@ -45,7 +47,7 @@ struct AdminView: View {
             .padding(CharterConstants.margin)
         }
         .scrollIndicators(.hidden)
-        .searchable(text: $searchText)
+        .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Rechercher")
     }
 
     private func clubView(for club: User) -> some View {

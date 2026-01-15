@@ -16,6 +16,7 @@ struct WaterfallView: View {
     @EnvironmentObject private var entitlementManager: EntitlementManager
     @EnvironmentObject private var dataManager: DataManager
     @EnvironmentObject private var interstitialAdsManager: InterstitialAdsManager
+
     @State private var isLoaderPresented = false
     @State private var showResetConfirmation = false
     @State private var showExportTeams = false
@@ -92,24 +93,26 @@ struct WaterfallView: View {
                                 .font(.title)
                                 .padding(.bottom, CharterConstants.margin)
                             if entitlementManager.canUpdate {
-                                Button {
-                                    configureClub = true
-                                } label: {
-                                    Text("Configurer le club")
-                                }
-                                .buttonStyle(PrimaryButtonStyle())
-                                HStack(spacing: CharterConstants.marginSmall) {
-                                    Divider()
-                                        .frame(height: 1)
-                                        .frame(maxWidth: .infinity)
-                                        .background(CharterConstants.halfWhite)
-                                    Text("OU")
-                                        .font(.headline)
-                                        .foregroundStyle(CharterConstants.halfWhite)
-                                    Divider()
-                                        .frame(height: 1)
-                                        .frame(maxWidth: .infinity)
-                                        .background(CharterConstants.halfWhite)
+                                if players.isEmpty {
+                                    Button {
+                                        configureClub = true
+                                    } label: {
+                                        Text("Configurer le club")
+                                    }
+                                    .buttonStyle(PrimaryButtonStyle())
+                                    HStack(spacing: CharterConstants.marginSmall) {
+                                        Divider()
+                                            .frame(height: 1)
+                                            .frame(maxWidth: .infinity)
+                                            .background(CharterConstants.halfWhite)
+                                        Text("OU")
+                                            .font(.headline)
+                                            .foregroundStyle(CharterConstants.halfWhite)
+                                        Divider()
+                                            .frame(height: 1)
+                                            .frame(maxWidth: .infinity)
+                                            .background(CharterConstants.halfWhite)
+                                    }
                                 }
                                 VStack(spacing: CharterConstants.marginSmall) {
                                     Text("1. Ajouter des équipes en allant dans l'onglet **Réglages** \(Image(systemName: "gearshape.fill"))")
