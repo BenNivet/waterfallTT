@@ -9,6 +9,6 @@ import Foundation
 
 struct ImportResult {
     var players: [(name: String, points: Int)] = []
-    var clubName: String = ""
-    var clubId: String = ""
+    var clubName = ""
+    var clubId = ""
 }

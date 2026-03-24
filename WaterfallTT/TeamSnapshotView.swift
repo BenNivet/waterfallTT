@@ -15,11 +15,6 @@ struct TeamSnapshotView: View {
         return Int(ceil(Double(teams.count) / 2))
     }
 
-    init(teams: [Team], players: [Player]) {
-        self.teams = teams
-        self.players = players
-    }
-
     var body: some View {
         VStack(alignment: .leading, spacing: CharterConstants.margin) {
             Text("Compositions")
@@ -50,7 +45,9 @@ struct TeamSnapshotView: View {
             .sorted { $0.points > $1.points }
             .sorted { $0.isCaptain && !$1.isCaptain },
             id: \.id) { player in
-                Text("• \(player.name)" + (player.isCaptain ? " (C)" : ""))
+                Text("• \(player.name)"
+                    + " (\(player.points))"
+                    + (player.isCaptain ? " (C)" : ""))
             }
     }
 

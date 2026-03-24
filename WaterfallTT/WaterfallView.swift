@@ -252,11 +252,13 @@ struct WaterfallView: View {
                         }
                     } label: {
                         VStack(spacing: CharterConstants.marginXSmall) {
-                            HStack(spacing: CharterConstants.marginSmall) {
+                            HStack(spacing: CharterConstants.margin) {
                                 Text(teamName(for: index))
+                                    .font(.headline)
                                 Image(systemName: "pencil")
+                                    .font(.title3)
+                                    .bold()
                             }
-                            .font(.headline)
                             HStack(spacing: CharterConstants.marginSmall) {
                                 teams[index].location.isEmpty
                                     ? Image(systemName: "house.fill")
@@ -355,7 +357,12 @@ struct WaterfallView: View {
 
     private func findTeams(code: String, update: Bool) {
         Task {
-            guard let user = await firestoreManager.fetchUser(for: code) else { return }
+            guard let user = await firestoreManager.fetchUser(for: code)
+            else {
+                entitlementManager.removeUserIfNeeded(userId: code)
+                selectNewUserIfPossible()
+                return
+            }
             dataManager.reset()
             let userStore = entitlementManager.appendUserIfNeeded(userId: user.documentId, canUpdate: update)
             entitlementManager.userId = userStore.userId
@@ -398,6 +405,12 @@ struct WaterfallView: View {
             dataManager.players[j] = player
         }
         Analytics.logEvent(LogEvent.reinitTeams, parameters: nil)
+    }
+
+    private func averagePoints(_ index: Int) -> Double {
+        let players = players(at: index)
+        guard !players.isEmpty else { return 0 }
+        return Double(totalPoints(index)) / Double(players.count)
     }
 
     private func totalPoints(_ index: Int) -> Int {
@@ -447,12 +460,12 @@ struct WaterfallView: View {
 
     private func teamBackgroundColor(for index: Int, sortedIndex: Int) -> Color {
         guard !players(at: index).isEmpty else { return CharterConstants.mainGray }
-        let total = totalPoints(index)
+        let average = averagePoints(index)
         if sortedTeams.indices.filter({ $0 > sortedIndex }).allSatisfy({
             guard let newIndex = teams.firstIndex(of: sortedTeams[$0]) else { return false }
-            return totalPoints(newIndex) < total
+            return averagePoints(newIndex) < average
         }) {
-            if players(at: index).count < 4 {
+            if players(at: index).count < 2 {
                 return Color.orange.opacity(0.6)
             } else {
                 return CharterConstants.mainGray
@@ -482,7 +495,10 @@ struct WaterfallView: View {
     }
 
     private func teamName(for index: Int) -> String {
-        "\(teams[index].name)" + (teams[index].division.isEmpty ? "" : " - \(teams[index].division)") + " (\(totalPoints(index)) pts)"
+        "\(teams[index].name)"
+            + (teams[index].division.isEmpty
+                ? ""
+               : " - \(teams[index].division)") + "\n\(totalPoints(index)) pts (~\(averagePoints(index).toMinimalString))"
     }
 
     private func teamLocation(for index: Int) -> String {
@@ -498,5 +514,22 @@ struct WaterfallView: View {
             waterfalltt://code/\(id)\(update ? "" : "-0")
             L'application Ping Cascade doit déjà être installée sur le téléphone.
             """)
+    }
+
+    private func selectNewUserIfPossible() {
+        if let newUser = entitlementManager.usersStored.first,
+           let url = URL(string: "waterfalltt://code/\(newUser.userId)\(newUser.canUpdate ? "" : "-0")") {
+            UIApplication.shared.open(url)
+        }
+    }
+}
+
+extension Double {
+    var toMinimalString: String {
+        if let intString = Int(exactly: self) {
+            "\(intString)"
+        } else {
+            "\(self)"
+        }
     }
 }
