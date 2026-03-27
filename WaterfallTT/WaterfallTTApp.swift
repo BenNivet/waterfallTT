@@ -14,6 +14,7 @@ struct WaterfallTTApp: App {
     @StateObject private var entitlementManager: EntitlementManager
     @StateObject private var dataManager: DataManager
     @StateObject private var interstitialAdsManager = InterstitialAdsManager()
+    @StateObject private var rewardedAdsManager = RewardedAdsManager()
 
     init() {
         FirebaseApp.configure()
@@ -33,8 +34,8 @@ struct WaterfallTTApp: App {
             }
         }
         if let userId = entitlementManager.userId {
-           entitlementManager.appendUserIfNeeded(userId: userId,
-                                                 canUpdate: entitlementManager.canUpdate)
+            entitlementManager.appendUserIfNeeded(userId: userId,
+                                                  canUpdate: entitlementManager.canUpdate)
         }
     }
 
@@ -44,6 +45,7 @@ struct WaterfallTTApp: App {
                 .environmentObject(entitlementManager)
                 .environmentObject(dataManager)
                 .environmentObject(interstitialAdsManager)
+                .environmentObject(rewardedAdsManager)
                 .fontDesign(.rounded)
         }
     }

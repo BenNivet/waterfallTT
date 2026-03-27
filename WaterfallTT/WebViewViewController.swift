@@ -105,6 +105,7 @@ extension WebViewViewController: WKNavigationDelegate {
     }
 
     func managePlayers(players: [PlayerNumber], clubName: String) {
+        delegate?.displayAd()
         tmpPlayers = players
         let numberPlayers = players.filter { $0.points == 9999 }
         Task {
@@ -133,6 +134,7 @@ extension WebViewViewController: WKNavigationDelegate {
 struct WebViewViewControllerRepresentable: UIViewControllerRepresentable {
     @Binding var idClub: String
     @Binding var results: ImportResult
+    @Binding var canShowAd: Bool
 
     func makeUIViewController(context: Context) -> WebViewViewController {
         let viewController = WebViewViewController()
@@ -157,6 +159,10 @@ struct WebViewViewControllerRepresentable: UIViewControllerRepresentable {
         func dismiss(with results: ImportResult) {
             parent.results = results
             parent.idClub.removeAll()
+        }
+
+        func displayAd() {
+            parent.canShowAd.toggle()
         }
     }
 }

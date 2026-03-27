@@ -9,10 +9,9 @@ import FirebaseAnalytics
 import SwiftUI
 
 struct PlayersView: View {
-    @Environment(\.requestReview) private var requestReview
-
     @EnvironmentObject private var entitlementManager: EntitlementManager
     @EnvironmentObject private var dataManager: DataManager
+    @EnvironmentObject private var rewardedAdsManager: RewardedAdsManager
 
     @State private var isLoaderPresented = false
     @State private var showAddPlayerView = false
@@ -33,6 +32,7 @@ struct PlayersView: View {
     @State private var oldIdClub = ""
     @State private var resetBeforeImport = false
     @State private var updateRemotePlayers = false
+    @State private var canShowAd = false
 
     private let firestoreManager = FirestoreManager.shared
 
@@ -189,7 +189,8 @@ struct PlayersView: View {
                 .background {
                     if !idClub.isEmpty {
                         WebViewViewControllerRepresentable(idClub: $idClub,
-                                                           results: $results)
+                                                           results: $results,
+                                                           canShowAd: $canShowAd)
                             .opacity(0)
                     }
                 }
@@ -247,6 +248,9 @@ struct PlayersView: View {
                     } else {
                         oldIdClub = old
                     }
+                }
+                .onChange(of: canShowAd) {
+                    rewardedAdsManager.displayRewardedAd()
                 }
                 .loader(isPresented: $isLoaderPresented)
         }
@@ -364,6 +368,7 @@ struct PlayersView: View {
 
     private func addPlayers() {
         guard !results.players.isEmpty else { return }
+        rewardedAdsManager.displayRewardedAd()
         Task {
             isLoaderPresented = true
             if entitlementManager.userId == nil {
@@ -396,7 +401,6 @@ struct PlayersView: View {
             }
             isLoaderPresented = false
             results = ImportResult()
-            requestReview()
         }
     }
 }

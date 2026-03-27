@@ -13,6 +13,8 @@ import UIKit
 struct WaterfallView: View {
     @Binding var reload: Bool
 
+    @Environment(\.requestReview) private var requestReview
+
     @EnvironmentObject private var entitlementManager: EntitlementManager
     @EnvironmentObject private var dataManager: DataManager
     @EnvironmentObject private var interstitialAdsManager: InterstitialAdsManager
@@ -147,9 +149,9 @@ struct WaterfallView: View {
                     .padding(.vertical, CharterConstants.margin)
                 }
             }
-//            .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
-//                ATTrackingManager.requestTrackingAuthorization(completionHandler: { _ in })
-//            }
+            .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
+                ATTrackingManager.requestTrackingAuthorization(completionHandler: { _ in })
+            }
             .onReceive(interstitialAdsManager.$interstitialAdLoaded) { isInterstitialAdLoaded in
                 if entitlementManager.userId != nil,
                    isInterstitialAdLoaded {
@@ -187,6 +189,7 @@ struct WaterfallView: View {
                 Button("Annuler", role: .cancel) {}
                 Button("Réinitialiser", role: .destructive) {
                     clearTeams()
+                    requestReview()
                 }
             }
             .sheet(isPresented: snapshotImageBinding) {

@@ -67,7 +67,8 @@ public struct ConfigureClubView: View {
                 .background {
                     if !fetchByIdClub.isEmpty {
                         WebViewViewControllerRepresentable(idClub: $fetchByIdClub,
-                                                           results: $results)
+                                                           results: $results,
+                                                           canShowAd: .constant(false))
                             .opacity(0)
                     }
                 }

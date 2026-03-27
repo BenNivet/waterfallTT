@@ -36,6 +36,7 @@
 		0BDA65D82E8BFA1F00B14CEA /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 0BDA65D72E8BFA1F00B14CEA /* SwiftSoup */; };
 		0BDA65DA2E8C1A9300B14CEA /* WebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BDA65D92E8C1A7B00B14CEA /* WebViewViewController.swift */; };
 		0BE3CFE82E61A133002A286A /* AnimatedStepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE3CFE72E61A133002A286A /* AnimatedStepper.swift */; };
+		0BE4986B2F748B3A00B4E582 /* RewardedAdsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE4986A2F748B3A00B4E582 /* RewardedAdsManager.swift */; };
 		0BECA4422E1EBC350000F789 /* SelectPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BECA4412E1EBC350000F789 /* SelectPlayerView.swift */; };
 		0BFA00082E1E4BA400F10BEA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0BFAFFFE2E1E4BA400F10BEA /* Assets.xcassets */; };
 		0BFA00092E1E4BA400F10BEA /* CameraButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFAFFEE2E1E4BA400F10BEA /* CameraButtonStyle.swift */; };
@@ -90,6 +91,7 @@
 		0BD11ED92E97C15400FE4495 /* ClubIdInterstitialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubIdInterstitialView.swift; sourceTree = "<group>"; };
 		0BDA65D92E8C1A7B00B14CEA /* WebViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewController.swift; sourceTree = "<group>"; };
 		0BE3CFE72E61A133002A286A /* AnimatedStepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedStepper.swift; sourceTree = "<group>"; };
+		0BE4986A2F748B3A00B4E582 /* RewardedAdsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardedAdsManager.swift; sourceTree = "<group>"; };
 		0BECA4412E1EBC350000F789 /* SelectPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectPlayerView.swift; sourceTree = "<group>"; };
 		0BFA00002E1E4BA400F10BEA /* ManagePlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagePlayerView.swift; sourceTree = "<group>"; };
 		0BFA00022E1E4BA400F10BEA /* PlayersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayersView.swift; sourceTree = "<group>"; };
@@ -155,6 +157,7 @@
 		0B68E2262E8423AB00718B5E /* Ads */ = {
 			isa = PBXGroup;
 			children = (
+				0BE4986A2F748B3A00B4E582 /* RewardedAdsManager.swift */,
 				0B68E2252E8423AB00718B5E /* InterstitialAdsManager.swift */,
 			);
 			path = Ads;
@@ -382,6 +385,7 @@
 				0BFA00142E1E4BA400F10BEA /* Team.swift in Sources */,
 				0BFA00152E1E4BA400F10BEA /* Constants.swift in Sources */,
 				0BFA00162E1E4BA400F10BEA /* ManagePlayerView.swift in Sources */,
+				0BE4986B2F748B3A00B4E582 /* RewardedAdsManager.swift in Sources */,
 				0BECA4422E1EBC350000F789 /* SelectPlayerView.swift in Sources */,
 				0BFA00182E1E4BA400F10BEA /* PlayersView.swift in Sources */,
 				0BD11EDA2E97C15400FE4495 /* ClubIdInterstitialView.swift in Sources */,
@@ -554,7 +558,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.2;
+				MARKETING_VERSION = 2.3;
 				PRODUCT_BUNDLE_IDENTIFIER = benjamin.cante.WaterfallPing;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -595,7 +599,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.2;
+				MARKETING_VERSION = 2.3;
 				PRODUCT_BUNDLE_IDENTIFIER = benjamin.cante.WaterfallPing;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

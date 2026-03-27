@@ -12,6 +12,7 @@ import GoogleMobileAds
 @MainActor
 class InterstitialAdsManager: NSObject, ObservableObject {
     @Published var interstitialAdLoaded = false
+    private let entitlementManager = EntitlementManager()
     var interstitialAd: InterstitialAd?
 
     #if DEBUG
@@ -24,6 +25,10 @@ class InterstitialAdsManager: NSObject, ObservableObject {
 
     override init() {
         super.init()
+        #if DEBUG
+            return
+        #endif
+        guard entitlementManager.appLaunched >= CharterConstants.minimumAppLaunch else { return }
         loadInterstitialAd()
     }
 
@@ -44,13 +49,12 @@ class InterstitialAdsManager: NSObject, ObservableObject {
     }
 
     func displayInterstitialAd() {
-        guard let root = UIApplication.shared.windows.first?.rootViewController
+        guard let interstitialAd,
+              let root = UIApplication.shared.windows.first?.rootViewController
         else { return }
 
-        if let interstitialAd {
-            interstitialAd.present(from: root)
-            self.interstitialAd = nil
-        }
+        interstitialAd.present(from: root)
+        self.interstitialAd = nil
     }
 }
 
