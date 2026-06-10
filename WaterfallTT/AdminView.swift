@@ -25,6 +25,7 @@ struct AdminView: View {
         NavigationStack {
             mainView
                 .task {
+                    guard clubs.isEmpty else { return }
                     clubs = await firestoreManager.fetchAllUsers()
                     players = await firestoreManager.fetchAllPlayers()
                 }
@@ -36,7 +37,7 @@ struct AdminView: View {
 
     private var mainView: some View {
         ScrollView {
-            VStack(spacing: 0) {
+            LazyVStack(spacing: 0) {
                 ForEach(filteredClubs, id: \.documentId) { club in
                     clubView(for: club)
                 }

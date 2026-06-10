@@ -52,11 +52,11 @@ struct TeamSnapshotView: View {
     }
 
     private func teamName(_ team: Team) -> String {
-        var name = team.name
-        if !team.division.isEmpty {
-            name += " - \(team.division)"
-        }
-        return name
+        "\(team.name)"
+            + (team.division.isEmpty
+                ? ""
+                : " - \(team.division)")
+            + "\n\(totalPoints(team)) pts (~\(averagePoints(team).toMinimalString))"
     }
 
     private func locationView(_ team: Team) -> some View {
@@ -69,6 +69,17 @@ struct TeamSnapshotView: View {
                 : Text(team.location)
         }
         .font(.headline)
+    }
+
+    private func averagePoints(_ team: Team) -> Double {
+        let players = players.filter { $0.teamId == team.teamId }
+        guard !players.isEmpty else { return 0 }
+        return Double(totalPoints(team)) / Double(players.count)
+    }
+
+    private func totalPoints(_ team: Team) -> Int {
+        let players = players.filter { $0.teamId == team.teamId }
+        return players.reduce(0) { $0 + $1.points }
     }
 }
 

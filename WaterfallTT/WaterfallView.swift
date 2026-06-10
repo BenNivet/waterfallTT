@@ -501,7 +501,8 @@ struct WaterfallView: View {
         "\(teams[index].name)"
             + (teams[index].division.isEmpty
                 ? ""
-                : " - \(teams[index].division)") + "\n\(totalPoints(index)) pts (~\(averagePoints(index).toMinimalString))"
+                : " - \(teams[index].division)")
+            + "\n\(totalPoints(index)) pts (~\(averagePoints(index).toMinimalString))"
     }
 
     private func teamLocation(for index: Int) -> String {
