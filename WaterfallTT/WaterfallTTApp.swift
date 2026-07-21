@@ -11,13 +11,13 @@ import SwiftUI
 
 @main
 struct WaterfallTTApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject private var entitlementManager: EntitlementManager
     @StateObject private var dataManager: DataManager
     @StateObject private var interstitialAdsManager = InterstitialAdsManager()
     @StateObject private var rewardedAdsManager = RewardedAdsManager()
 
     init() {
-        FirebaseApp.configure()
         let entitlementManager = EntitlementManager()
         entitlementManager.appLaunched += 1
         let dataManager = DataManager()

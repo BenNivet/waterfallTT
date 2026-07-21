@@ -10,9 +10,9 @@ import SwiftUI
 struct TeamSnapshotView: View {
     let teams: [Team]
     let players: [Player]
-    var numberOfArray: Int {
-        guard teams.count > 3 else { return teams.count }
-        return Int(ceil(Double(teams.count) / 2))
+    let columnCount: Int
+    private var columns: [GridItem] {
+        Array(repeating: GridItem(.flexible(), spacing: CharterConstants.margin), count: columnCount)
     }
 
     var body: some View {
@@ -21,18 +21,15 @@ struct TeamSnapshotView: View {
                 .font(.title)
                 .bold()
 
-            ForEach(teams.splitInSubArrays(into: numberOfArray), id: \.self) { array in
-                HStack(alignment: .top, spacing: CharterConstants.margin) {
-                    ForEach(array) { team in
-                        VStack(alignment: .leading, spacing: CharterConstants.marginSmall) {
-                            Text(teamName(team))
-                                .font(.headline)
-                            locationView(team)
-                            players(in: team)
-                        }
+            LazyVGrid(columns: columns, alignment: .leading, spacing: CharterConstants.margin) {
+                ForEach(teams) { team in
+                    VStack(alignment: .leading, spacing: CharterConstants.marginSmall) {
+                        Text(teamName(team))
+                            .font(.headline)
+                        locationView(team)
+                        players(in: team)
                     }
                 }
-                .padding(.bottom, CharterConstants.marginSmall)
             }
         }
         .padding(CharterConstants.margin)
@@ -40,15 +37,29 @@ struct TeamSnapshotView: View {
     }
 
     func players(in team: Team) -> some View {
-        ForEach(players
-            .filter { $0.teamId == team.teamId }
-            .sorted { $0.points > $1.points }
-            .sorted { $0.isCaptain && !$1.isCaptain },
-            id: \.id) { player in
-                Text("• \(player.name)"
-                    + " (\(player.points))"
-                    + (player.isCaptain ? " (C)" : ""))
-            }
+        VStack(alignment: .leading, spacing: CharterConstants.marginSmall) {
+            ForEach(players
+                .filter { $0.teamId == team.teamId }
+                .sorted { $0.points > $1.points }
+                .sorted { $0.isCaptain && !$1.isCaptain },
+                id: \.id) { player in
+                    HStack(spacing: CharterConstants.marginXSmall) {
+                        Text("•")
+                        Text(player.name)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.85)
+                            .truncationMode(.middle)
+
+                        Text("(\(player.points))")
+
+                        if player.isCaptain {
+                            Text("(C)")
+                                .bold()
+                        }
+                        Spacer(minLength: CharterConstants.marginXSmall)
+                    }
+                }
+        }
     }
 
     private func teamName(_ team: Team) -> String {
@@ -56,7 +67,7 @@ struct TeamSnapshotView: View {
             + (team.division.isEmpty
                 ? ""
                 : " - \(team.division)")
-            + "\n\(totalPoints(team)) pts (~\(averagePoints(team).toMinimalString))"
+                + "\n\(totalPoints(team)) pts (~\(averagePoints(team).toMinimalString))"
     }
 
     private func locationView(_ team: Team) -> some View {
@@ -80,19 +91,5 @@ struct TeamSnapshotView: View {
     private func totalPoints(_ team: Team) -> Int {
         let players = players.filter { $0.teamId == team.teamId }
         return players.reduce(0) { $0 + $1.points }
-    }
-}
-
-extension Array {
-    func splitInSubArrays(into size: Int) -> [[Element]] {
-        var output: [[Element]] = []
-        (0 ..< size).forEach {
-            var subArray: [Element] = []
-            for elem in stride(from: $0, to: count, by: size) {
-                subArray.append(self[elem])
-            }
-            output.append(subArray)
-        }
-        return output
     }
 }

@@ -452,12 +452,35 @@ struct WaterfallView: View {
     }
 
     private func shareSnapshot(teams: [Team]) {
-        let snapshotView = TeamSnapshotView(teams: teams, players: players)
-        let renderer = ImageRenderer(content: snapshotView)
-        renderer.proposedSize = ProposedViewSize(CGSize(width: 595.2, height: 841.8))
-        if let image = renderer.uiImage {
+        if let image = renderCompositionImage(teams: teams) {
             Analytics.logEvent(LogEvent.exportTeams, parameters: nil)
             snapshotImage = image
+        }
+    }
+
+    private func renderCompositionImage(teams: [Team], columns: Int? = nil, width: CGFloat? = nil) -> UIImage? {
+        let layout = exportLayout(forTeamCount: teams.count)
+        let finalColumns = columns ?? layout.columns
+        let finalWidth = width ?? layout.width
+
+        let view = TeamSnapshotView(teams: teams, players: players, columnCount: finalColumns)
+            .frame(width: finalWidth)
+
+        let renderer = ImageRenderer(content: view)
+        renderer.scale = 3 // qualité rétina, net même zoomé sur mobile
+        return renderer.uiImage
+    }
+
+    private func exportLayout(forTeamCount count: Int) -> (columns: Int, width: CGFloat) {
+        switch count {
+        case ..<3:
+            (1, 420) // 1-2 équipes : une colonne, lisible en un coup d'œil
+        case 3 ... 6:
+            (2, 750) // cas courant : 2 colonnes comme ton screenshot
+        case 7 ... 11:
+            (2, 780) // reste en 2 colonnes mais un peu plus large
+        default:
+            (3, 1080) // 12-15+ équipes : 3 colonnes pour limiter la hauteur
         }
     }
 
@@ -502,7 +525,7 @@ struct WaterfallView: View {
             + (teams[index].division.isEmpty
                 ? ""
                 : " - \(teams[index].division)")
-            + "\n\(totalPoints(index)) pts (~\(averagePoints(index).toMinimalString))"
+                + "\n\(totalPoints(index)) pts (~\(averagePoints(index).toMinimalString))"
     }
 
     private func teamLocation(for index: Int) -> String {
