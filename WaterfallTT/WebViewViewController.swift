@@ -21,6 +21,7 @@ class WebViewViewController: UIViewController {
     weak var delegate: WebViewViewControllerRepresentable.Coordinator?
     var idClub: String?
     var tmpPlayers: [PlayerNumber] = []
+    private var currentAttempt = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,6 +30,10 @@ class WebViewViewController: UIViewController {
         webView.navigationDelegate = self
         view.addSubview(webView)
 
+        load()
+    }
+
+    func load() {
         if let idClub,
            let url = URL(string: "https://www.pingpocket.fr/app/fftt/clubs/\(idClub)/licencies?SORT=OFFICIAL_RANK") {
             let request = URLRequest(url: url)
@@ -105,6 +110,15 @@ extension WebViewViewController: WKNavigationDelegate {
     }
 
     func managePlayers(players: [PlayerNumber], clubName: String) {
+        guard !players.isEmpty || currentAttempt > 2
+        else {
+            currentAttempt += 1
+            Task {
+                try await Task.sleep(for: .seconds(2))
+                load()
+            }
+            return
+        }
         delegate?.displayAd()
         tmpPlayers = players
         let numberPlayers = players.filter { $0.points == 9999 }

@@ -150,7 +150,7 @@ struct PlayersView: View {
                 .confirmationDialog("Import de joueurs",
                                     isPresented: $showImportDialog,
                                     titleVisibility: .visible) {
-                    Button("Via FFTT") {
+                    Button("Via id FFTT de mon club") {
                         if let ffttId = dataManager.user?.ffttId,
                            !ffttId.isEmpty {
                             if players.isEmpty {
@@ -172,6 +172,9 @@ struct PlayersView: View {
                         } else {
                             showInterstitialPicker = true
                         }
+                    }
+                    Button("Via autre id FFTT (entente)") {
+                        showingIdClubAlert = true
                     }
                     Button("Annuler", role: .cancel) {}
                 }
@@ -212,7 +215,7 @@ struct PlayersView: View {
                         idClub = dataManager.user?.ffttId ?? ""
                     }
                 } message: {
-                    Text("Souhaitez-vous mettre à jour votre liste de joueurs ?\n(Cela va supprimer toute liste de joueurs actuelle)")
+                    Text("Souhaitez-vous mettre à jour votre liste de joueurs ?\n(Cela va supprimer toute la liste de joueurs actuelle)")
                 }
                 .alert("Attention", isPresented: $resetBeforeImport) {
                     Button("Non", role: .cancel) {
@@ -383,7 +386,7 @@ struct PlayersView: View {
                 if newUser.name.isEmpty, !results.clubName.isEmpty {
                     newUser.name = results.clubName
                 }
-                if !results.clubId.isEmpty {
+                if newUser.ffttId.isEmpty, !results.clubId.isEmpty {
                     newUser.ffttId = results.clubId
                 }
                 firestoreManager.updateUser(newUser)
