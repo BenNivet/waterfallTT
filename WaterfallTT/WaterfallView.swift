@@ -263,7 +263,7 @@ struct WaterfallView: View {
                                     .bold()
                             }
                             HStack(spacing: CharterConstants.marginSmall) {
-                                teams[index].location.isEmpty
+                                teams[index].atHome
                                     ? Image(systemName: "house.fill")
                                     : Image(systemName: "car.fill")
                                 Text(teamLocation(for: index))
@@ -393,12 +393,15 @@ struct WaterfallView: View {
         }
     }
 
-    private func clearTeams() {
-        for i in teams.indices {
-            var team = teams[i]
-            team.location.removeAll()
-            firestoreManager.updateTeam(team)
-            dataManager.teams[i] = team
+    private func clearTeams(withLocation: Bool = true) {
+        if withLocation {
+            for i in teams.indices {
+                var team = teams[i]
+                team.location.removeAll()
+                team.atHome = true
+                firestoreManager.updateTeam(team)
+                dataManager.teams[i] = team
+            }
         }
         for j in players.indices {
             var player = players[j]
@@ -425,7 +428,7 @@ struct WaterfallView: View {
     }
 
     private func assignPlayersToTeams() {
-        clearTeams()
+        clearTeams(withLocation: false)
 
         var assignablePlayers = players.filter(\.isAvailable).sorted { $0.points > $1.points }
         var addedPlayers = [Player]()
@@ -467,7 +470,7 @@ struct WaterfallView: View {
             .frame(width: finalWidth)
 
         let renderer = ImageRenderer(content: view)
-        renderer.scale = 3 // qualité rétina, net même zoomé sur mobile
+        renderer.scale = 3
         return renderer.uiImage
     }
 
@@ -529,7 +532,7 @@ struct WaterfallView: View {
     }
 
     private func teamLocation(for index: Int) -> String {
-        teams[index].location.isEmpty ? "Domicile" : "\(teams[index].location)"
+        teams[index].formattedLocationName
     }
 
     func sharedText(id: String, update: Bool) -> String {

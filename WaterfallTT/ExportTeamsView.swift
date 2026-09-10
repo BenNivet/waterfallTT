@@ -85,6 +85,7 @@ struct ExportTeamsView: View {
 
     private func teamName(for team: Team) -> String {
         team.name + (team.division.isEmpty ? "" : " - \(team.division)")
+        + "\n" + team.formattedLocationName
     }
 
     private func exportTeamsBinding(for team: Team) -> Binding<Bool> {

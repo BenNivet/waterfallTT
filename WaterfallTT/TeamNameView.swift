@@ -11,7 +11,7 @@ public struct TeamNameView: View {
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject private var dataManager: DataManager
 
-    @State private var newName = ""
+    @State private var newName: String
     @State private var atHome: Bool
     @State private var location: String
 
@@ -24,7 +24,7 @@ public struct TeamNameView: View {
     init(team: Team) {
         self.team = team
         _newName = State(initialValue: team.division)
-        _atHome = State(initialValue: team.location.isEmpty)
+        _atHome = State(initialValue: team.atHome)
         _location = State(initialValue: team.location)
     }
 
@@ -36,6 +36,10 @@ public struct TeamNameView: View {
             Toggle("Domicile", isOn: $atHome)
             if !atHome {
                 FloatingTextField(placeHolder: "Lieu de la rencontre",
+                                  text: $location)
+                    .autocorrectionDisabled()
+            } else {
+                FloatingTextField(placeHolder: "Adversaire",
                                   text: $location)
                     .autocorrectionDisabled()
             }
@@ -57,11 +61,8 @@ public struct TeamNameView: View {
         if let index = teams.firstIndex(of: team) {
             var newTeam = teams[index]
             newTeam.division = newName
-            if atHome {
-                newTeam.location.removeAll()
-            } else {
-                newTeam.location = location
-            }
+            newTeam.location = location
+            newTeam.atHome = atHome
             firestoreManager.updateTeam(newTeam)
             dataManager.teams[index] = newTeam
         }

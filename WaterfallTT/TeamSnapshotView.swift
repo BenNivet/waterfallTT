@@ -72,12 +72,11 @@ struct TeamSnapshotView: View {
 
     private func locationView(_ team: Team) -> some View {
         HStack(spacing: CharterConstants.marginSmall) {
-            team.location.isEmpty
+            team.atHome
                 ? Image(systemName: "house.fill")
                 : Image(systemName: "car.fill")
-            team.location.isEmpty
-                ? Text("Domicile")
-                : Text(team.location)
+
+            Text(team.formattedLocationName)
         }
         .font(.headline)
     }
