@@ -52,10 +52,15 @@ public struct Chip: View {
 
 private extension Chip {
     var backgroundColor: Color {
-        if model.isActive {
-            CharterConstants.mainColor
-        } else {
-            CharterConstants.mainGray
+        switch model.mode {
+        case .normal:
+            if model.isActive {
+                CharterConstants.mainColor
+            } else {
+                CharterConstants.mainGray
+            }
+        case .error:
+            CharterConstants.mainRed
         }
     }
 

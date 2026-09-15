@@ -16,6 +16,7 @@ struct Team: Identifiable, Hashable {
     var division: String
     var location: String
     var atHome: Bool
+    var minPoints: Int
     
     var formattedLocationName: String {
         if location.isEmpty {
@@ -31,7 +32,8 @@ struct Team: Identifiable, Hashable {
                    name: name,
                    division: division,
                    location: location,
-                   atHome: atHome)
+                   atHome: atHome,
+                   minPoints: minPoints)
     }
 
     init(userId: String = "",
@@ -40,7 +42,8 @@ struct Team: Identifiable, Hashable {
          name: String,
          division: String = "",
          location: String = "",
-         atHome: Bool = true) {
+         atHome: Bool = true,
+         minPoints: Int = 0) {
         self.userId = userId
         self.teamId = teamId
         self.order = order
@@ -48,6 +51,7 @@ struct Team: Identifiable, Hashable {
         self.division = division
         self.location = location
         self.atHome = atHome
+        self.minPoints = minPoints
     }
 
     init(teamServer: TeamServer, documentId: String) {
@@ -58,6 +62,7 @@ struct Team: Identifiable, Hashable {
         division = teamServer.division
         location = teamServer.location
         atHome = teamServer.atHome ?? location.isEmpty
+        minPoints = teamServer.minPoints ?? 0
     }
 
     static func == (lhs: Team, rhs: Team) -> Bool {
@@ -72,4 +77,5 @@ struct TeamServer: Codable {
     var division: String
     var location: String
     var atHome: Bool?
+    var minPoints: Int?
 }

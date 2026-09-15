@@ -14,6 +14,7 @@ public struct TeamNameView: View {
     @State private var newName: String
     @State private var atHome: Bool
     @State private var location: String
+    @State private var minPoints: String
 
     let team: Team
     private let firestoreManager = FirestoreManager.shared
@@ -26,6 +27,7 @@ public struct TeamNameView: View {
         _newName = State(initialValue: team.division)
         _atHome = State(initialValue: team.atHome)
         _location = State(initialValue: team.location)
+        _minPoints = State(initialValue: String(team.minPoints))
     }
 
     public var body: some View {
@@ -43,6 +45,9 @@ public struct TeamNameView: View {
                                   text: $location)
                     .autocorrectionDisabled()
             }
+            FloatingTextField(placeHolder: "Points min. requis par joueur",
+                              text: $minPoints)
+                .keyboardType(.numberPad)
             Spacer()
             Button("Valider") {
                 hideKeyboard()
@@ -63,6 +68,8 @@ public struct TeamNameView: View {
             newTeam.division = newName
             newTeam.location = location
             newTeam.atHome = atHome
+            let minPoints = Int(minPoints) ?? 0
+            newTeam.minPoints = minPoints
             firestoreManager.updateTeam(newTeam)
             dataManager.teams[index] = newTeam
         }

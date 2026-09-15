@@ -274,7 +274,7 @@ struct WaterfallView: View {
                         .contentShape(Rectangle())
                     }
                     Spacer()
-                    teamPlayersView(index: index)
+                    teamPlayersView(index: index, minPoints: teams[index].minPoints)
                     Spacer()
                 }
                 .padding(CharterConstants.marginSmall)
@@ -287,7 +287,7 @@ struct WaterfallView: View {
     }
 
     @ViewBuilder
-    private func teamPlayersView(index: Int) -> some View {
+    private func teamPlayersView(index: Int, minPoints: Int) -> some View {
         if players(at: index).isEmpty {
             Text("Cliquer-ici pour ajouter des joueurs")
                 .font(.footnote)
@@ -296,7 +296,8 @@ struct WaterfallView: View {
                 HStack(spacing: CharterConstants.marginSmall) {
                     Spacer()
                     Chip(model: ChipModel(isActive: .constant(true),
-                                          title: "\(player.name) (\(player.points))") {
+                                          title: "\(player.name) (\(player.points))",
+                                          mode: player.points >= minPoints ? .normal : .error) {
                             if entitlementManager.canUpdate {
                                 removePlayerFromTeam(player)
                             }
