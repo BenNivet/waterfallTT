@@ -76,6 +76,21 @@ struct WaterfallView: View {
         dataManager.user?.name ?? ""
     }
 
+    private func exportImageURL(for image: UIImage) -> URL? {
+        guard let imageData = image.pngData() else { return nil }
+
+        let date = Date.now.formatted(.iso8601.year().month().day())
+        let fileName = "compositions-\(date).png"
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent(fileName)
+
+        do {
+            try imageData.write(to: url, options: .atomic)
+            return url
+        } catch {
+            return nil
+        }
+    }
+
     private var isTeamsEmpty: Bool {
         teams.isEmpty || players.allSatisfy(\.teamId.isEmpty)
     }
@@ -193,14 +208,15 @@ struct WaterfallView: View {
                 }
             }
             .sheet(isPresented: snapshotImageBinding) {
-                if let snapshotImage {
-                    ShareSheet(activityItems: [snapshotImage])
+                if let snapshotImage,
+                   let imageURL = exportImageURL(for: snapshotImage) {
+                    ShareSheet(activityItems: [imageURL])
                 }
             }
             .sheet(isPresented: showTeamNameViewBinding) {
                 if let showTeamNameView {
                     TeamNameView(team: showTeamNameView)
-                        .presentationDetents([.fraction(0.5)])
+                        .presentationDetents([.fraction(0.85), .large])
                 }
             }
             .fullScreenCover(isPresented: selectedTeamIndexBinding) {
@@ -262,13 +278,19 @@ struct WaterfallView: View {
                                     .font(.title3)
                                     .bold()
                             }
-                            HStack(spacing: CharterConstants.marginSmall) {
-                                teams[index].atHome
+                            VStack(spacing: CharterConstants.marginXXSmall) {
+                                HStack(spacing: CharterConstants.marginSmall) {
+                                    teams[index].atHome
                                     ? Image(systemName: "house.fill")
                                     : Image(systemName: "car.fill")
-                                Text(teamLocation(for: index))
+                                    Text(teamLocation(for: index))
+                                }
+                                .font(.subheadline)
+                                if let meetingSchedule = meetingSchedule(teams[index]) {
+                                    Label(meetingSchedule, systemImage: "calendar")
+                                        .font(.subheadline)
+                                }
                             }
-                            .font(.subheadline)
                         }
                         .padding(CharterConstants.marginSmall)
                         .contentShape(Rectangle())
@@ -278,7 +300,7 @@ struct WaterfallView: View {
                     Spacer()
                 }
                 .padding(CharterConstants.marginSmall)
-                .frame(maxWidth: .infinity, minHeight: 150)
+                .frame(maxWidth: .infinity, minHeight: 200)
                 .background(teamBackgroundColor(for: index, sortedIndex: sortedTeamIndex))
                 .cornerRadius(CharterConstants.radius)
             }
@@ -400,6 +422,7 @@ struct WaterfallView: View {
                 var team = teams[i]
                 team.location.removeAll()
                 team.atHome = true
+                team.location.removeAll()
                 firestoreManager.updateTeam(team)
                 dataManager.teams[i] = team
             }
@@ -552,6 +575,11 @@ struct WaterfallView: View {
            let url = URL(string: "waterfalltt://code/\(newUser.userId)\(newUser.canUpdate ? "" : "-0")") {
             UIApplication.shared.open(url)
         }
+    }
+
+    private func meetingSchedule(_ team: Team) -> String? {
+        guard !team.meetingDay.isEmpty, !team.meetingTime.isEmpty else { return nil }
+        return "\(team.meetingDay.prefix(3)). à \(team.meetingTime)"
     }
 }
 

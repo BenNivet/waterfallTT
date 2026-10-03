@@ -55,7 +55,7 @@ extension WebViewViewController: WKNavigationDelegate {
                     var players: [PlayerNumber] = []
                     var clubName = ""
                     do {
-                        let document: Document = try SwiftSoup.parse(html)
+                        let document: SwiftSoup.Document = try SwiftSoup.parse(html)
                         if let doc = try document.getElementsByClass("edgetoedge").first {
                             let links = try doc.select("a[href*=licencies]").compactMap { try $0.attr("href") }
                             let names = try doc.getElementsByClass("labels").compactMap { try $0.text() }
@@ -84,7 +84,7 @@ extension WebViewViewController: WKNavigationDelegate {
                           let index = tmpPlayers.firstIndex(where: { $0.licenceNumber == licenceNumber })
                     else { return }
                     do {
-                        let document: Document = try SwiftSoup.parse(html)
+                        let document: SwiftSoup.Document = try SwiftSoup.parse(html)
                         let items = try document.getElementsByClass("item-container")
                         for item in items {
                             let label = try item.getElementsByClass("labels").text()

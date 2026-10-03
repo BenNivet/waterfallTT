@@ -11,7 +11,7 @@ import StoreKit
 import SwiftUI
 
 struct SettingsView: View {
-    @Environment(\.requestReview) private var requestReview
+    @Environment(\.openURL) private var openURL
 
     @EnvironmentObject private var entitlementManager: EntitlementManager
     @EnvironmentObject private var dataManager: DataManager
@@ -250,7 +250,9 @@ struct SettingsView: View {
 
     private var rateButton: some View {
         Button("Noter l'application") {
-            requestReview()
+            guard let url = URL(string: "https://apps.apple.com/fr/app/ping-cascade-tennis-de-table/id6749312688?action=write-review")
+            else { return }
+            openURL(url)
         }
         .buttonStyle(PrimaryButtonStyle())
     }

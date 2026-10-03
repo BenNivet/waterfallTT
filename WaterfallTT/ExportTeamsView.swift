@@ -78,14 +78,29 @@ struct ExportTeamsView: View {
     }
 
     private var teamsView: some View {
-        ForEach(teams.sorted { $1.order > $0.order }) { team in
-            Toggle(teamName(for: team), isOn: exportTeamsBinding(for: team))
+        let sortedTeams = teams.sorted { $1.order > $0.order }
+        return ForEach(Array(sortedTeams.enumerated()), id: \.element.id) { index, team in
+            VStack(spacing: CharterConstants.marginSmall) {
+                Toggle(teamName(for: team), isOn: exportTeamsBinding(for: team))
+                if index < sortedTeams.count - 1 {
+                    Divider()
+                        .frame(height: 1)
+                        .frame(maxWidth: .infinity)
+                        .background(CharterConstants.halfWhite)
+                }
+            }
         }
     }
 
     private func teamName(for team: Team) -> String {
         team.name + (team.division.isEmpty ? "" : " - \(team.division)")
-        + "\n" + team.formattedLocationName
+            + "\n" + team.formattedLocationName
+            + meetingSchedule(for: team)
+    }
+
+    private func meetingSchedule(for team: Team) -> String {
+        guard !team.meetingDay.isEmpty, !team.meetingTime.isEmpty else { return "" }
+        return "\n" + "\(team.meetingDay.prefix(3)). \(team.meetingTime)"
     }
 
     private func exportTeamsBinding(for team: Team) -> Binding<Bool> {

@@ -17,7 +17,9 @@ struct Team: Identifiable, Hashable {
     var location: String
     var atHome: Bool
     var minPoints: Int
-    
+    var meetingDay: String
+    var meetingTime: String
+
     var formattedLocationName: String {
         if location.isEmpty {
             atHome ? "Domicile" : "Exterieur"
@@ -33,7 +35,9 @@ struct Team: Identifiable, Hashable {
                    division: division,
                    location: location,
                    atHome: atHome,
-                   minPoints: minPoints)
+                   minPoints: minPoints,
+                   meetingDay: meetingDay,
+                   meetingTime: meetingTime)
     }
 
     init(userId: String = "",
@@ -43,7 +47,9 @@ struct Team: Identifiable, Hashable {
          division: String = "",
          location: String = "",
          atHome: Bool = true,
-         minPoints: Int = 0) {
+         minPoints: Int = 0,
+         meetingDay: String = "",
+         meetingTime: String = "") {
         self.userId = userId
         self.teamId = teamId
         self.order = order
@@ -52,6 +58,8 @@ struct Team: Identifiable, Hashable {
         self.location = location
         self.atHome = atHome
         self.minPoints = minPoints
+        self.meetingDay = meetingDay
+        self.meetingTime = meetingTime
     }
 
     init(teamServer: TeamServer, documentId: String) {
@@ -63,6 +71,8 @@ struct Team: Identifiable, Hashable {
         location = teamServer.location
         atHome = teamServer.atHome ?? location.isEmpty
         minPoints = teamServer.minPoints ?? 0
+        meetingDay = teamServer.meetingDay ?? ""
+        meetingTime = teamServer.meetingTime ?? ""
     }
 
     static func == (lhs: Team, rhs: Team) -> Bool {
@@ -78,4 +88,6 @@ struct TeamServer: Codable {
     var location: String
     var atHome: Bool?
     var minPoints: Int?
+    var meetingDay: String?
+    var meetingTime: String?
 }

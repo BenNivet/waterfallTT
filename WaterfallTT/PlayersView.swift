@@ -29,6 +29,9 @@ struct PlayersView: View {
     @State private var showingIdClubAlert = false
     @State private var idClubText = ""
     @State private var showDeleteAllConfirmation = false
+    @State private var showDeleteSelectedConfirmation = false
+    @State private var isSelectingPlayers = false
+    @State private var selectedPlayerIDs = Set<String>()
     @State private var oldIdClub = ""
     @State private var resetBeforeImport = false
     @State private var updateRemotePlayers = false
@@ -71,13 +74,42 @@ struct PlayersView: View {
 
     var body: some View {
         NavigationStack {
-            mainView
-                .padding(.vertical, CharterConstants.margin)
-                .addLinearGradientBackground()
-                .navigationTitle("Joueurs")
+            eventConfiguredView
+        }
+    }
+
+    private var baseView: AnyView {
+        AnyView(mainView
+            .padding(.vertical, CharterConstants.margin)
+            .addLinearGradientBackground()
+            .navigationTitle(isSelectingPlayers ? "" : "Joueurs")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
-                    if entitlementManager.canUpdate {
+                    if entitlementManager.canUpdate && isSelectingPlayers {
+                        ToolbarItem(placement: .topBarLeading) {
+                            Button(allDisplayedPlayersAreSelected ? "Tout désélectionner" : "Tout sélectionner") {
+                                toggleAllDisplayedPlayers()
+                            }
+                        }
+                        ToolbarItem(placement: .topBarTrailing) {
+                            Button(role: .destructive) {
+                                showDeleteSelectedConfirmation = true
+                            } label: {
+                                HStack(spacing: CharterConstants.marginXSmall) {
+                                    Image(systemName: "trash")
+                                    Text(String(selectedPlayerIDs.count))
+                                }
+                            }
+                            .disabled(selectedPlayerIDs.isEmpty)
+                        }
+                        ToolbarItem(placement: .topBarTrailing) {
+                            Button {
+                                endSelection()
+                            } label: {
+                                Image(systemName: "checkmark")
+                            }
+                        }
+                    } else if entitlementManager.canUpdate {
                         if let ffttId = dataManager.user?.ffttId,
                            !ffttId.isEmpty,
                            !players.isEmpty {
@@ -110,9 +142,22 @@ struct PlayersView: View {
                                 Image(systemName: "questionmark.circle")
                             }
                         }
+                        if !players.isEmpty {
+                            ToolbarItem(placement: .topBarLeading) {
+                                Button {
+                                    isSelectingPlayers = true
+                                } label: {
+                                    Image(systemName: "checklist")
+                                }
+                            }
+                        }
                     }
-                }
-                .sheet(isPresented: $showAddPlayerView) {
+                })
+    }
+
+    private var presentedView: AnyView {
+        AnyView(baseView
+            .sheet(isPresented: $showAddPlayerView) {
                     ManagePlayerView()
                         .presentationDetents([.fraction(0.4)])
                 }
@@ -196,8 +241,12 @@ struct PlayersView: View {
                                                            canShowAd: $canShowAd)
                             .opacity(0)
                     }
-                }
-                .alert("Importer les joueurs", isPresented: $showingIdClubAlert) {
+                })
+    }
+
+    private var alertConfiguredView: AnyView {
+        AnyView(presentedView
+            .alert("Importer les joueurs", isPresented: $showingIdClubAlert) {
                     TextField("Identifiant FFTT", text: $idClubText)
                         .autocorrectionDisabled()
                     Button("Annuler", role: .cancel) {}
@@ -243,7 +292,19 @@ struct PlayersView: View {
                         deleteAllPlayers()
                     }
                 }
-                .onChange(of: idClub) { old, _ in
+                .alert("Supprimer les joueurs sélectionnés ?", isPresented: $showDeleteSelectedConfirmation) {
+                    Button("Annuler", role: .cancel) {}
+                    Button("Supprimer", role: .destructive) {
+                        deleteSelectedPlayers()
+                    }
+                } message: {
+                    Text("Cette action supprimera \(selectedPlayerIDs.count) joueur(s).")
+                })
+    }
+
+    private var eventConfiguredView: AnyView {
+        AnyView(alertConfiguredView
+            .onChange(of: idClub) { old, _ in
                     isLoaderPresented.toggle()
                     if !results.players.isEmpty {
                         results.clubId = old
@@ -255,8 +316,7 @@ struct PlayersView: View {
                 .onChange(of: canShowAd) {
                     rewardedAdsManager.displayRewardedAd()
                 }
-                .loader(isPresented: $isLoaderPresented)
-        }
+                .loader(isPresented: $isLoaderPresented))
     }
 
     @ViewBuilder private var mainView: some View {
@@ -293,37 +353,20 @@ struct PlayersView: View {
             }
             .frame(maxWidth: .infinity)
         } else {
-            List {
-                ForEach(displayedPlayers) { player in
-                    HStack {
-                        Text(player.name)
-                        Spacer()
-                        Text("\(player.points)")
-                    }
-                    .contentShape(Rectangle())
-                    .onTapGesture {
-                        if entitlementManager.canUpdate {
-                            showManagePlayerView = player
-                        }
-                    }
-                }
-                .if(entitlementManager.canUpdate) {
-                    $0.onDelete(perform: deletePlayer)
-                }
-                if searchText.isEmpty {
-                    removeAllButtonView
-                }
-            }
-            .listStyle(PlainListStyle())
-            .searchable(text: $searchText, prompt: "Rechercher un joueur")
+            contentView
         }
     }
 
-    private var removeAllButtonView: some View {
-        Button("Tout supprimer") {
-            showDeleteAllConfirmation = true
-        }
-        .buttonStyle(DestructiveButtonStyle())
+    private var contentView: some View {
+        PlayersListView(players: displayedPlayers,
+                        canUpdate: entitlementManager.canUpdate,
+                        searchText: $searchText,
+                        isSelecting: $isSelectingPlayers,
+                        selectedPlayerIDs: $selectedPlayerIDs,
+                        onPlayerTap: { showManagePlayerView = $0 },
+                        onDelete: deletePlayer,
+                        onDeleteAll: { showDeleteAllConfirmation = true },
+                        onDeleteSelected: { showDeleteSelectedConfirmation = true })
     }
 
     private func deletePlayer(at offsets: IndexSet) {
@@ -336,11 +379,40 @@ struct PlayersView: View {
         }
     }
 
+    private func endSelection() {
+        selectedPlayerIDs.removeAll()
+        isSelectingPlayers = false
+    }
+
+    private var allDisplayedPlayersAreSelected: Bool {
+        let displayedPlayerIDs = Set(displayedPlayers.map(\.id))
+        return !displayedPlayerIDs.isEmpty && displayedPlayerIDs.isSubset(of: selectedPlayerIDs)
+    }
+
+    private func toggleAllDisplayedPlayers() {
+        let displayedPlayerIDs = Set(displayedPlayers.map(\.id))
+        if displayedPlayerIDs.isSubset(of: selectedPlayerIDs) {
+            selectedPlayerIDs.subtract(displayedPlayerIDs)
+        } else {
+            selectedPlayerIDs.formUnion(displayedPlayerIDs)
+        }
+    }
+
+    private func deleteSelectedPlayers() {
+        let selectedPlayers = players.filter { selectedPlayerIDs.contains($0.id) }
+        for player in selectedPlayers {
+            firestoreManager.deletePlayer(player)
+        }
+        dataManager.players.removeAll { selectedPlayerIDs.contains($0.id) }
+        endSelection()
+    }
+
     private func deleteAllPlayers() {
         for player in players {
             firestoreManager.deletePlayer(player)
         }
         dataManager.players.removeAll()
+        endSelection()
     }
 
     private func extractLines(from fileURL: URL) {

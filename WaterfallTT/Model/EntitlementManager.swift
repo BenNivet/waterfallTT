@@ -32,6 +32,7 @@ final class EntitlementManager: ObservableObject {
 
     @AppStorage("hasSeenImportInterstitial", store: userDefaults) var hasSeenImportInterstitial = false
     @AppStorage("hasSeenClubIdInterstitial", store: userDefaults) var hasSeenClubIdInterstitial = false
+    @AppStorage("hasSeenAppReviewInterstitial", store: userDefaults) var hasSeenAppReviewInterstitial = false
 
     @discardableResult
     func appendUserIfNeeded(userId: String, canUpdate: Bool) -> UserStore {

@@ -15,9 +15,20 @@ public struct TeamNameView: View {
     @State private var atHome: Bool
     @State private var location: String
     @State private var minPoints: String
+    @State private var hasMeetingSchedule: Bool
+    @State private var meetingDay: String
+    @State private var meetingTime: Date
 
     let team: Team
     private let firestoreManager = FirestoreManager.shared
+    private let meetingDays = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]
+    private static let timeFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "fr_FR")
+        formatter.dateFormat = "HH:mm"
+        return formatter
+    }()
+
     private var teams: [Team] {
         dataManager.teams
     }
@@ -28,26 +39,16 @@ public struct TeamNameView: View {
         _atHome = State(initialValue: team.atHome)
         _location = State(initialValue: team.location)
         _minPoints = State(initialValue: String(team.minPoints))
+        _hasMeetingSchedule = State(initialValue: !team.meetingDay.isEmpty || !team.meetingTime.isEmpty)
+        _meetingDay = State(initialValue: team.meetingDay.isEmpty ? "Dimanche" : team.meetingDay)
+        _meetingTime = State(initialValue: Self.timeFormatter.date(from: team.meetingTime) ?? Self.defaultMeetingTime)
     }
 
     public var body: some View {
         VStack(spacing: CharterConstants.margin) {
-            FloatingTextField(placeHolder: String(localized: "Division de l'équipe"),
-                              text: $newName)
-                .autocorrectionDisabled()
-            Toggle("Domicile", isOn: $atHome)
-            if !atHome {
-                FloatingTextField(placeHolder: "Lieu de la rencontre",
-                                  text: $location)
-                    .autocorrectionDisabled()
-            } else {
-                FloatingTextField(placeHolder: "Adversaire",
-                                  text: $location)
-                    .autocorrectionDisabled()
-            }
-            FloatingTextField(placeHolder: "Points min. requis par joueur",
-                              text: $minPoints)
-                .keyboardType(.numberPad)
+            teamInformationSection
+            meetingSection
+            playersRequirementSection
             Spacer()
             Button("Valider") {
                 hideKeyboard()
@@ -55,11 +56,61 @@ public struct TeamNameView: View {
             }
             .buttonStyle(PrimaryButtonStyle())
         }
-        .padding(CharterConstants.margin)
+        .padding(.top, CharterConstants.marginLarge)
+        .padding([.horizontal, .bottom], CharterConstants.margin)
         .keyboardAvoiding()
         .onTapGesture {
             hideKeyboard()
         }
+    }
+
+    private var teamInformationSection: some View {
+        VStack(alignment: .leading, spacing: CharterConstants.marginSmall) {
+            sectionTitle("Équipe")
+            FloatingTextField(placeHolder: String(localized: "Division de l'équipe"),
+                              text: $newName)
+                .autocorrectionDisabled()
+        }
+        .sectionContainer()
+    }
+
+    private var meetingSection: some View {
+        VStack(alignment: .leading, spacing: CharterConstants.marginSmall) {
+            sectionTitle("Rencontre")
+            Toggle("Domicile", isOn: $atHome)
+            FloatingTextField(placeHolder: atHome ? "Adversaire" : "Lieu de la rencontre",
+                              text: $location)
+                .autocorrectionDisabled()
+            Toggle("Définir le jour et l'heure", isOn: $hasMeetingSchedule)
+            if hasMeetingSchedule {
+                FloatingTextField(type: .picker(rows: meetingDays),
+                                  placeHolder: "Jour",
+                                  text: $meetingDay,
+                                  rightIcon: "chevron.down")
+                DatePicker("Heure", selection: $meetingTime, displayedComponents: .hourAndMinute)
+            }
+        }
+        .sectionContainer()
+    }
+
+    private var playersRequirementSection: some View {
+        VStack(alignment: .leading, spacing: CharterConstants.marginSmall) {
+            sectionTitle("Règlement")
+            FloatingTextField(placeHolder: "Points min. requis par joueur",
+                              text: $minPoints)
+                .keyboardType(.numberPad)
+        }
+        .sectionContainer()
+    }
+
+    private func sectionTitle(_ title: String) -> some View {
+        Text(title)
+            .font(.title3)
+            .bold()
+    }
+
+    private static var defaultMeetingTime: Date {
+        Calendar.current.date(bySettingHour: 9, minute: 0, second: 0, of: Date()) ?? Date()
     }
 
     private func saveName() {
@@ -70,9 +121,21 @@ public struct TeamNameView: View {
             newTeam.atHome = atHome
             let minPoints = Int(minPoints) ?? 0
             newTeam.minPoints = minPoints
+            newTeam.meetingDay = hasMeetingSchedule ? meetingDay : ""
+            newTeam.meetingTime = hasMeetingSchedule ? Self.timeFormatter.string(from: meetingTime) : ""
             firestoreManager.updateTeam(newTeam)
             dataManager.teams[index] = newTeam
         }
         dismiss()
+    }
+}
+
+private extension View {
+    func sectionContainer() -> some View {
+        padding(CharterConstants.margin)
+            .overlay {
+                RoundedRectangle(cornerRadius: CharterConstants.radius)
+                    .stroke(CharterConstants.halfWhite, lineWidth: 0.5)
+            }
     }
 }

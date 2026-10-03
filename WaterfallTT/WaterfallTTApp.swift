@@ -47,6 +47,18 @@ struct WaterfallTTApp: App {
                 .environmentObject(interstitialAdsManager)
                 .environmentObject(rewardedAdsManager)
                 .fontDesign(.rounded)
+                .fullScreenCover(isPresented: appReviewInterstitialBinding) {
+                    AppReviewInterstitialView()
+                        .environmentObject(entitlementManager)
+                }
+        }
+    }
+
+    private var appReviewInterstitialBinding: Binding<Bool> {
+        Binding {
+            entitlementManager.appLaunched >= 20 && !entitlementManager.hasSeenAppReviewInterstitial
+        } set: { _ in
+            entitlementManager.hasSeenAppReviewInterstitial = true
         }
     }
 }

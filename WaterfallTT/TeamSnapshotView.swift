@@ -26,7 +26,13 @@ struct TeamSnapshotView: View {
                     VStack(alignment: .leading, spacing: CharterConstants.marginSmall) {
                         Text(teamName(team))
                             .font(.headline)
-                        locationView(team)
+                        Group {
+                            locationView(team)
+                            if let meetingSchedule = meetingSchedule(team) {
+                                Label(meetingSchedule, systemImage: "calendar")
+                            }
+                        }
+                        .font(.headline)
                         players(in: team)
                     }
                 }
@@ -78,7 +84,11 @@ struct TeamSnapshotView: View {
 
             Text(team.formattedLocationName)
         }
-        .font(.headline)
+    }
+
+    private func meetingSchedule(_ team: Team) -> String? {
+        guard !team.meetingDay.isEmpty, !team.meetingTime.isEmpty else { return nil }
+        return "\(team.meetingDay.prefix(3)). à \(team.meetingTime)"
     }
 
     private func averagePoints(_ team: Team) -> Double {

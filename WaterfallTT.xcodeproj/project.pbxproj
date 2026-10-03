@@ -64,6 +64,8 @@
 		0BFC0FA9300E0F7D006DE3F9 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 0BFC0FA8300E0F7D006DE3F9 /* FirebaseCrashlytics */; };
 		0BFC0FAB300E0F7D006DE3F9 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 0BFC0FAA300E0F7D006DE3F9 /* FirebaseFirestore */; };
 		0BFC0FAD300E0F7D006DE3F9 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 0BFC0FAC300E0F7D006DE3F9 /* FirebaseMessaging */; };
+		A10000012F00000100000001 /* PlayersListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000022F00000100000001 /* PlayersListView.swift */; };
+		A10000032F00000100000001 /* AppReviewInterstitialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000042F00000100000001 /* AppReviewInterstitialView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -119,6 +121,8 @@
 		0BFAFFFF2E1E4BA400F10BEA /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		0BFC0F9D300E03A5006DE3F9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0BFC0F9F300E084E006DE3F9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		A10000022F00000100000001 /* PlayersListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayersListView.swift; sourceTree = "<group>"; };
+		A10000042F00000100000001 /* AppReviewInterstitialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppReviewInterstitialView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -187,6 +191,7 @@
 				0B6E7D282E8DB4B400422636 /* SettingsView.swift */,
 				0B0E5E072E9807BA009240C0 /* AdminView.swift */,
 				0B07486B2F054B81004BF08E /* ConfigureClubView.swift */,
+				A10000022F00000100000001 /* PlayersListView.swift */,
 				0BFA00002E1E4BA400F10BEA /* ManagePlayerView.swift */,
 				0BFA00032E1E4BA400F10BEA /* ShareSheet.swift */,
 				0BECA4412E1EBC350000F789 /* SelectPlayerView.swift */,
@@ -201,6 +206,7 @@
 				0B6E7D2A2E8DBEFA00422636 /* ClubListView.swift */,
 				0BDA65D92E8C1A7B00B14CEA /* WebViewViewController.swift */,
 				0BC2965A2E9D3266002FA18B /* MailView.swift */,
+				A10000042F00000100000001 /* AppReviewInterstitialView.swift */,
 				0B68E2262E8423AB00718B5E /* Ads */,
 				0BFAFFFA2E1E4BA400F10BEA /* Components */,
 				0BC8BE252E3A3CD600ABA07F /* Database */,
@@ -391,6 +397,8 @@
 				0BE4986B2F748B3A00B4E582 /* RewardedAdsManager.swift in Sources */,
 				0BECA4422E1EBC350000F789 /* SelectPlayerView.swift in Sources */,
 				0BFA00182E1E4BA400F10BEA /* PlayersView.swift in Sources */,
+				A10000012F00000100000001 /* PlayersListView.swift in Sources */,
+				A10000032F00000100000001 /* AppReviewInterstitialView.swift in Sources */,
 				0BD11EDA2E97C15400FE4495 /* ClubIdInterstitialView.swift in Sources */,
 				0BFA00262E1E509700F10BEA /* LoaderView.swift in Sources */,
 				0BFA00272E1E509700F10BEA /* LoaderViewModifier.swift in Sources */,
@@ -540,7 +548,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = WK7T3Z2QPN;
 				ENABLE_PREVIEWS = YES;
@@ -562,7 +570,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.9;
+				MARKETING_VERSION = 3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = benjamin.cante.WaterfallPing;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -582,7 +590,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = WK7T3Z2QPN;
 				ENABLE_PREVIEWS = YES;
@@ -604,7 +612,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.9;
+				MARKETING_VERSION = 3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = benjamin.cante.WaterfallPing;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
