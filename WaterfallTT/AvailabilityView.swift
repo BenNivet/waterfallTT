@@ -84,6 +84,7 @@ struct AvailabilityView: View {
             player.teamId.removeAll()
             player.isCaptain = false
             player.isAvailable.toggle()
+            player.lastUpdate = Date()
             firestoreManager.updatePlayer(player)
             dataManager.players[index] = player
             Analytics.logEvent(LogEvent.updateAvailabilityPlayer, parameters: nil)

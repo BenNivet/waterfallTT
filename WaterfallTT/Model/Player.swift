@@ -20,6 +20,7 @@ struct Player: Identifiable, Hashable {
     var points: Int
     var isAvailable: Bool
     var isCaptain: Bool
+    var lastUpdate: Date?
 
     var playerServer: PlayerServer {
         PlayerServer(userId: userId,
@@ -27,7 +28,8 @@ struct Player: Identifiable, Hashable {
                      name: name,
                      points: points,
                      isAvailable: isAvailable,
-                     isCaptain: isCaptain)
+                     isCaptain: isCaptain,
+                     lastUpdate: lastUpdate.map(Helper.shared.string(from:)))
     }
 
     init(userId: String = "",
@@ -36,7 +38,8 @@ struct Player: Identifiable, Hashable {
          name: String,
          points: Int = 500,
          isAvailable: Bool = true,
-         isCaptain: Bool = false) {
+         isCaptain: Bool = false,
+         lastUpdate: Date? = Date()) {
         self.userId = userId
         self.playerId = playerId
         self.teamId = teamId
@@ -44,6 +47,7 @@ struct Player: Identifiable, Hashable {
         self.points = points
         self.isAvailable = isAvailable
         self.isCaptain = isCaptain
+        self.lastUpdate = lastUpdate
     }
 
     init(playerServer: PlayerServer, documentId: String) {
@@ -54,6 +58,11 @@ struct Player: Identifiable, Hashable {
         points = playerServer.points
         isAvailable = playerServer.isAvailable
         isCaptain = playerServer.isCaptain
+        lastUpdate = if let lastUpdateString = playerServer.lastUpdate {
+            Helper.shared.date(from: lastUpdateString)
+        } else {
+            nil
+        }
     }
 
     static func == (lhs: Player, rhs: Player) -> Bool {
@@ -68,4 +77,5 @@ struct PlayerServer: Codable {
     var points: Int
     var isAvailable: Bool
     var isCaptain: Bool
+    var lastUpdate: String?
 }

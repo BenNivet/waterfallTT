@@ -14,11 +14,32 @@ struct AdminView: View {
 
     private let firestoreManager = FirestoreManager.shared
     private var filteredClubs: [User] {
-        guard !searchText.isEmpty else { return clubs.sorted { $1.date < $0.date } }
         let queryFormatted = searchText.queryFormatted
-        return clubs
-            .filter { $0.name.queryFormatted.contains(queryFormatted) }
-            .sorted { $1.date < $0.date }
+        let filteredClubs: [User] = searchText.isEmpty
+            ? clubs
+            : clubs.filter { $0.name.queryFormatted.contains(queryFormatted) }
+
+        let latestUpdates: [String: Date] = Dictionary(grouping: players, by: \.userId)
+            .compactMapValues { $0.compactMap(\.lastUpdate).max() }
+
+        return filteredClubs.sorted { (lhs: User, rhs: User) in
+            let lhsLatestUpdate = latestUpdates[lhs.documentId]
+            let rhsLatestUpdate = latestUpdates[rhs.documentId]
+            let lhsCreation = Helper.shared.date(from: lhs.date) ?? .distantPast
+            let rhsCreation = Helper.shared.date(from: rhs.date) ?? .distantPast
+            let lhsDate = lhsLatestUpdate ?? lhsCreation
+            let rhsDate = rhsLatestUpdate ?? rhsCreation
+
+            return if lhsDate == rhsDate {
+                if lhsLatestUpdate == rhsLatestUpdate {
+                    rhsCreation > lhsCreation
+                } else {
+                    lhsLatestUpdate != nil && rhsLatestUpdate == nil
+                }
+            } else {
+                lhsDate > rhsDate
+            }
+        }
     }
 
     var body: some View {
@@ -61,8 +82,15 @@ struct AdminView: View {
                 VStack(alignment: .leading) {
                     Text(club.name.isEmpty ? "Inconnu" : club.name.trimmingCharacters(in: .whitespaces))
                         .font(.headline)
-                    Text(club.date)
-                        .font(.footnote)
+                    HStack(spacing: CharterConstants.marginSmall) {
+                        if let latestUpdate = latestUpdate(for: club),
+                           club.date != Helper.shared.string(from: latestUpdate) {
+                            Label(Helper.shared.updateString(from: latestUpdate), systemImage: "clock")
+                                .font(.footnote)
+                        }
+                        Label(club.date, systemImage: "calendar")
+                            .font(.caption)
+                    }
                 }
                 Spacer()
                 players(for: club)
@@ -77,6 +105,13 @@ struct AdminView: View {
                 .background(CharterConstants.halfGray)
         }
         .buttonStyle(.plain)
+    }
+
+    private func latestUpdate(for club: User) -> Date? {
+        players
+            .filter { $0.userId == club.documentId }
+            .compactMap(\.lastUpdate)
+            .max()
     }
 
     @ViewBuilder

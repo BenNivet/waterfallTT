@@ -102,6 +102,7 @@ struct SelectPlayerView: View {
                 var player = players[i]
                 if selectedPlayers.contains(player) {
                     player.teamId = teams[teamIndex].teamId
+                    player.lastUpdate = Date()
                     firestoreManager.updatePlayer(player)
                     dataManager.players[i] = player
                     if indexMaxPoint == nil
@@ -114,6 +115,7 @@ struct SelectPlayerView: View {
                selectedPlayers.allSatisfy({ !$0.isCaptain }) {
                 var maxPlayer = players[indexMaxPoint]
                 maxPlayer.isCaptain = true
+                maxPlayer.lastUpdate = Date()
                 firestoreManager.updatePlayer(maxPlayer)
                 dataManager.players[indexMaxPoint] = maxPlayer
             }

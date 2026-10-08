@@ -281,8 +281,8 @@ struct WaterfallView: View {
                             VStack(spacing: CharterConstants.marginXXSmall) {
                                 HStack(spacing: CharterConstants.marginSmall) {
                                     teams[index].atHome
-                                    ? Image(systemName: "house.fill")
-                                    : Image(systemName: "car.fill")
+                                        ? Image(systemName: "house.fill")
+                                        : Image(systemName: "car.fill")
                                     Text(teamLocation(for: index))
                                 }
                                 .font(.subheadline)
@@ -406,10 +406,12 @@ struct WaterfallView: View {
                 if let otherIndex = players.firstIndex(where: { $0.teamId == player.teamId }) {
                     var otherPlayer = players[otherIndex]
                     otherPlayer.isCaptain = true
+                    otherPlayer.lastUpdate = Date()
                     firestoreManager.updatePlayer(otherPlayer)
                     dataManager.players[otherIndex] = otherPlayer
                 }
             }
+            newPlayer.lastUpdate = Date()
             firestoreManager.updatePlayer(newPlayer)
             dataManager.players[index] = newPlayer
             Analytics.logEvent(LogEvent.updateTeam, parameters: nil)
@@ -431,6 +433,7 @@ struct WaterfallView: View {
             var player = players[j]
             player.teamId.removeAll()
             player.isCaptain = false
+            player.lastUpdate = Date()
             firestoreManager.updatePlayer(player)
             dataManager.players[j] = player
         }
@@ -467,6 +470,7 @@ struct WaterfallView: View {
                             newPlayer.isCaptain = true
                         }
                         newPlayer.teamId = teams[teamIndex].teamId
+                        newPlayer.lastUpdate = Date()
                         firestoreManager.updatePlayer(newPlayer)
                         dataManager.players[index] = newPlayer
                     }
@@ -535,12 +539,14 @@ struct WaterfallView: View {
         if let oldCaptainIndex = players.firstIndex(where: { $0.isCaptain && $0.teamId == player.teamId }) {
             var oldCaptain = players[oldCaptainIndex]
             oldCaptain.isCaptain = false
+            oldCaptain.lastUpdate = Date()
             firestoreManager.updatePlayer(oldCaptain)
             dataManager.players[oldCaptainIndex] = oldCaptain
         }
         if let otherIndex = players.firstIndex(where: { $0.id == player.id }) {
             var otherPlayer = players[otherIndex]
             otherPlayer.isCaptain = true
+            otherPlayer.lastUpdate = Date()
             firestoreManager.updatePlayer(otherPlayer)
             dataManager.players[otherIndex] = otherPlayer
         }

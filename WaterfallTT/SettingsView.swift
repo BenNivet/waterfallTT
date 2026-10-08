@@ -22,6 +22,7 @@ struct SettingsView: View {
     @State private var showIdFFTTClub = false
     @State private var showExitConfirmation = false
     @State private var showResetAllConfirmation = false
+    @State private var showCascadeModeInformation = false
     @State private var showingMailView = false
     @State private var mailResult: Result<MFMailComposeResult, Error>? = nil
 
@@ -138,6 +139,12 @@ struct SettingsView: View {
                     resetAll()
                 }
             }
+            .alert("Réglementation",
+                   isPresented: $showCascadeModeInformation) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text("Ce réglage permet de choisir entre le mode cascade de points et le mode de brûlage, conformément au règlement FFTT en vigueur dans votre région.")
+            }
             .loader(isPresented: $isLoaderPresented)
         }
     }
@@ -194,9 +201,19 @@ struct SettingsView: View {
     }
 
     private var toggleCascadeView: some View {
-        Toggle("Mode Cascade", isOn: cascadeModeBinding)
-            .font(.headline)
-            .padding(.vertical, CharterConstants.marginSmall)
+        HStack {
+            Text("Mode Cascade")
+            Button {
+                showCascadeModeInformation = true
+            } label: {
+                Image(systemName: "info.circle")
+            }
+            Spacer()
+            Toggle("", isOn: cascadeModeBinding)
+                .labelsHidden()
+        }
+        .font(.headline)
+        .padding(.vertical, CharterConstants.marginSmall)
     }
 
     private var numberTeamsView: some View {
@@ -287,6 +304,7 @@ struct SettingsView: View {
                         var newUser = user
                         newUser.teamId.removeAll()
                         newUser.isCaptain = false
+                        newUser.lastUpdate = Date()
                         firestoreManager.updatePlayer(newUser)
                         dataManager.players[index] = newUser
                     }
