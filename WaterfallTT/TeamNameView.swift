@@ -18,6 +18,7 @@ public struct TeamNameView: View {
     @State private var hasMeetingSchedule: Bool
     @State private var meetingDay: String
     @State private var meetingTime: Date
+    @State private var isImportantMatch: Bool
 
     let team: Team
     private let firestoreManager = FirestoreManager.shared
@@ -42,6 +43,7 @@ public struct TeamNameView: View {
         _hasMeetingSchedule = State(initialValue: !team.meetingDay.isEmpty || !team.meetingTime.isEmpty)
         _meetingDay = State(initialValue: team.meetingDay.isEmpty ? "Dimanche" : team.meetingDay)
         _meetingTime = State(initialValue: Self.timeFormatter.date(from: team.meetingTime) ?? Self.defaultMeetingTime)
+        _isImportantMatch = State(initialValue: team.isImportantMatch)
     }
 
     public var body: some View {
@@ -89,6 +91,8 @@ public struct TeamNameView: View {
                                   rightIcon: "chevron.down")
                 DatePicker("Heure", selection: $meetingTime, displayedComponents: .hourAndMinute)
             }
+            Toggle("Match à enjeu", isOn: $isImportantMatch)
+                .padding(.top, CharterConstants.marginSmall)
         }
         .sectionContainer()
     }
@@ -123,6 +127,7 @@ public struct TeamNameView: View {
             newTeam.minPoints = minPoints
             newTeam.meetingDay = hasMeetingSchedule ? meetingDay : ""
             newTeam.meetingTime = hasMeetingSchedule ? Self.timeFormatter.string(from: meetingTime) : ""
+            newTeam.isImportantMatch = isImportantMatch
             firestoreManager.updateTeam(newTeam)
             dataManager.teams[index] = newTeam
         }

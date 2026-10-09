@@ -216,7 +216,7 @@ struct WaterfallView: View {
             .sheet(isPresented: showTeamNameViewBinding) {
                 if let showTeamNameView {
                     TeamNameView(team: showTeamNameView)
-                        .presentationDetents([.fraction(0.85), .large])
+                        .presentationDetents([.fraction(0.90), .large])
                 }
             }
             .fullScreenCover(isPresented: selectedTeamIndexBinding) {
@@ -264,7 +264,26 @@ struct WaterfallView: View {
                     selectedTeamIndex = index
                 }
             } label: {
-                VStack {
+                VStack(spacing: CharterConstants.marginXSmall) {
+                    if teams[index].isImportantMatch {
+                        HStack(spacing: CharterConstants.marginXSmall) {
+                            Image(systemName: "flame.fill")
+                                .font(.caption)
+                                .foregroundStyle(.yellow.gradient)
+
+                            Text("MATCH À ENJEU")
+                                .font(.caption2)
+                                .fontWeight(.heavy)
+                                .tracking(1.2)
+                        }
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, CharterConstants.marginSmall)
+                        .padding(.vertical, CharterConstants.marginXSmall)
+                        .background(.black.opacity(0.55), in: Capsule())
+                        .overlay(Capsule().stroke(.yellow.opacity(0.75), lineWidth: 1))
+                        .shadow(color: .black.opacity(0.45), radius: 5, y: 2)
+                        .padding(.top, CharterConstants.marginSmall)
+                    }
                     Button {
                         if entitlementManager.canUpdate {
                             showTeamNameView = teams[index]
@@ -301,8 +320,40 @@ struct WaterfallView: View {
                 }
                 .padding(CharterConstants.marginSmall)
                 .frame(maxWidth: .infinity, minHeight: 200)
-                .background(teamBackgroundColor(for: index, sortedIndex: sortedTeamIndex))
+                .background {
+                    if teams[index].isImportantMatch,
+                       !hasInvalidPoints(at: index, sortedIndex: sortedTeamIndex) {
+                        ZStack {
+                            LinearGradient(colors: [
+                                Color(red: 0.36, green: 0.02, blue: 0.04),
+                                Color(red: 0.13, green: 0.02, blue: 0.04),
+                                Color.black
+                            ], startPoint: .topLeading, endPoint: .bottomTrailing)
+
+                            RadialGradient(colors: [.orange.opacity(0.38), .clear],
+                                           center: .top,
+                                           startRadius: 0,
+                                           endRadius: 260)
+                        }
+                    } else {
+                        teamBackgroundColor(for: index, sortedIndex: sortedTeamIndex)
+                    }
+                }
                 .cornerRadius(CharterConstants.radius)
+                .overlay {
+                    RoundedRectangle(cornerRadius: CharterConstants.radius)
+                        .stroke(teams[index].isImportantMatch
+                            ? LinearGradient(colors: [.yellow, .orange, .red, .orange],
+                                             startPoint: .topLeading,
+                                             endPoint: .bottomTrailing)
+                            : LinearGradient(colors: [.clear],
+                                             startPoint: .top,
+                                             endPoint: .bottom),
+                            lineWidth: teams[index].isImportantMatch ? 3 : 0)
+                }
+                .shadow(color: teams[index].isImportantMatch ? .orange.opacity(0.45) : .clear,
+                        radius: 14,
+                        y: 4)
             }
         }
         .padding(.horizontal, CharterConstants.margin)
@@ -425,6 +476,7 @@ struct WaterfallView: View {
                 team.location.removeAll()
                 team.atHome = true
                 team.location.removeAll()
+                team.isImportantMatch = false
                 firestoreManager.updateTeam(team)
                 dataManager.teams[i] = team
             }
@@ -517,11 +569,7 @@ struct WaterfallView: View {
 
     private func teamBackgroundColor(for index: Int, sortedIndex: Int) -> Color {
         guard !players(at: index).isEmpty else { return CharterConstants.mainGray }
-        let average = averagePoints(index)
-        if sortedTeams.indices.filter({ $0 > sortedIndex }).allSatisfy({
-            guard let newIndex = teams.firstIndex(of: sortedTeams[$0]) else { return false }
-            return averagePoints(newIndex) < average
-        }) {
+        if !hasInvalidPoints(at: index, sortedIndex: sortedIndex) {
             if players(at: index).count < 2 {
                 return Color.orange.opacity(0.6)
             } else {
@@ -531,6 +579,17 @@ struct WaterfallView: View {
             return dataManager.user?.cascade ?? true
                 ? CharterConstants.mainRed.opacity(0.7)
                 : CharterConstants.mainGray
+        }
+    }
+
+    private func hasInvalidPoints(at index: Int, sortedIndex: Int) -> Bool {
+        guard !players(at: index).isEmpty,
+              dataManager.user?.cascade ?? true
+        else { return false }
+        let average = averagePoints(index)
+        return !sortedTeams.indices.filter { $0 > sortedIndex }.allSatisfy {
+            guard let newIndex = teams.firstIndex(of: sortedTeams[$0]) else { return false }
+            return averagePoints(newIndex) < average
         }
     }
 

@@ -19,6 +19,7 @@ struct Team: Identifiable, Hashable {
     var minPoints: Int
     var meetingDay: String
     var meetingTime: String
+    var isImportantMatch: Bool
 
     var formattedLocationName: String {
         if location.isEmpty {
@@ -37,7 +38,8 @@ struct Team: Identifiable, Hashable {
                    atHome: atHome,
                    minPoints: minPoints,
                    meetingDay: meetingDay,
-                   meetingTime: meetingTime)
+                   meetingTime: meetingTime,
+                   isImportantMatch: isImportantMatch)
     }
 
     init(userId: String = "",
@@ -49,7 +51,8 @@ struct Team: Identifiable, Hashable {
          atHome: Bool = true,
          minPoints: Int = 0,
          meetingDay: String = "",
-         meetingTime: String = "") {
+         meetingTime: String = "",
+         isImportantMatch: Bool = false) {
         self.userId = userId
         self.teamId = teamId
         self.order = order
@@ -60,6 +63,7 @@ struct Team: Identifiable, Hashable {
         self.minPoints = minPoints
         self.meetingDay = meetingDay
         self.meetingTime = meetingTime
+        self.isImportantMatch = isImportantMatch
     }
 
     init(teamServer: TeamServer, documentId: String) {
@@ -73,6 +77,7 @@ struct Team: Identifiable, Hashable {
         minPoints = teamServer.minPoints ?? 0
         meetingDay = teamServer.meetingDay ?? ""
         meetingTime = teamServer.meetingTime ?? ""
+        isImportantMatch = teamServer.isImportantMatch ?? false
     }
 
     static func == (lhs: Team, rhs: Team) -> Bool {
@@ -90,4 +95,5 @@ struct TeamServer: Codable {
     var minPoints: Int?
     var meetingDay: String?
     var meetingTime: String?
+    var isImportantMatch: Bool?
 }
